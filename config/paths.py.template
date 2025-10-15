@@ -1,0 +1,68 @@
+"""
+Path configuration template for Arctic zero-curtain pipeline.
+
+Copy this file to paths.py and update with your actual data locations.
+"""
+
+from pathlib import Path
+import os
+import sys
+
+BASE_DIR = Path(__file__).parent.parent
+
+# UPDATE THIS: Point to your data directory
+# Examples:
+#   - External drive: Path('/Volumes/your_drive/data')
+#   - Network drive: Path('/mnt/research/arctic_data')
+#   - Local directory: Path.home() / 'arctic_data'
+DATA_DIR = Path('/path/to/your/data')
+
+# Check if data directory exists
+if not DATA_DIR.exists():
+    print(f"⚠️  WARNING: Data directory not found at {DATA_DIR}")
+    print("Please update DATA_DIR in config/paths.py")
+    sys.exit(1)
+
+OUTPUT_DIR = BASE_DIR / 'outputs'
+CACHE_DIR = BASE_DIR / 'cache'
+
+# Ensure local directories exist
+OUTPUT_DIR.mkdir(exist_ok=True)
+CACHE_DIR.mkdir(exist_ok=True)
+(OUTPUT_DIR / 'figures').mkdir(exist_ok=True)
+(OUTPUT_DIR / 'reports').mkdir(exist_ok=True)
+(BASE_DIR / 'logs').mkdir(exist_ok=True)
+
+# UPDATE THESE: Input data file paths
+INPUT_PATHS = {
+    'in_situ': DATA_DIR / 'your_insitu_file.parquet',
+    'arctic_consolidated': DATA_DIR / 'your_consolidated_file.parquet',
+    # Add your other data files here
+}
+
+# Intermediate processing paths (stored in local cache)
+INTERMEDIATE_PATHS = {
+    'quality_controlled': CACHE_DIR / 'quality_controlled.parquet',
+    'feature_engineered': CACHE_DIR / 'feature_engineered.parquet',
+}
+
+# Output paths
+OUTPUT_PATHS = {
+    'teacher_forcing_dataset': OUTPUT_DIR / 'teacher_forcing_dataset.parquet',
+    'data_summary_stats': OUTPUT_DIR / 'reports' / 'summary_statistics.json',
+}
+
+PATHS = {**INPUT_PATHS, **INTERMEDIATE_PATHS, **OUTPUT_PATHS}
+
+def validate_paths():
+    """Validate that required input paths exist."""
+    missing = []
+    for name, path in INPUT_PATHS.items():
+        if not Path(path).exists():
+            missing.append(f"{name}: {path}")
+    if missing:
+        print(f"⚠️  Missing {len(missing)} file(s):")
+        for m in missing:
+            print(f"  - {m}")
+        return False
+    return True

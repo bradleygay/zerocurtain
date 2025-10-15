@@ -1,0 +1,109 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+isce3/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data files (NEVER commit data!)
+*.parquet
+*.csv
+*.h5
+*.hdf5
+*.nc
+*.nc4
+*.tif
+*.tiff
+*.geotiff
+*.pkl
+*.pickle
+*.npy
+*.npz
+
+# Cache and temporary files
+cache/
+*.cache
+tmp/
+temp/
+
+# Outputs (generated files)
+outputs/
+results/
+figures/
+plots/
+models/*.pth
+models/*.h5
+models/*.pkl
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# Large files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Environment files with secrets
+.env
+secrets.py
+credentials.json
+*.key
+
+# Specific to this project
+/Volumes/
+merged_*.parquet
+final_*.parquet
+circumarctic_*.parquet
+zero_curtain_*.parquet
