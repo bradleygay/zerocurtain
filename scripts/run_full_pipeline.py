@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Main pipeline runner for Arctic zero-curtain teacher forcing dataset.
-Orchestrates all stages from data loading to final output.
+Pipeline with COLD SEASON filtering (Sept-May only).
 """
 
 import sys
@@ -10,52 +9,52 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from config.paths import INPUT_PATHS, OUTPUT_PATHS
+from config.pipeline_parameters import SPLIT_RATIOS, STRATIFICATION, SEQUENCE_PARAMS, SEASONAL_FILTER
 from src.data_ingestion.inspect_parquet import inspect_parquet
-from src.visualization.arctic_projections import analyze_data_coverage
 from src.modeling.teacher_forcing_prep import prepare_teacher_forcing_dataset
-import pandas as pd
 
 
 def main():
-    """Execute complete pipeline."""
     print("\n" + "=" * 80)
-    print("ARCTIC ZERO-CURTAIN PIPELINE - TEACHER FORCING DATASET")
-    print("=" * 80 + "\n")
+    print("ARCTIC PIPELINE - COLD SEASON ZERO-CURTAIN")
+    print("=" * 80)
+    print("\n🔥 CRITICAL: Summer months EXCLUDED")
+    print(f"  Zero-curtain only occurs Sept-May (freeze-thaw transitions)")
+    print(f"  Excluding: June, July, August (no freeze-thaw dynamics)")
+    print(f"\nMethodology:")
+    print(f"  Seasonal filter: {SEASONAL_FILTER['exclude_months']} excluded")
+    print(f"  Splits: {SPLIT_RATIOS['train']*100:.0f}% / {SPLIT_RATIOS['validation']*100:.0f}% / {SPLIT_RATIOS['test']*100:.0f}%")
+    print(f"  Stratification: {STRATIFICATION['stratify_columns']}")
     
-    # Stage 1: Inspect data
+    # Inspect
+    print("\n" + "=" * 80)
     print("STAGE 1: Data Inspection")
-    print("-" * 80)
+    print("=" * 80)
     inspect_parquet(INPUT_PATHS['in_situ'], n_rows=5, show_preview=True)
     
-    # Stage 2: Coverage analysis
+    # Teacher Forcing with SUMMER FILTER
     print("\n" + "=" * 80)
-    print("STAGE 2: Coverage Analysis")
-    print("-" * 80)
-    df = pd.read_parquet(INPUT_PATHS['in_situ'])
-    sample = df.sample(n=min(50000, len(df)))
-    results = analyze_data_coverage(sample)
-    
-    # Stage 3: Teacher forcing preparation
-    print("\n" + "=" * 80)
-    print("STAGE 3: Teacher Forcing Dataset Preparation")
-    print("-" * 80)
+    print("STAGE 2: Cold Season Stratified Dataset")
+    print("=" * 80)
     metadata = prepare_teacher_forcing_dataset(
         input_path=INPUT_PATHS['in_situ'],
         output_path=OUTPUT_PATHS['teacher_forcing_dataset'],
-        sequence_length=30,
-        prediction_horizon=7,
-        validation_split=0.2,
-        test_split=0.1
+        train_ratio=SPLIT_RATIOS['train'],
+        val_ratio=SPLIT_RATIOS['validation'],
+        test_ratio=SPLIT_RATIOS['test'],
+        stratify_columns=STRATIFICATION['stratify_columns'],
+        random_state=STRATIFICATION['random_state'],
+        exclude_months=SEASONAL_FILTER['exclude_months'],  # CRITICAL
+        min_duration_hours=SEQUENCE_PARAMS['min_duration_hours'],
+        max_duration_hours=SEQUENCE_PARAMS['max_duration_hours']
     )
     
-    # Summary
     print("\n" + "=" * 80)
-    print("PIPELINE COMPLETE")
+    print("PIPELINE COMPLETE - COLD SEASON ONLY")
     print("=" * 80)
-    print(f"\nOutputs saved to: {OUTPUT_PATHS['teacher_forcing_dataset'].parent}")
-    print(f"\nDataset ready for zero-curtain model training!")
-    
-    return metadata
+    print(f"\nCold season observations: {metadata['total_observations_after_filter']:,}")
+    print(f"Summer observations removed: {metadata['observations_removed']:,}")
+    print(f"Ready for zero-curtain model training")
 
 
 if __name__ == "__main__":
