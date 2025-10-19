@@ -1,82 +1,102 @@
 # Arctic Zero-Curtain Analysis Pipeline
-
 **Research pipeline for constructing teacher forcing datasets from Arctic in situ measurements, remote sensing data, and physics-based models for zero-curtain detection and analysis.**
 
 ## Overview
-
 This pipeline integrates multi-source Arctic datasets to create high-quality training data for machine learning models focused on zero-curtain phenomenon detection and prediction.
-
 ### Data Sources
+- **In Situ Measurements**: Circumarctic ground-based active layer thickness, soil temperature, and soil moisture data
+- **Remote Sensing Observations**: NISAR, UAVSAR, and SMAP satellite observations
+- **Physics Models**: Thermodynamic and phase-change detection algorithms via LPJ-EOSIM and CryoGrid
+- **Stefan problem solver**: Numerical freeze-thaw boundary tracking
+- **Spatiotemporal analysis**: Permafrost zones, snow effects, climate context
 
-- **In Situ Measurements**: Ground-based soil temperature and moisture sensors
-- **Remote Sensing**: NISAR, UAVSAR, and SMAP satellite observations  
-- **Physics Models**: Thermodynamic and phase-change detection algorithms
+**Output**: 54+ million physics-informed zero-curtain events with comprehensive feature sets for machine learning.
 
-## Project Structure
+## Repository Structure
 ```
 arctic_zero_curtain_pipeline/
-├── config/              # Configuration files
-│   ├── paths.py        # Data paths (template - update for your system)
-│   └── parameters.py   # Pipeline parameters
-├── src/                # Source code modules
-│   ├── common/         # Shared utilities
-│   ├── data_ingestion/ # Data loading and inspection
-│   ├── transformations/# Data transformations
-│   ├── processing/     # Core processing logic
-│   ├── visualization/  # Plotting and visualization
-│   └── modeling/       # ML model utilities
-├── orchestration/      # Pipeline orchestration
-├── scripts/            # Executable scripts
-├── tests/              # Unit tests
-└── outputs/            # Generated outputs (not in git)
+├── src/
+│   ├── physics_detection/
+│   │   ├── zero_curtain_detector.py       # Core physics detector
+│   │   ├── physics_config.py              # Configuration management
+│   │   └── README.md
+│   └── common/
+│       ├── imports.py
+│       └── utilities.py
+├── orchestration/
+│   ├── orchestration_module.py            # Traditional detection pipeline
+│   └── physics_detection_orchestrator.py  # Physics-informed orchestrator
+├── scripts/
+│   ├── validate_physics_setup.py          # Validation script
+│   ├── run_physics_detection.py           # Standalone detection
+│   ├── consolidate_physics_results.py     # Dataset consolidation
+│   ├── qa_physics_results.py              # Quality assurance
+│   ├── organize_outputs.py                # Output organization
+│   └── update_script_paths.py             # Path updates
+├── outputs/
+│   ├── consolidated_datasets/             # Final datasets (1.7 GB)
+│   ├── splits/                            # Train/val/test (2.7 GB)
+│   ├── statistics/                        # Statistical summaries
+│   ├── metadata/                          # Configuration files
+│   ├── emergency_saves/                   # Checkpoints
+│   └── incremental_saves/                 # Progress saves
+├── data/
+│   └── auxiliary/
+│       ├── DATA_SOURCES.md                # Data download instructions
+│       └── README.md
+├── tests/
+│   └── test_physics_detection.py
+├── configs/
+├── requirements.txt
+├── LICENSE
+└── README.md                              # This file
 ```
 
 ## Installation
-
 ### Prerequisites
-
 - Python 3.10+
 - conda or mamba (recommended)
 - 16GB+ RAM recommended
 - External storage for large datasets
-
 ### Setup
 ```bash
 # Clone repository
 git clone https://github.com/bradleygay/zerocurtain.git
 cd zerocurtain
-
 # Create conda environment
 conda env create -f environment.yml
 conda activate arctic_pipeline
-
 # Or install with pip
 pip install -r requirements.txt
-
 # Configure data paths
 cp config/paths.py.template config/paths.py
 # Edit config/paths.py with your data locations
 ```
+### Download Auxiliary Data
+Download required datasets (see `data/auxiliary/DATA_SOURCES.md`):
+- Permafrost probability raster (~85 GB)
+- Permafrost zones shapefile (~900 MB)
+- ERA5 snow data (~3-5 GB)
+Place in `/Users/bagay/Downloads/` or configure paths in `src/physics_detection/physics_config.py`.
+
+### Validate Setup
+```bash
+python scripts/validate_physics_setup.py
+```
 
 ## Usage
-
 ### Quick Start
 ```bash
 # Check configuration
 python scripts/check_external_drive.py
-
 # Test data access
 python scripts/test_imports.py
-
 # Inspect data
 python src/data_ingestion/inspect_parquet.py
-
 # Run full pipeline
 python scripts/run_pipeline.py
 ```
-
 ### Data Configuration
-
 Update `config/paths.py` with your data locations:
 ```python
 # Example configuration
@@ -86,65 +106,173 @@ INPUT_PATHS = {
     'arctic_consolidated': DATA_DIR / 'nisar_smap_consolidated.parquet',
 }
 ```
+### Run Detection
+```bash
+# Standalone physics detection
+python scripts/run_physics_detection.py
+# Integrated pipeline (traditional + physics)
+python orchestration/orchestration_module.py --integrated
+```
+### Consolidate Results
+```bash
+python scripts/consolidate_physics_results.py
+```
+
+# Dataset
+### Complete Dataset
+- **Location**: `outputs/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet`
+- **Size**: 1.7 GB
+- **Events**: 54,418,117
+- **Features**: 40
+### Data Splits
+- **Training**: `outputs/splits/physics_informed_events_train.parquet` (70%, 1.9 GB)
+- **Validation**: `outputs/splits/physics_informed_events_val.parquet` (15%, 423 MB)
+- **Testing**: `outputs/splits/physics_informed_events_test.parquet` (15%, 423 MB)
+### Coverage
+- **Spatial**: 713 Arctic sites (49.4°N to 81.6°N)
+- **Temporal**: 132.4 years (1891-2023)
+- **Permafrost zones**: All types (continuous, discontinuous, sporadic, isolated)
+
+## Features
+### Main Features (Target Variables)
+1. **intensity_percentile**: Zero-curtain intensity [0-1]
+2. **duration_hours**: Event duration in hours
+3. **spatial_extent_meters**: Vertical extent of zero-curtain zone [meters]
+### Physics Features (CryoGrid)
+- `cryogrid_thermal_conductivity`: Thermal conductivity [W/m/K]
+- `cryogrid_heat_capacity`: Volumetric heat capacity [J/m³/K]
+- `cryogrid_enthalpy_stability`: Enthalpy stability metric [0-1]
+- `phase_change_energy`: Phase transition energy [J/m³]
+- `freeze_penetration_depth`: Freeze depth [m]
+- `thermal_diffusivity`: Thermal diffusivity [m²/s]
+- `snow_insulation_factor`: Snow insulation effect [0-1]
+### Spatiotemporal Features
+- Location: `latitude`, `longitude`
+- Classification: `depth_zone`, `permafrost_zone`, `permafrost_probability`
+- Temporal: `start_time`, `end_time`, `year`, `month`, `season`
+### Derived Features
+- `intensity_category`: weak/moderate/strong/extreme
+- `duration_category`: short/medium/long/extended
+- `extent_category`: shallow/moderate/deep/very_deep
+- `composite_severity`: Combined severity score [0-1]
+- `energy_intensity`: Log-transformed phase change energy
+
+## Physics Implementation
+### Thermodynamic Models
+- **LPJ-EOSIM**: Heat capacity, thermal conductivity, phase change
+- **CryoGrid**: Enthalpy formulation, Painter-Karra freezing, surface energy balance
+### Numerical Methods
+- **Stefan problem solver**: Crank-Nicholson scheme for freeze-thaw boundaries
+- **Adaptive time-stepping**: Numerical stability control
+- **Enthalpy-based formulation**: Temperature-dependent phase transitions
+### Environmental Integration
+- **Permafrost context**: Probability maps and zone classifications
+- **Snow physics**: Thermal insulation, conductivity, melt energy
+- **Spatiotemporal variability**: Site-specific environmental conditions
 
 ## Pipeline Stages
-
 1. **Data Inspection**: Validate and inspect input datasets
 2. **Quality Control**: Remove outliers and ensure data quality
 3. **Feature Engineering**: Create temporal and spatial features
 4. **Teacher Forcing Preparation**: Format data for ML training
 5. **Visualization**: Generate analysis figures and reports
 
-## Development
+## Physics-Informed Detection Module
+The pipeline also includes physics-informed zero-curtain detection using the `PhysicsInformedZeroCurtainDetector` class. This module integrates:
+### Key Features
+- **Advanced Thermodynamics**: LPJ-EOSIM and CryoGrid physics models
+- **Stefan Problem Solver**: Numerical solution for freeze-thaw dynamics
+- **Multi-Physics Integration**: Permafrost, snow, soil interactions
+- **Spatiotemporal Analysis**: Site-specific environmental context
+### Quick Start
+```bash
+# Run physics detection standalone
+python scripts/run_physics_detection.py
+# Or as part of full pipeline
+python orchestration/orchestration_manager.py
+```
+### Configuration
+Edit `src/physics_detection/physics_config.py` to customize:
+- Detection thresholds
+- Physics model options
+- Data paths
+- Output formats
+See [Physics Detection Documentation](src/physics_detection/README.md) for details.
+### Output
+Detection results are saved to `outputs/` directory:
+- `zero_curtain_physics_informed_results.parquet`: Event detection results
+- `zero_curtain_physics_informed_summary.json`: Statistical summary
+- `zero_curtain_physics_informed_site_suitability.parquet`: Site screening results
 
+## Development
 ### Running Tests
 ```bash
 # Run all tests
 pytest tests/
-
 # Run specific test
 python tests/test_inspect_parquet.py
 ```
-
 ### Code Style
-
 This project follows PEP 8 guidelines. Before committing:
 ```bash
 # Format code
 black src/ scripts/ tests/
-
 # Check style
 flake8 src/ scripts/ tests/
 ```
 
 ## Contributing
-
-This is research code. For questions or collaboration inquiries, please open an issue.
+This is research code. For questions or collaboration inquiries, please open an issue and/or contact the PI (Bradley Gay) at: bradley.a.gay@nasa.gov.
 
 ## License
-
-This project is licensed under the MIT License - see LICENSE file for details.
+This project is licensed under the AGPL-3.0 GNU AFFERO GENERAL PUBLIC LICENSE - see LICENSE file for details.
 
 ## Citation
-
-If you use this code in your research, please cite:
+If you use any of this code in your research, please cite:
+Gay, B., Miner, K., Rietze, N., Pastick, N., Poulter, B., & Miller, C. (2025). zerocurtain (Version 1.0.0) [Computer software]. https://doi.org/Nature Machine Intelligence (TBD)
 ```bibtex
-@software{arctic_zero_curtain_pipeline,
-  title={Arctic Zero-Curtain Analysis Pipeline},
-  author={Gay, Bradley A.},
-  year={2025},
-  url={https://github.com/bradleygay/zerocurtain}
+@software{Gay_zerocurtain_2025,
+author = {Gay, Bradley and Miner, Kimberley and Rietze, Nils and Pastick, Neal and Poulter, Ben and Miller, Charles},
+doi = {Nature Machine Intelligence (TBD)},
+month = oct,
+title = {{zerocurtain}},
+url = {https://github.com/bradleygay/zerocurtain},
+version = {1.0.0},
+year = {2025}
 }
 ```
 
 ## Acknowledgments
+Acknowledgment and gratitude are owed to the NASA Postdoctoral Program and proposal reviewers whose contributions and
+feedback elevated this research. Much appreciation is owed and extended to the following institutions, networks, teams, and
+individuals responsible for the viability, momentum, and success of this work: National Aeronautics and Space Administration
+(NASA), Jet Propulsion Laboratory (JPL), Goddard Space Flight Center (GSFC), NASA Arctic Boreal Vulnerability Experiment
+(ABoVE) field and science support services, National Science Foundation (NSF), Woodwell Climate Research Center, University of
+Alaska ‐ Fairbanks, Institute of Arctic Biology (IAB), California Institute of Technology, NASA UAVSAR airborne, algorithm, and
+inSAR/polSAR processing teams, NASA ABoVE Airborne Working Group, CALM, GTNP, AmeriFlux, National Ecological
+Observatory Network (NEON), Toolik Field Station, Peter Griffith (GSFC), Elizabeth Hoy (GSFC), Naiara Pinto (JPL), Yang Zheng
+(JPL), Nikolay Shiklomanov (GWU), Julia Boike (UCI), Pavel Groisman (NOAA), and Oliver Frauenfeld (TAMU). BG’s
+participation and research was sponsored by the National Aeronautics and Space Administration (NASA) and supported by an
+appointment to the NASA Postdoctoral Program (NPP) at the Jet Propulsion Laboratory (JPL) and the California Institute of
+Technology, administered by Oak Ridge Associated Universities (ORAU) under contract with NASA (80NM0018D0004). The views
+and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies,
+either expressed or implied, of NASA, JPL, the California Institute of Technology, or the U.S. Government. The U.S. Government is
+authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notation herein. Any use of
+trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.
 
-- NASA Goddard Space Flight Center
-- Arctic research community
-- Open-source scientific Python community
+## Further Acknowledgments
+- LPJ-EOSIM permafrost physics model
+- CryoGrid community model
+- University of Oslo Permafrost CCI datasets
+- ERA5-Land snow data (Copernicus Climate Data Store)
+- Circumarctic in situ measurement networks
+
+## References
+- Westermann et al. (2023). CryoGrid community model
+- Painter & Karra (2014). Soil freezing characteristics
+- Sturm et al. (1997). Snow thermal properties
 
 ## Contact
-
 For questions about this research:
 - GitHub Issues: https://github.com/bradleygay/zerocurtain/issues
-- Email: your.email@nasa.gov
+- Email: bradley.a.gay@nasa.gov

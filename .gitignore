@@ -107,3 +107,44 @@ merged_*.parquet
 final_*.parquet
 circumarctic_*.parquet
 zero_curtain_*.parquet
+
+# Physics detection outputs
+outputs/zero_curtain_*INCREMENTAL*.parquet
+outputs/zero_curtain_*EMERGENCY*.parquet
+outputs/*_PROGRESS_*.txt
+
+# Large auxiliary data files (should be downloaded separately)
+data/auxiliary/UiO_PEX_*.tif
+data/auxiliary/UiO_PEX_*.shp
+data/auxiliary/*.nc
+data/auxiliary/*.pkl
+
+# Temporary detection files
+*.pkl
+*_debug_*.txt
+
+# Physics detection outputs - organized structure
+outputs/emergency_saves/*.parquet
+outputs/incremental_saves/*.parquet
+outputs/incremental_saves/*.txt
+outputs/consolidated_datasets/*.parquet
+outputs/splits/*.parquet
+
+# Keep directory structure and READMEs
+!outputs/*/README.md
+!outputs/README.md
+
+# Statistics and metadata (small files - can be committed)
+# outputs/statistics/*.json
+# outputs/metadata/*.txt
+
+# Large auxiliary data files
+*.nc
+*PERPROB*.tif
+*PERZONES*.shp
+*PERZONES*.shx
+*PERZONES*.dbf
+*PERZONES*.prj
+
+# Archive directory
+outputs/archive/*

@@ -20,6 +20,8 @@ from functools import partial
 import warnings
 warnings.filterwarnings('ignore')
 
+from physics_detection_orchestrator import PhysicsDetectionOrchestrator
+
 # Define critical utility function
 def memory_usage():
     """Monitor memory usage in MB"""
@@ -1392,116 +1394,388 @@ def optimize_settings():
 #         include_moisture=INCLUDE_MOISTURE
 #     )
 
-# Directly run the high-performance pipeline without command-line arguments
+# # Directly run the high-performance pipeline without command-line arguments
 
-# Copy and paste the entire optimized-pipeline code here, then add this execution code at the end:
+# # Copy and paste the entire optimized-pipeline code here, then add this execution code at the end:
 
-# ---- Direct execution without command-line arguments ----
+# # ---- Direct execution without command-line arguments ----
+# if __name__ == "__main__":
+#     # Configuration settings - EDIT THESE
+#     FEATHER_PATH = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+#     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
+#     MAX_WORKERS = None  # None means auto-determine based on CPU count
+#     SUPER_BATCH_SIZE = None  # None means auto-determine based on system resources
+#     MAX_GAP_HOURS = 8
+#     INCLUDE_MOISTURE = True
+#     ESTIMATE_ONLY = False  # Set to True to only estimate without running
+
+#     # Get optimal settings
+#     settings = optimize_settings()
+
+#     # Use provided settings if specified
+#     if MAX_WORKERS is not None:
+#         settings['max_workers'] = MAX_WORKERS
+        
+#     if SUPER_BATCH_SIZE is not None:
+#         settings['super_batch_size'] = SUPER_BATCH_SIZE
+
+#     print(f"Using {settings['max_workers']} worker processes")
+#     print(f"Using super-batch size of {settings['super_batch_size']}")
+
+#     # Estimate time to completion
+#     import os
+#     import pickle
+#     import pandas as pd
+
+#     # Get site count
+#     site_depths = None
+#     checkpoint_dir = os.path.join(OUTPUT_DIR, 'checkpoints')
+#     os.makedirs(checkpoint_dir, exist_ok=True)
+    
+#     if os.path.exists(os.path.join(checkpoint_dir, 'site_depths.pkl')):
+#         with open(os.path.join(checkpoint_dir, 'site_depths.pkl'), 'rb') as f:
+#             site_depths = pickle.load(f)
+
+#     if site_depths is None:
+#         print("Reading site data to estimate completion time...")
+#         site_df = pd.read_feather(FEATHER_PATH, columns=['source', 'soil_temp_depth'])
+#         valid_df = site_df.dropna(subset=['soil_temp_depth'])
+#         site_count = len(valid_df.drop_duplicates(['source', 'soil_temp_depth']))
+#     else:
+#         site_count = len(site_depths)
+
+#     # Check for already processed sites
+#     processed_count = 0
+#     if os.path.exists(os.path.join(checkpoint_dir, 'processed_indices.pkl')):
+#         with open(os.path.join(checkpoint_dir, 'processed_indices.pkl'), 'rb') as f:
+#             processed_indices = pickle.load(f)
+#             processed_count = len(processed_indices)
+
+#     remaining_count = site_count - processed_count
+
+#     # Estimate completion time
+#     est_time = estimate_completion_time(
+#         remaining_count, 
+#         settings['estimated_sites_per_second'],
+#         settings['max_workers']
+#     )
+
+#     print(f"\nPipeline Settings:")
+#     print(f"  Worker processes:  {settings['max_workers']}")
+#     print(f"  Super batch size:  {settings['super_batch_size']}")
+#     print(f"  Total sites:       {site_count}")
+#     print(f"  Already processed: {processed_count}")
+#     print(f"  Remaining sites:   {remaining_count}")
+#     print(f"  Estimated time:    {est_time}\n")
+
+#     if ESTIMATE_ONLY:
+#         print("Estimation complete. Exiting without running pipeline.")
+#         import sys
+#         sys.exit(0)
+
+#     # Run with simple confirmation
+#     if remaining_count > 1000:
+#         confirm = input(f"This will process {remaining_count} sites. Continue? (y/n): ")
+#         if confirm.lower() != 'y':
+#             print("Aborting pipeline run.")
+#             import sys
+#             sys.exit(0)
+
+#     # Run the pipeline
+#     print("\nStarting pipeline run...\n")
+#     run_high_performance_pipeline_fixed(
+#         feather_path=FEATHER_PATH,
+#         output_dir=OUTPUT_DIR,
+#         super_batch_size=settings['super_batch_size'],
+#         max_workers=settings['max_workers'],
+#         max_gap_hours=MAX_GAP_HOURS,
+#         include_moisture=INCLUDE_MOISTURE
+#     )
+
+# # if __name__ == "__main__":
+# #     import warnings
+# #     warnings.filterwarnings('ignore')
+    
+# #     print("Starting preprocessing...")
+# #     print("\nPreprocessing parameters:")
+# #     print("- Chunk size: 10 sites")
+# #     print("- Window size: 30 days")
+# #     print("- Minimum depths: 4")
+# #     print("- Depth range: -2m to 20m")
+# #     print("- Missing value threshold: 30%")
+    
+# #     processed_chunks = preprocess_in_chunks(temp_df, zc_df, chunk_size=10)
+# #     print(f"\nTotal processed windows: {len(processed_chunks)}")
+
+def run_integrated_pipeline_with_physics(feather_path, output_dir, settings):
+    """
+    Integrated pipeline: zero-curtain detection followed by physics-informed analysis
+    
+    Parameters:
+    -----------
+    feather_path : str
+        Path to the feather file
+    output_dir : str
+        Output directory for results
+    settings : dict
+        Optimized settings dictionary with max_workers, super_batch_size, etc.
+    """
+    print("="*90)
+    print("INTEGRATED ZERO-CURTAIN PIPELINE WITH PHYSICS DETECTION")
+    print("="*90)
+    
+    print(f"\nPhase 1: Traditional Zero-Curtain Detection")
+    print(f"Using {settings['max_workers']} worker processes")
+    print(f"Using super-batch size of {settings['super_batch_size']}")
+    
+    phase1_start = time.time()
+    
+    events = run_high_performance_pipeline_fixed(
+        feather_path=feather_path,
+        output_dir=output_dir,
+        super_batch_size=settings['super_batch_size'],
+        max_workers=settings['max_workers'],
+        max_gap_hours=8,
+        include_moisture=True
+    )
+    
+    phase1_time = time.time() - phase1_start
+    
+    if events and len(events) > 0:
+        print(f"\n{'='*90}")
+        print(f"PHASE 1 COMPLETE: {len(events)} events detected")
+        print(f"Phase 1 Duration: {phase1_time:.1f} seconds ({phase1_time/60:.1f} minutes)")
+        print(f"{'='*90}")
+        
+        print(f"\nPhase 2: Physics-Informed Analysis")
+        print(f"Initializing physics detection framework...")
+        
+        phase2_start = time.time()
+        
+        try:
+            physics_orchestrator = PhysicsDetectionOrchestrator()
+            
+            print("Validating physics detection configuration...")
+            if physics_orchestrator.validate_configuration():
+                print("Configuration validated successfully")
+                
+                print("Initializing physics-informed detector...")
+                physics_orchestrator.initialize_detector()
+                
+                print("Running physics-informed detection pipeline...")
+                physics_results = physics_orchestrator.run_detection_pipeline()
+                
+                print("Generating summary report...")
+                summary = physics_orchestrator.generate_summary_report()
+                physics_orchestrator.save_summary_report(summary)
+                
+                phase2_time = time.time() - phase2_start
+                total_time = phase1_time + phase2_time
+                
+                print(f"\n{'='*90}")
+                print(f"PHASE 2 COMPLETE: {len(physics_results)} physics-informed events")
+                print(f"Phase 2 Duration: {phase2_time:.1f} seconds ({phase2_time/60:.1f} minutes)")
+                print(f"{'='*90}")
+                
+                print(f"\n{'='*90}")
+                print(f"INTEGRATED PIPELINE COMPLETE")
+                print(f"{'='*90}")
+                print(f"Phase 1 Events (Traditional): {len(events)}")
+                print(f"Phase 2 Events (Physics-Informed): {len(physics_results)}")
+                print(f"Total Pipeline Duration: {total_time:.1f} seconds ({total_time/60:.1f} minutes)")
+                print(f"{'='*90}")
+                
+                return events, physics_results
+                
+            else:
+                print("\n" + "="*90)
+                print("PHYSICS DETECTION CONFIGURATION VALIDATION FAILED")
+                print("="*90)
+                print("Required auxiliary data files not found in /Users/bagay/Downloads/:")
+                print("  1. UiO_PEX_PERPROB_5.0_20181128_2000_2016_NH.tif (Permafrost probability)")
+                print("  2. UiO_PEX_PERZONES_5.0_20181128_2000_2016_NH.shp (Permafrost zones)")
+                print("  3. aa6ddc60e4ed01915fb9193bcc7f4146.nc (ERA5 snow data)")
+                print("\nPhase 1 results are still available in:", output_dir)
+                print("="*90)
+                
+                return events, None
+                
+        except Exception as e:
+            phase2_time = time.time() - phase2_start
+            
+            print(f"\n{'='*90}")
+            print(f"PHASE 2 ERROR")
+            print(f"{'='*90}")
+            print(f"Physics detection encountered an error after {phase2_time:.1f} seconds:")
+            print(f"Error: {e}")
+            import traceback
+            traceback.print_exc()
+            print(f"\nPhase 1 results are still available in:", output_dir)
+            print(f"{'='*90}")
+            
+            return events, None
+    else:
+        print(f"\n{'='*90}")
+        print("PHASE 1 COMPLETE: No events detected")
+        print("Cannot proceed to Phase 2 without events from Phase 1")
+        print(f"{'='*90}")
+        return None, None
+
+
 if __name__ == "__main__":
-    # Configuration settings - EDIT THESE
-    FEATHER_PATH = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+    import sys
+    
+    MODE_TRADITIONAL = "traditional"
+    MODE_INTEGRATED = "integrated"
+    
+    mode = MODE_TRADITIONAL
+    
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--integrated":
+            mode = MODE_INTEGRATED
+        elif sys.argv[1] == "--traditional":
+            mode = MODE_TRADITIONAL
+        elif sys.argv[1] == "--help":
+            print("="*90)
+            print("ARCTIC ZERO-CURTAIN PIPELINE")
+            print("="*90)
+            print("\nUsage:")
+            print("  python orchestration/orchestration_module.py [--traditional|--integrated]")
+            print("\nModes:")
+            print("  --traditional  : Run only traditional zero-curtain detection (default)")
+            print("  --integrated   : Run traditional detection + physics-informed analysis")
+            print("  --help         : Show this help message")
+            print("\nConfiguration:")
+            print("  Edit the FEATHER_PATH and OUTPUT_DIR variables in this file")
+            print("="*90)
+            sys.exit(0)
+        else:
+            print(f"Unknown argument: {sys.argv[1]}")
+            print("Use --help for usage information")
+            sys.exit(1)
+    
+    FEATHER_PATH = '/Users/bagay/Desktop/Research/Code/merged_compressed.feather'
     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
-    MAX_WORKERS = None  # None means auto-determine based on CPU count
-    SUPER_BATCH_SIZE = None  # None means auto-determine based on system resources
+    MAX_WORKERS = None
+    SUPER_BATCH_SIZE = None
     MAX_GAP_HOURS = 8
     INCLUDE_MOISTURE = True
-    ESTIMATE_ONLY = False  # Set to True to only estimate without running
-
-    # Get optimal settings
+    ESTIMATE_ONLY = False
+    
     settings = optimize_settings()
-
-    # Use provided settings if specified
+    
     if MAX_WORKERS is not None:
         settings['max_workers'] = MAX_WORKERS
         
     if SUPER_BATCH_SIZE is not None:
         settings['super_batch_size'] = SUPER_BATCH_SIZE
-
-    print(f"Using {settings['max_workers']} worker processes")
-    print(f"Using super-batch size of {settings['super_batch_size']}")
-
-    # Estimate time to completion
-    import os
-    import pickle
-    import pandas as pd
-
-    # Get site count
+    
+    print("="*90)
+    print("ARCTIC ZERO-CURTAIN DETECTION PIPELINE")
+    print("="*90)
+    print(f"Mode: {mode.upper()}")
+    print(f"Feather path: {FEATHER_PATH}")
+    print(f"Output directory: {OUTPUT_DIR}")
+    print(f"Worker processes: {settings['max_workers']}")
+    print(f"Super batch size: {settings['super_batch_size']}")
+    print("="*90)
+    
     site_depths = None
     checkpoint_dir = os.path.join(OUTPUT_DIR, 'checkpoints')
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     if os.path.exists(os.path.join(checkpoint_dir, 'site_depths.pkl')):
-        with open(os.path.join(checkpoint_dir, 'site_depths.pkl'), 'rb') as f:
-            site_depths = pickle.load(f)
-
+        try:
+            with open(os.path.join(checkpoint_dir, 'site_depths.pkl'), 'rb') as f:
+                site_depths = pickle.load(f)
+            print(f"\nLoaded checkpoint data")
+        except:
+            pass
+    
     if site_depths is None:
-        print("Reading site data to estimate completion time...")
+        print("\nReading site data to estimate completion time...")
         site_df = pd.read_feather(FEATHER_PATH, columns=['source', 'soil_temp_depth'])
         valid_df = site_df.dropna(subset=['soil_temp_depth'])
         site_count = len(valid_df.drop_duplicates(['source', 'soil_temp_depth']))
+        del site_df, valid_df
+        gc.collect()
     else:
-        site_count = len(site_depths)
-
-    # Check for already processed sites
+        if isinstance(site_depths, list):
+            site_count = len(site_depths)
+        elif isinstance(site_depths, pd.DataFrame):
+            site_count = len(site_depths)
+        else:
+            site_count = 0
+    
     processed_count = 0
     if os.path.exists(os.path.join(checkpoint_dir, 'processed_indices.pkl')):
-        with open(os.path.join(checkpoint_dir, 'processed_indices.pkl'), 'rb') as f:
-            processed_indices = pickle.load(f)
-            processed_count = len(processed_indices)
-
+        try:
+            with open(os.path.join(checkpoint_dir, 'processed_indices.pkl'), 'rb') as f:
+                processed_indices = pickle.load(f)
+                processed_count = len(processed_indices)
+        except:
+            pass
+    
     remaining_count = site_count - processed_count
-
-    # Estimate completion time
+    
     est_time = estimate_completion_time(
         remaining_count, 
         settings['estimated_sites_per_second'],
         settings['max_workers']
     )
-
-    print(f"\nPipeline Settings:")
-    print(f"  Worker processes:  {settings['max_workers']}")
-    print(f"  Super batch size:  {settings['super_batch_size']}")
-    print(f"  Total sites:       {site_count}")
-    print(f"  Already processed: {processed_count}")
-    print(f"  Remaining sites:   {remaining_count}")
-    print(f"  Estimated time:    {est_time}\n")
-
+    
+    print(f"\nPipeline Estimates:")
+    print(f"  Total sites:       {site_count:,}")
+    print(f"  Already processed: {processed_count:,}")
+    print(f"  Remaining sites:   {remaining_count:,}")
+    print(f"  Estimated time:    {est_time}")
+    print("="*90)
+    
     if ESTIMATE_ONLY:
-        print("Estimation complete. Exiting without running pipeline.")
-        import sys
+        print("\nEstimation complete. Exiting without running pipeline.")
         sys.exit(0)
-
-    # Run with simple confirmation
+    
     if remaining_count > 1000:
-        confirm = input(f"This will process {remaining_count} sites. Continue? (y/n): ")
+        confirm = input(f"\nThis will process {remaining_count:,} sites. Continue? (y/n): ")
         if confirm.lower() != 'y':
-            print("Aborting pipeline run.")
-            import sys
+            print("Pipeline execution aborted by user.")
             sys.exit(0)
-
-    # Run the pipeline
-    print("\nStarting pipeline run...\n")
-    run_high_performance_pipeline_fixed(
-        feather_path=FEATHER_PATH,
-        output_dir=OUTPUT_DIR,
-        super_batch_size=settings['super_batch_size'],
-        max_workers=settings['max_workers'],
-        max_gap_hours=MAX_GAP_HOURS,
-        include_moisture=INCLUDE_MOISTURE
-    )
-
-# if __name__ == "__main__":
-#     import warnings
-#     warnings.filterwarnings('ignore')
     
-#     print("Starting preprocessing...")
-#     print("\nPreprocessing parameters:")
-#     print("- Chunk size: 10 sites")
-#     print("- Window size: 30 days")
-#     print("- Minimum depths: 4")
-#     print("- Depth range: -2m to 20m")
-#     print("- Missing value threshold: 30%")
+    print(f"\nStarting pipeline in {mode.upper()} mode...\n")
     
-#     processed_chunks = preprocess_in_chunks(temp_df, zc_df, chunk_size=10)
-#     print(f"\nTotal processed windows: {len(processed_chunks)}")
-
+    pipeline_start_time = time.time()
+    
+    if mode == MODE_INTEGRATED:
+        trad_events, phys_events = run_integrated_pipeline_with_physics(
+            feather_path=FEATHER_PATH,
+            output_dir=OUTPUT_DIR,
+            settings=settings
+        )
+    else:
+        print("="*90)
+        print("TRADITIONAL ZERO-CURTAIN DETECTION")
+        print("="*90)
+        
+        trad_events = run_high_performance_pipeline_fixed(
+            feather_path=FEATHER_PATH,
+            output_dir=OUTPUT_DIR,
+            super_batch_size=settings['super_batch_size'],
+            max_workers=settings['max_workers'],
+            max_gap_hours=MAX_GAP_HOURS,
+            include_moisture=INCLUDE_MOISTURE
+        )
+        
+        pipeline_time = time.time() - pipeline_start_time
+        
+        print(f"\n{'='*90}")
+        print("PIPELINE COMPLETE")
+        print(f"{'='*90}")
+        if trad_events:
+            print(f"Total events detected: {len(trad_events):,}")
+        else:
+            print("No events detected")
+        print(f"Total duration: {pipeline_time:.1f} seconds ({pipeline_time/60:.1f} minutes)")
+        print(f"Results saved to: {OUTPUT_DIR}")
+        print(f"{'='*90}")
+    
+    print("\nPipeline execution finished.")
