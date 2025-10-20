@@ -17,25 +17,25 @@ print("="*70)
 # Load your training data
 print("\n1. Loading data...")
 df = pd.read_parquet('outputs/teacher_forcing_in_situ_database_train.parquet')
-print(f"   ✓ Loaded {len(df):,} measurements")
+print(f"    Loaded {len(df):,} measurements")
 print(f"   Columns: {list(df.columns)[:10]}...")
 
 # Sample for quick test
 print("\n2. Sampling data for test...")
 df_sample = df.sample(n=min(50000, len(df)), random_state=42)
-print(f"   ✓ Sample: {len(df_sample):,} measurements")
+print(f"    Sample: {len(df_sample):,} measurements")
 
 # Filter cold season
 print("\n3. Filtering cold season...")
 cold_months = [9, 10, 11, 12, 1, 2, 3, 4, 5]
 df_cold = df_sample[df_sample['datetime'].dt.month.isin(cold_months)]
-print(f"   ✓ Cold season: {len(df_cold):,} measurements")
+print(f"    Cold season: {len(df_cold):,} measurements")
 
 # Get sites
 print("\n4. Identifying sites...")
 sites = df_cold.groupby(['latitude', 'longitude', 'source']).size().reset_index(name='n')
 sites = sites[sites['n'] >= 50].head(10)
-print(f"   ✓ Testing {len(sites)} sites")
+print(f"    Testing {len(sites)} sites")
 
 # Initialize detector
 print("\n5. Initializing detector...")
@@ -85,10 +85,10 @@ if all_events:
     # Save
     output = Path('outputs/pinszc_test_real_data.parquet')
     events_df.to_parquet(output, index=False)
-    print(f"\n   ✓ Saved to: {output}")
-    print("\n✅ TEST SUCCESSFUL!")
+    print(f"\n    Saved to: {output}")
+    print("\n TEST SUCCESSFUL!")
 else:
-    print("\n   ⚠ No events detected")
+    print("\n    No events detected")
     print("   This may be normal - try adjusting detection parameters")
 
 print("\n" + "="*70)

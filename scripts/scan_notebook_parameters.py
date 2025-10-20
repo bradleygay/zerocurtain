@@ -126,19 +126,19 @@ def scan_notebook(notebook_path):
     print("=" * 80)
     
     if findings['splits']:
-        print(f"✓ Found {len(findings['splits'])} split-related parameters")
+        print(f" Found {len(findings['splits'])} split-related parameters")
     else:
-        print("⚠️  No explicit split parameters found")
+        print("  No explicit split parameters found")
     
     if findings['sampling']:
-        print(f"✓ Found {len(findings['sampling'])} sampling operations")
+        print(f" Found {len(findings['sampling'])} sampling operations")
     else:
-        print("✓ No sampling operations found (using full dataset)")
+        print(" No sampling operations found (using full dataset)")
     
     if findings['sequence_params']:
-        print(f"✓ Found {len(findings['sequence_params'])} sequence parameters")
+        print(f" Found {len(findings['sequence_params'])} sequence parameters")
     else:
-        print("⚠️  No sequence parameters found")
+        print("  No sequence parameters found")
     
     print("\n" + "=" * 80)
     

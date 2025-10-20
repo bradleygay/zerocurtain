@@ -18,7 +18,7 @@ def main():
     print("\n" + "=" * 80)
     print("ARCTIC PIPELINE - COLD SEASON ZERO-CURTAIN")
     print("=" * 80)
-    print("\n🔥 CRITICAL: Summer months EXCLUDED")
+    print("\n CRITICAL: Summer months EXCLUDED")
     print(f"  Zero-curtain only occurs Sept-May (freeze-thaw transitions)")
     print(f"  Excluding: June, July, August (no freeze-thaw dynamics)")
     print(f"\nMethodology:")

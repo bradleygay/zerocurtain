@@ -387,11 +387,11 @@ def update_datetime_values(df):
         df.loc[season_mask, 'datetime'] = pd.to_datetime(df.loc[season_mask, 'year'].astype(int).astype(str) + f'-{month}-15')
     return df
 def main():
-    gtnp_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/gtnp'
-    siberia_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/siberia'
-    alt_base_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/alt_sources'
-    calm_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/calm.csv'
-    coordinates_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/gtnp_coordinates.csv'
+    gtnp_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp'
+    siberia_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/siberia'
+    alt_base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources'
+    calm_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/calm.csv'
+    coordinates_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp_coordinates.csv'
     print("Processing Combined ALT Data...")
     alt_data = process_combined_alt_data(gtnp_path, alt_base_path, calm_path)
     print("\nProcessing Borehole Data...")
@@ -416,7 +416,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-base_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/alt_sources/'
+base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources/'
 alt_sources = {
     'calm': 'CALM',
     'rocha': 'ABoVE_Rocha',
@@ -435,7 +435,7 @@ for folder, source_name in alt_sources.items():
 
 tundra_cols = ['date', 'yr_data', 'latitude', 'longitude', 'plot_id', 'dataset_id', 'dataset_name',
                'soil_temp_10cm', 'water_table', 'soil_moist', 'ALT_mean']
-tundrafielddb = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/preprocessing_raw_data/Tundra_field_database.csv')[tundra_cols]
+tundrafielddb = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/Tundra_field_database.csv')[tundra_cols]
 
 tundrafielddb['date'] = tundrafielddb['date'].astype(str)
 invalid_months = tundrafielddb[tundrafielddb['date'].str[4:6] == '00']
@@ -1822,7 +1822,7 @@ def assign_depth_zone(depth):
     else:
         return 'very_deep'
 
-def get_file_paths(directory='/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/zerocurtain/siberia', pattern='HPIP_'):
+def get_file_paths(directory='/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/zerocurtain/siberia', pattern='HPIP_'):
     if not os.path.exists(directory):
         print(f"Directory does not exist: {directory}")
         return []
@@ -4017,8 +4017,8 @@ Zero Curtain Model Visualization
 This script provides multiple visualization methods for the Zero Curtain model architecture.
 Each function generates a different type of visualization and saves it to disk.
 
-Dr. [Author]
-Arctic Research & Data Scientist, NASA
+[REDACTED_NAME]
+Arctic Research & Data Scientist, [REDACTED_AFFILIATION]
 """
 
 import matplotlib.pyplot as plt
@@ -4896,8 +4896,8 @@ if __name__ == "__main__":
     create_all_visualizations()
 
 """
-Dr. [Author]
-Arctic Research & Data Scientist, NASA
+[REDACTED_NAME]
+Arctic Research & Data Scientist, [REDACTED_AFFILIATION]
 """
 
 import os
@@ -38036,7 +38036,7 @@ if __name__ == "__main__":
 
 """
 Zero Curtain Detection Model with Memory-Optimized Training Pipeline
-Author: Dr. [Author]
+Author: [REDACTED_NAME]
 """
 
 # Force CPU-only mode if needed

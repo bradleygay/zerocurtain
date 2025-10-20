@@ -11,7 +11,7 @@ def update_script_paths():
     print("UPDATING SCRIPT FILEPATHS FOR ORGANIZED STRUCTURE")
     print("="*90)
     
-    project_root = Path("/Users/bagay/arctic_zero_curtain_pipeline")
+    project_root = Path("/path/to/user/arctic_zero_curtain_pipeline")
     
     path_mappings = {
         'outputs/physics_informed_zero_curtain_events_COMPLETE.parquet': 
@@ -41,7 +41,7 @@ def update_script_paths():
         full_path = project_root / script_path
         
         if not full_path.exists():
-            print(f"  ⚠️  Script not found: {script_path}")
+            print(f"    Script not found: {script_path}")
             continue
         
         with open(full_path, 'r') as f:
@@ -58,11 +58,11 @@ def update_script_paths():
         if updates_made > 0:
             with open(full_path, 'w') as f:
                 f.write(content)
-            print(f"  ✅ Updated {script_path}: {updates_made} path(s) changed")
+            print(f"   Updated {script_path}: {updates_made} path(s) changed")
         else:
-            print(f"  ℹ️  {script_path}: no changes needed")
+            print(f"  ℹ  {script_path}: no changes needed")
     
-    print("\n✅ All scripts updated with new filepaths")
+    print("\n All scripts updated with new filepaths")
     print("="*90)
 
 

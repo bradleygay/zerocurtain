@@ -37,7 +37,7 @@ def prepare_teacher_forcing_dataset(
     print("=" * 80)
     
     if exclude_months:
-        print(f"\n⚠️  SEASONAL FILTER ACTIVE")
+        print(f"\n  SEASONAL FILTER ACTIVE")
         print(f"  Excluding months: {exclude_months} (summer - no zero-curtain)")
         print(f"  Zero-curtain only occurs Sept-May (freeze-thaw transitions)")
     
@@ -58,7 +58,7 @@ def prepare_teacher_forcing_dataset(
         df = df[~df['month'].isin(exclude_months)].copy()
         filtered_count = initial_count - len(df)
         
-        print(f"\n🔥 SUMMER FILTER APPLIED:")
+        print(f"\n SUMMER FILTER APPLIED:")
         print(f"  Removed: {filtered_count:,} summer observations")
         print(f"  Remaining: {len(df):,} cold-season observations")
         print(f"  Reduction: {filtered_count/initial_count*100:.1f}%")

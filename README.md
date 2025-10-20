@@ -15,41 +15,41 @@ This pipeline integrates multi-source Arctic datasets to create high-quality tra
 ## Repository Structure
 ```
 arctic_zero_curtain_pipeline/
-├── src/
-│   ├── physics_detection/
-│   │   ├── zero_curtain_detector.py       # Core physics detector
-│   │   ├── physics_config.py              # Configuration management
-│   │   └── README.md
-│   └── common/
-│       ├── imports.py
-│       └── utilities.py
-├── orchestration/
-│   ├── orchestration_module.py            # Traditional detection pipeline
-│   └── physics_detection_orchestrator.py  # Physics-informed orchestrator
-├── scripts/
-│   ├── validate_physics_setup.py          # Validation script
-│   ├── run_physics_detection.py           # Standalone detection
-│   ├── consolidate_physics_results.py     # Dataset consolidation
-│   ├── qa_physics_results.py              # Quality assurance
-│   ├── organize_outputs.py                # Output organization
-│   └── update_script_paths.py             # Path updates
-├── outputs/
-│   ├── consolidated_datasets/             # Final datasets (1.7 GB)
-│   ├── splits/                            # Train/val/test (2.7 GB)
-│   ├── statistics/                        # Statistical summaries
-│   ├── metadata/                          # Configuration files
-│   ├── emergency_saves/                   # Checkpoints
-│   └── incremental_saves/                 # Progress saves
-├── data/
-│   └── auxiliary/
-│       ├── DATA_SOURCES.md                # Data download instructions
-│       └── README.md
-├── tests/
-│   └── test_physics_detection.py
-├── configs/
-├── requirements.txt
-├── LICENSE
-└── README.md                              # This file
+ src/
+    physics_detection/
+       zero_curtain_detector.py       # Core physics detector
+       physics_config.py              # Configuration management
+       README.md
+    common/
+        imports.py
+        utilities.py
+ orchestration/
+    orchestration_module.py            # Traditional detection pipeline
+    physics_detection_orchestrator.py  # Physics-informed orchestrator
+ scripts/
+    validate_physics_setup.py          # Validation script
+    run_physics_detection.py           # Standalone detection
+    consolidate_physics_results.py     # Dataset consolidation
+    qa_physics_results.py              # Quality assurance
+    organize_outputs.py                # Output organization
+    update_script_paths.py             # Path updates
+ outputs/
+    consolidated_datasets/             # Final datasets (1.7 GB)
+    splits/                            # Train/val/test (2.7 GB)
+    statistics/                        # Statistical summaries
+    metadata/                          # Configuration files
+    emergency_saves/                   # Checkpoints
+    incremental_saves/                 # Progress saves
+ data/
+    auxiliary/
+        DATA_SOURCES.md                # Data download instructions
+        README.md
+ tests/
+    test_physics_detection.py
+ configs/
+ requirements.txt
+ LICENSE
+ README.md                              # This file
 ```
 
 ## Installation
@@ -77,7 +77,7 @@ Download required datasets (see `data/auxiliary/DATA_SOURCES.md`):
 - Permafrost probability raster (~85 GB)
 - Permafrost zones shapefile (~900 MB)
 - ERA5 snow data (~3-5 GB)
-Place in `/Users/bagay/Downloads/` or configure paths in `src/physics_detection/physics_config.py`.
+Place in `/path/to/user/Downloads/` or configure paths in `src/physics_detection/physics_config.py`.
 
 ### Validate Setup
 ```bash
@@ -243,20 +243,20 @@ year = {2025}
 ```
 
 ## Acknowledgments
-Acknowledgment and gratitude are owed to the NASA Postdoctoral Program and proposal reviewers whose contributions and
+Acknowledgment and gratitude are owed to the [REDACTED_AFFILIATION] Postdoctoral Program and proposal reviewers whose contributions and
 feedback elevated this research. Much appreciation is owed and extended to the following institutions, networks, teams, and
 individuals responsible for the viability, momentum, and success of this work: National Aeronautics and Space Administration
-(NASA), Jet Propulsion Laboratory (JPL), Goddard Space Flight Center (GSFC), NASA Arctic Boreal Vulnerability Experiment
+([REDACTED_AFFILIATION]), [REDACTED_AFFILIATION] ([REDACTED_AFFILIATION]), Goddard Space Flight Center (GSFC), [REDACTED_AFFILIATION] Arctic Boreal Vulnerability Experiment
 (ABoVE) field and science support services, National Science Foundation (NSF), Woodwell Climate Research Center, University of
-Alaska ‐ Fairbanks, Institute of Arctic Biology (IAB), California Institute of Technology, NASA UAVSAR airborne, algorithm, and
-inSAR/polSAR processing teams, NASA ABoVE Airborne Working Group, CALM, GTNP, AmeriFlux, National Ecological
-Observatory Network (NEON), Toolik Field Station, Peter Griffith (GSFC), Elizabeth Hoy (GSFC), Naiara Pinto (JPL), Yang Zheng
-(JPL), Nikolay Shiklomanov (GWU), Julia Boike (UCI), Pavel Groisman (NOAA), and Oliver Frauenfeld (TAMU). BG’s
-participation and research was sponsored by the National Aeronautics and Space Administration (NASA) and supported by an
-appointment to the NASA Postdoctoral Program (NPP) at the Jet Propulsion Laboratory (JPL) and the California Institute of
-Technology, administered by Oak Ridge Associated Universities (ORAU) under contract with NASA (80NM0018D0004). The views
+Alaska ‐ Fairbanks, Institute of Arctic Biology (IAB), California Institute of Technology, [REDACTED_AFFILIATION] UAVSAR airborne, algorithm, and
+inSAR/polSAR processing teams, [REDACTED_AFFILIATION] ABoVE Airborne Working Group, CALM, GTNP, AmeriFlux, National Ecological
+Observatory Network (NEON), Toolik Field Station, Peter Griffith (GSFC), Elizabeth Hoy (GSFC), Naiara Pinto ([REDACTED_AFFILIATION]), Yang Zheng
+([REDACTED_AFFILIATION]), Nikolay Shiklomanov (GWU), Julia Boike (UCI), Pavel Groisman (NOAA), and Oliver Frauenfeld (TAMU). BG’s
+participation and research was sponsored by the National Aeronautics and Space Administration ([REDACTED_AFFILIATION]) and supported by an
+appointment to the [REDACTED_AFFILIATION] Postdoctoral Program (NPP) at the [REDACTED_AFFILIATION] ([REDACTED_AFFILIATION]) and the California Institute of
+Technology, administered by Oak Ridge Associated Universities (ORAU) under contract with [REDACTED_AFFILIATION] (80NM0018D0004). The views
 and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies,
-either expressed or implied, of NASA, JPL, the California Institute of Technology, or the U.S. Government. The U.S. Government is
+either expressed or implied, of [REDACTED_AFFILIATION], [REDACTED_AFFILIATION], the California Institute of Technology, or the U.S. Government. The U.S. Government is
 authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notation herein. Any use of
 trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.
 

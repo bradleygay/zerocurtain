@@ -1,0 +1,136 @@
+# Part II: GeoCryoAI Teacher Forcing Configuration
+# Physics-Informed Zero-Curtain Detection Framework
+
+experiment_name: "geocryoai_teacher_forcing_v1"
+random_seed: 42
+
+# Data Configuration
+data:
+  parquet_file: "../outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  pinszc_ground_truth: "../outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  
+  # Train/Val/Test Split
+  test_size: 0.2
+  val_size: 0.1
+  
+  # Sequence Configuration
+  sequence_length: null  # Auto-calculated based on temporal coverage
+  temporal_coverage: "seasonal"  # Options: seasonal, annual, extended_event
+  
+  # Batch Configuration
+  batch_size: 128
+  num_workers: 4
+  pin_memory: true
+
+# Model Architecture
+model:
+  # Base Model
+  input_features: 21  # Will be determined from dataset
+  d_model: 128
+  n_heads: 4
+  n_layers: 2
+  liquid_hidden: 64
+  dropout: 0.1
+  
+  # GeoCryoAI Configuration
+  geocryoai:
+    enabled: true
+    spatial_threshold_km: 50.0
+    spatial_hidden: 64
+    temporal_hidden: 64
+    num_graph_layers: 3
+  
+  # Temporal Pattern Analysis
+  pattern_analysis:
+    enabled: true
+    rapid_max_duration: 72.0      # hours
+    extended_min_duration: 168.0  # hours
+    consecutive_gap_threshold: 48.0  # hours
+
+# Teacher Forcing Configuration
+teacher_forcing:
+  enabled: true
+  initial_ratio: 0.9
+  min_ratio: 0.1
+  decay_rate: 0.95
+  curriculum_schedule: "exponential"  # Options: exponential, linear, inverse_sigmoid
+
+# Training Configuration
+training:
+  epochs: 25
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  
+  # Loss Function Weights
+  loss_weights:
+    alpha_mse: 1.0
+    alpha_physics: 0.1
+    alpha_temporal: 0.05
+    alpha_pattern: 0.1
+  
+  # Optimizer
+  optimizer: "adamw"
+  scheduler: "cosine_annealing"
+  scheduler_params:
+    T_0: 10
+    T_mult: 2
+  
+  # Early Stopping
+  early_stopping:
+    patience: 15
+    min_delta: 0.001
+  
+  # Mixed Precision Training
+  use_amp: true
+  
+  # Gradient Clipping
+  max_grad_norm: 1.0
+
+# Bayesian Optimization (Optional)
+bayesian_optimization:
+  enabled: false
+  n_calls: 20
+  search_space:
+    learning_rate: [1.0e-5, 1.0e-2]
+    n_heads: [4, 16]
+    n_layers: [2, 8]
+    d_model: [128, 1024]
+    liquid_hidden: [64, 512]
+    dropout: [0.0, 0.5]
+    alpha_physics: [0.1, 2.0]
+    alpha_temporal: [0.1, 1.0]
+
+# Model Explainability
+explainability:
+  enabled: true
+  lime:
+    enabled: true
+    num_features: 10
+    num_samples: 50
+  shap:
+    enabled: true
+    sample_size: 50
+
+# Output Configuration
+output:
+  save_dir: "./outputs"
+  models_dir: "./outputs/models"
+  predictions_dir: "./outputs/predictions"
+  explainability_dir: "./outputs/explainability"
+  
+  # Checkpointing
+  save_frequency: 5  # Save checkpoint every N epochs
+  save_best_only: false
+  
+  # Logging
+  log_level: "INFO"
+  tensorboard: true
+  wandb:
+    enabled: false
+    project: "zero-curtain-part2"
+    entity: null
+
+# Reproducibility
+reproducibility:
+  deterministic: true
+  benchmark: false

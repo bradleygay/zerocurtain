@@ -5,7 +5,7 @@ This module centralizes all configurable parameters for zero-curtain detection,
 enabling systematic parameter tuning and ablation studies.
 
 Author: Dr. Bradley Gay
-Institution: NASA Arctic Research
+Institution: [REDACTED_AFFILIATION] Arctic Research
 """
 
 from dataclasses import dataclass, field
@@ -271,9 +271,9 @@ if __name__ == "__main__":
     print("Validating configuration...")
     try:
         config.validate()
-        print("✅ Configuration validation passed\n")
+        print(" Configuration validation passed\n")
     except AssertionError as e:
-        print(f"❌ Configuration validation failed: {e}\n")
+        print(f" Configuration validation failed: {e}\n")
         exit(1)
     
     print(config.summary())

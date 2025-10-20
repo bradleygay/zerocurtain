@@ -10,10 +10,10 @@ This module implements physics-informed detection of zero-curtain events across 
 ## Module Structure
 ```
 physics_detection/
-├── __init__.py
-├── zero_curtain_detector.py    # Core PhysicsInformedZeroCurtainDetector class
-├── physics_config.py            # Configuration management
-└── README.md                    # This file
+ __init__.py
+ zero_curtain_detector.py    # Core PhysicsInformedZeroCurtainDetector class
+ physics_config.py            # Configuration management
+ README.md                    # This file
 ```
 
 ## Core Components
@@ -70,7 +70,7 @@ PhysicsParameters(
 )
 ```
 ### Data Paths
-Paths are automatically detected from `/Users/bagay/Downloads/` directory. Override if needed:
+Paths are automatically detected from `/path/to/user/Downloads/` directory. Override if needed:
 ```python
 DataPaths(
     base_dir=Path("/custom/path"),

@@ -30,7 +30,7 @@ def main():
     # Modify these parameters as needed
     config = DetectionConfig(
         paths=DataPaths(
-            base_dir=Path("/Users/bagay/Downloads")
+            base_dir=Path("/path/to/user/Downloads")
         ),
         physics=PhysicsParameters(
             temp_threshold=3.0,
@@ -54,7 +54,7 @@ def main():
         return 0
         
     except Exception as e:
-        print(f"\n❌ Detection failed: {e}")
+        print(f"\n Detection failed: {e}")
         import traceback
         traceback.print_exc()
         return 1

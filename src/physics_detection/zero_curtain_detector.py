@@ -24,7 +24,7 @@ processed_sites_global = 0
 
 def signal_handler(sig, frame):
     """Handle Ctrl+C or system shutdown gracefully with ALL features"""
-    print(f'\n💾 EMERGENCY SHUTDOWN DETECTED - Saving {len(all_events_global)} events with ALL features...')
+    print(f'\n EMERGENCY SHUTDOWN DETECTED - Saving {len(all_events_global)} events with ALL features...')
     
     try:
         if all_events_global:
@@ -49,20 +49,20 @@ def signal_handler(sig, frame):
                 labels=['shallow', 'moderate', 'deep', 'very_deep']
             )
             
-            emergency_file = f"/Users/bagay/Downloads/zero_curtain_EMERGENCY_SHUTDOWN_{processed_sites_global}sites.parquet"
+            emergency_file = f"/path/to/user/Downloads/zero_curtain_EMERGENCY_SHUTDOWN_{processed_sites_global}sites.parquet"
             emergency_df.to_parquet(emergency_file, index=False, compression='snappy')
             
             # Verify three main features
             main_features = ['intensity_percentile', 'duration_hours', 'spatial_extent_meters']
             verified = all(f in emergency_df.columns for f in main_features)
             
-            print(f"✅ Emergency shutdown save complete: {emergency_file}")
-            print(f"✅ Three main features saved: {verified}")
-            print(f"✅ Total features saved: {len(emergency_df.columns)}")
+            print(f" Emergency shutdown save complete: {emergency_file}")
+            print(f" Three main features saved: {verified}")
+            print(f" Total features saved: {len(emergency_df.columns)}")
         else:
             print("No events to save")
     except Exception as e:
-        print(f"⚠️  Emergency save failed: {e}")
+        print(f"  Emergency save failed: {e}")
     
     sys.exit(0)
 
@@ -154,7 +154,7 @@ class PhysicsInformedZeroCurtainDetector:
             # Validate paths first
             paths_valid, missing = self.config.paths.validate_paths()
             if not paths_valid:
-                print(f"⚠️ Warning: Some auxiliary data files missing:")
+                print(f" Warning: Some auxiliary data files missing:")
                 for missing_path in missing:
                     print(f"  - {missing_path}")
                 print("Proceeding with available data...")
@@ -168,7 +168,7 @@ class PhysicsInformedZeroCurtainDetector:
                         'crs': src.crs,
                         'bounds': src.bounds
                     }
-                    print(f"✓ Permafrost probability loaded: shape={self.permafrost_prob['data'].shape}, "
+                    print(f" Permafrost probability loaded: shape={self.permafrost_prob['data'].shape}, "
                         f"CRS={self.permafrost_prob['crs']}, bounds={self.permafrost_prob['bounds']}")
                     print(f"  Data range: {np.nanmin(self.permafrost_prob['data'])} to {np.nanmax(self.permafrost_prob['data'])}")
                     print(f"  NoData values: {np.sum(self.permafrost_prob['data'] < 0)} pixels")
@@ -176,19 +176,19 @@ class PhysicsInformedZeroCurtainDetector:
             # Load permafrost zones shapefile
             if self.config.paths.permafrost_zones_shapefile and self.config.paths.permafrost_zones_shapefile.exists():
                 self.permafrost_zones = gpd.read_file(str(self.config.paths.permafrost_zones_shapefile))
-                print(f"✓ Permafrost zones loaded: {len(self.permafrost_zones)} features")
+                print(f" Permafrost zones loaded: {len(self.permafrost_zones)} features")
                 print(f"  Zone types: {self.permafrost_zones['EXTENT'].value_counts().to_dict()}")
                 print(f"  CRS: {self.permafrost_zones.crs}")
             
             # Load and validate snow data coordinate system
             if self.config.paths.snow_data_netcdf and self.config.paths.snow_data_netcdf.exists():
                 self.snow_data = xr.open_dataset(str(self.config.paths.snow_data_netcdf))
-                print(f"✓ Snow data loaded: variables={list(self.snow_data.variables.keys())}")
+                print(f" Snow data loaded: variables={list(self.snow_data.variables.keys())}")
                 
                 # Comprehensive snow coordinate system validation
                 self._validate_snow_coordinates()
             
-            print("✓ Auxiliary datasets loaded successfully")
+            print(" Auxiliary datasets loaded successfully")
             
         except Exception as e:
             print(f"Warning: Could not load auxiliary data: {e}")
@@ -222,7 +222,7 @@ class PhysicsInformedZeroCurtainDetector:
         lon_coords = [c for c in coord_info.keys() if 'lon' in c.lower()]
         
         if not lat_coords or not lon_coords:
-            print("❌ ERROR: Could not identify latitude/longitude coordinates in snow data")
+            print(" ERROR: Could not identify latitude/longitude coordinates in snow data")
             return False
         
         lat_coord = lat_coords[0]
@@ -239,28 +239,28 @@ class PhysicsInformedZeroCurtainDetector:
         is_geographic = self._is_geographic_coordinates(lat_data, lon_data)
         
         if is_geographic:
-            print("✅ Snow data appears to use GEOGRAPHIC coordinates (WGS84/EPSG:4326)")
+            print(" Snow data appears to use GEOGRAPHIC coordinates (WGS84/EPSG:4326)")
             self.snow_coord_system = 'geographic'
             self.snow_lat_coord = lat_coord
             self.snow_lon_coord = lon_coord
             
             # Validate geographic extent for Arctic region
             if lat_data.max() < 50.0:
-                print("⚠️  WARNING: Maximum latitude < 50°N - may not cover Arctic region")
+                print("  WARNING: Maximum latitude < 50°N - may not cover Arctic region")
             elif lat_data.max() >= 50.0:
-                print(f"✅ Arctic coverage confirmed: max latitude = {lat_data.max():.1f}°N")
+                print(f" Arctic coverage confirmed: max latitude = {lat_data.max():.1f}°N")
             
             # Check for global vs regional coverage
             lat_span = lat_data.max() - lat_data.min()
             lon_span = lon_data.max() - lon_data.min()
             
             if lat_span > 90 and lon_span > 180:
-                print("✅ Global coverage detected")
+                print(" Global coverage detected")
             else:
-                print(f"ℹ️  Regional coverage: {lat_span:.1f}° lat × {lon_span:.1f}° lon")
+                print(f"ℹ  Regional coverage: {lat_span:.1f}° lat × {lon_span:.1f}° lon")
         
         else:
-            print("⚠️  Snow data appears to use PROJECTED coordinates")
+            print("  Snow data appears to use PROJECTED coordinates")
             self.snow_coord_system = 'projected'
             self.snow_lat_coord = lat_coord
             self.snow_lon_coord = lon_coord
@@ -323,10 +323,10 @@ class PhysicsInformedZeroCurtainDetector:
                     distance = np.sqrt((lat - nearest_lat)**2 + (lon - nearest_lon)**2)
                     
                     if distance < 5.0:  # Within 5 degrees
-                        print(f"  ✅ {location}: {lat:.1f}, {lon:.1f} → {nearest_lat:.1f}, {nearest_lon:.1f} (Δ={distance:.2f}°)")
+                        print(f"   {location}: {lat:.1f}, {lon:.1f} → {nearest_lat:.1f}, {nearest_lon:.1f} (Δ={distance:.2f}°)")
                         successful_extractions += 1
                     else:
-                        print(f"  ❌ {location}: {lat:.1f}, {lon:.1f} → {nearest_lat:.1f}, {nearest_lon:.1f} (Δ={distance:.2f}° - too far)")
+                        print(f"   {location}: {lat:.1f}, {lon:.1f} → {nearest_lat:.1f}, {nearest_lon:.1f} (Δ={distance:.2f}° - too far)")
                 
                 else:
                     # Projected coordinates - attempt transformation
@@ -346,13 +346,13 @@ class PhysicsInformedZeroCurtainDetector:
                     distance = np.sqrt((x - nearest_x)**2 + (y - nearest_y)**2)
                     
                     if distance < 100000:  # Within 100km
-                        print(f"  ✅ {location}: ({x:.0f}, {y:.0f}) → ({nearest_x:.0f}, {nearest_y:.0f}) (Δ={distance/1000:.1f}km)")
+                        print(f"   {location}: ({x:.0f}, {y:.0f}) → ({nearest_x:.0f}, {nearest_y:.0f}) (Δ={distance/1000:.1f}km)")
                         successful_extractions += 1
                     else:
-                        print(f"  ❌ {location}: ({x:.0f}, {y:.0f}) → ({nearest_x:.0f}, {nearest_y:.0f}) (Δ={distance/1000:.1f}km - too far)")
+                        print(f"   {location}: ({x:.0f}, {y:.0f}) → ({nearest_x:.0f}, {nearest_y:.0f}) (Δ={distance/1000:.1f}km - too far)")
                         
             except Exception as e:
-                print(f"  ❌ {location}: Coordinate test failed - {e}")
+                print(f"   {location}: Coordinate test failed - {e}")
         
         alignment_score = successful_extractions / len(test_sites)
         
@@ -360,11 +360,11 @@ class PhysicsInformedZeroCurtainDetector:
         print(f"  Successful extractions: {successful_extractions}/{len(test_sites)} ({alignment_score*100:.0f}%)")
         
         if alignment_score >= 0.8:
-            print("✅ EXCELLENT coordinate alignment - snow data ready for physics integration")
+            print(" EXCELLENT coordinate alignment - snow data ready for physics integration")
         elif alignment_score >= 0.6:
-            print("⚠️  MODERATE coordinate alignment - may have some spatial mismatches")
+            print("  MODERATE coordinate alignment - may have some spatial mismatches")
         else:
-            print("❌ POOR coordinate alignment - significant coordinate system issues detected")
+            print(" POOR coordinate alignment - significant coordinate system issues detected")
             print("   Consider verifying snow dataset CRS or using different reprojection strategy")
         
         self.snow_alignment_score = alignment_score
@@ -2453,7 +2453,7 @@ class PhysicsInformedZeroCurtainDetector:
             success_rate = sum(1 for d in recent_diagnostics if d['events_detected'] > 0) / len(recent_diagnostics)
             avg_data_points = np.mean([d['data_points'] for d in recent_diagnostics])
             
-            print(f"📊 Last 25 sites diagnostic summary:")
+            print(f" Last 25 sites diagnostic summary:")
             print(f"   Success rate: {success_rate*100:.1f}%")
             print(f"   Average data points: {avg_data_points:.0f}")
             print(f"   Sites processed: {len(self.site_diagnostics)}")
@@ -2567,7 +2567,7 @@ class PhysicsInformedZeroCurtainDetector:
                 print(f"  Screening progress: {total_screened}/{len(unique_sites)} sites "
                       f"({suitable_pct:.1f}% suitable for permafrost)")
         
-        print(f"✓ Permafrost suitability screening complete:")
+        print(f" Permafrost suitability screening complete:")
         print(f"  - Suitable sites: {len(suitable_sites)}")
         print(f"  - Unsuitable sites: {len(unsuitable_sites)} (no permafrost)")
         
@@ -2665,10 +2665,10 @@ class PhysicsInformedZeroCurtainDetector:
                     print(f"  Current site: {lat:.3f}°N, {lon:.3f}°E ({source})")
                     print(f"  Events at this site: {site_event_count}")
                     print(f"  Running totals:")
-                    print(f"    ├─ Sites with events: {sites_with_events}/{processed_sites} ({detection_rate:.1f}%)")
-                    print(f"    ├─ Total events: {len(all_events)}")
-                    print(f"    ├─ Events per site: {events_per_site:.2f}")
-                    print(f"    └─ Remaining sites: {len(suitable_sites) - processed_sites}")
+                    print(f"     Sites with events: {sites_with_events}/{processed_sites} ({detection_rate:.1f}%)")
+                    print(f"     Total events: {len(all_events)}")
+                    print(f"     Events per site: {events_per_site:.2f}")
+                    print(f"     Remaining sites: {len(suitable_sites) - processed_sites}")
                     
                     # Store detection history for trend analysis
                     detection_history.append({
@@ -2690,7 +2690,7 @@ class PhysicsInformedZeroCurtainDetector:
                 
                 # INCREMENTAL SAVING EVERY 50 SITES WITH ALL FEATURES
                 if processed_sites % 50 == 0:
-                    print(f"💾 INCREMENTAL SAVE at site {processed_sites}...")
+                    print(f" INCREMENTAL SAVE at site {processed_sites}...")
                     
                     try:
                         if all_events:
@@ -2735,15 +2735,15 @@ class PhysicsInformedZeroCurtainDetector:
                             temp_output_file = str(self.config.paths.output_dir / f"{self.config.output_prefix}_INCREMENTAL_site_{processed_sites}.parquet")
                             zc_df_temp.to_parquet(temp_output_file, index=False, compression='snappy')
                             
-                            print(f"  ✅ Saved {len(all_events)} events with ALL features to: {temp_output_file}")
+                            print(f"   Saved {len(all_events)} events with ALL features to: {temp_output_file}")
                             
                             # Verify the three main features are present
                             main_features = ['intensity_percentile', 'duration_hours', 'spatial_extent_meters']
                             missing_features = [f for f in main_features if f not in zc_df_temp.columns]
                             if missing_features:
-                                print(f"  ⚠️  WARNING: Missing main features: {missing_features}")
+                                print(f"    WARNING: Missing main features: {missing_features}")
                             else:
-                                print(f"  ✅ All three main features confirmed: intensity, duration, spatial_extent")
+                                print(f"   All three main features confirmed: intensity, duration, spatial_extent")
                             
                             # ALSO SAVE SITE SUITABILITY
                             suitable_df_temp = pd.DataFrame(suitable_sites)
@@ -2777,7 +2777,7 @@ class PhysicsInformedZeroCurtainDetector:
                                 f.write(f"\nFeatures saved: {list(zc_df_temp.columns)}\n")
                                 f.write(f"Main features verified: {main_features}\n")
                             
-                            print(f"  ✅ Progress and suitability saved")
+                            print(f"   Progress and suitability saved")
                             
                             # Memory cleanup to optimize performance
                             del zc_df_temp, suitable_df_temp, unsuitable_df_temp, all_sites_df_temp
@@ -2785,13 +2785,13 @@ class PhysicsInformedZeroCurtainDetector:
                             gc.collect()
                             
                     except Exception as e:
-                        print(f"  ⚠️  Incremental save failed: {e}")
+                        print(f"    Incremental save failed: {e}")
                         import traceback
                         traceback.print_exc()
                 
                 # Special notification for high-event sites
                 if site_event_count >= 3:
-                    print(f"🎯 HIGH-YIELD SITE: {site_event_count} events at {lat:.3f}°N, {lon:.3f}°E")
+                    print(f" HIGH-YIELD SITE: {site_event_count} events at {lat:.3f}°N, {lon:.3f}°E")
                     for i, event in enumerate(events[-site_event_count:]):
                         print(f"   Event {i+1}: {event['duration_hours']:.1f}h duration, "
                               f"intensity={event['intensity_percentile']:.3f}, "
@@ -2800,19 +2800,19 @@ class PhysicsInformedZeroCurtainDetector:
                     
                     # EMERGENCY SAVE for high-yield sites (>100 events) with ALL features
                     if site_event_count >= 100:
-                        print(f"💾 EMERGENCY SAVE - High-yield site with {site_event_count} events")
+                        print(f" EMERGENCY SAVE - High-yield site with {site_event_count} events")
                         
                         try:
                             emergency_file = str(self.config.paths.output_dir / f"{self.config.output_prefix}_EMERGENCY_site_{processed_sites}_{site_event_count}events.parquet")
                             if all_events:
                                 emergency_df = pd.DataFrame(all_events)
                                 emergency_df.to_parquet(emergency_file, index=False, compression='snappy')
-                                print(f"  ✅ Emergency save with ALL features: {emergency_file}")
+                                print(f"   Emergency save with ALL features: {emergency_file}")
                                 
                                 # Verify all three main features
                                 main_features = ['intensity_percentile', 'duration_hours', 'spatial_extent_meters']
                                 verified = all(f in emergency_df.columns for f in main_features)
-                                print(f"  ✅ Three main features verified: {verified}")
+                                print(f"   Three main features verified: {verified}")
                                 
                                 # Memory cleanup
                                 del emergency_df
@@ -2820,10 +2820,10 @@ class PhysicsInformedZeroCurtainDetector:
                                 gc.collect()
                                 
                         except Exception as e:
-                            print(f"  ⚠️  Emergency save failed: {e}")
+                            print(f"    Emergency save failed: {e}")
                     
             except Exception as e:
-                print(f"⚠️  ERROR processing site {processed_sites} ({lat:.3f}, {lon:.3f}): {e}")
+                print(f"  ERROR processing site {processed_sites} ({lat:.3f}, {lon:.3f}): {e}")
                 continue
         
         # Create comprehensive dataset with CryoGrid enhancements
@@ -3023,19 +3023,19 @@ class PhysicsInformedZeroCurtainDetector:
                 # Recommendations based on results
                 print(f"\nRECOMMENDATIONS:")
                 if final_detection_rate < 50:
-                    print(f"  ⚠️  Low detection rate ({final_detection_rate:.1f}%) suggests criteria may still be too restrictive")
+                    print(f"    Low detection rate ({final_detection_rate:.1f}%) suggests criteria may still be too restrictive")
                     print(f"     Consider further loosening thresholds or adding more fallback detection pathways")
                 elif final_detection_rate > 80:
-                    print(f"  ✅ High detection rate ({final_detection_rate:.1f}%) indicates good parameter tuning")
+                    print(f"   High detection rate ({final_detection_rate:.1f}%) indicates good parameter tuning")
                     print(f"     Current criteria successfully capture zero-curtain events")
                 else:
-                    print(f"  📊 Moderate detection rate ({final_detection_rate:.1f}%) suggests balanced criteria")
+                    print(f"   Moderate detection rate ({final_detection_rate:.1f}%) suggests balanced criteria")
                     print(f"     Results appear reasonable for circumarctic analysis")
 
                 if final_events_per_site < 1.0:
-                    print(f"  📈 Low events per site ({final_events_per_site:.2f}) suggests brief or weak zero-curtain signatures")
+                    print(f"   Low events per site ({final_events_per_site:.2f}) suggests brief or weak zero-curtain signatures")
                 elif final_events_per_site > 3.0:
-                    print(f"  🎯 High events per site ({final_events_per_site:.2f}) indicates strong zero-curtain activity")
+                    print(f"   High events per site ({final_events_per_site:.2f}) indicates strong zero-curtain activity")
 
                 print(f"Freezing characteristics: {zc_df['soil_freezing_characteristic'].value_counts().to_dict()}")
                 print(f"\nOUTPUT FILES:")
@@ -3064,8 +3064,8 @@ def main():
     print(f"  - Adaptive time-stepping: {detector.use_adaptive_timestep}")
     print()
     
-    parquet_file = "/Users/bagay/Downloads/merged_compressed_corrected_final.parquet"
-    output_file = "/Users/bagay/Downloads/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+    parquet_file = "/path/to/user/Downloads/merged_compressed_corrected_final.parquet"
+    output_file = "/path/to/user/Downloads/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
     
     results = detector.process_circumarctic_dataset(parquet_file, output_file)
     

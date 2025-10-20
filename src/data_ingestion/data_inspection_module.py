@@ -238,7 +238,7 @@ import json
 import re
 import os
 
-df = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/ru/new/latlon_ru_update.csv')
+df = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/new/latlon_ru_update.csv')
 indices_dailysoiltemperature = df[df['data_source'] == 'dailysoiltemperature_1984-2012']['index'].unique()
 latlon_extracted = df[(df['index'].isin(indices_dailysoiltemperature)) & (df['data_source'] != 'dailysoiltemperature_1984-2012')][['index', 'latitude', 'longitude', 'data_source']]
 latlon_lookup = latlon_extracted.groupby('index')[['latitude', 'longitude']].first()
@@ -565,7 +565,7 @@ class RussianMeteoProcessor:
                         print(sorted(df['pressure_hpa'].unique()))
         return results
     
-    def save_results(self, results: Dict[str, pd.DataFrame], output_dir: str = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/newrun'):
+    def save_results(self, results: Dict[str, pd.DataFrame], output_dir: str = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/newrun'):
         output_dir = Path(output_dir)
         output_dir.mkdir(exist_ok=True)
         for data_type, df in results.items():
@@ -590,7 +590,7 @@ class RussianMeteoProcessor:
             print(f"Saved metadata to {metadata_file}")
 
 def main():
-    base_path = '/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/ru/old'
+    base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/old'
     processor = RussianMeteoProcessor(base_path)
     print("Starting data processing...")
     results = processor.process_all_data()
@@ -650,7 +650,7 @@ def batch_process_meteo_files(input_dir, output_dir, latlon_file_path):
         for file in results['failed']:
             print(f"- {file}")
 
-input_directory = "/Users/bgay/Library/CloudStorage/OneDrive-JPL/zerocurtain/processed_meteo_data"
+input_directory = "/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/processed_meteo_data"
 output_directory = "/Users/bgay/Downloads"
 latlon_file_path = "/Users/bgay/Downloads/latlon_ru_update.csv"
 batch_process_meteo_files(input_directory, output_directory, latlon_file_path)
@@ -17581,7 +17581,7 @@ A comprehensive model for zero curtain detection in permafrost monitoring,
 with specific optimizations for numerical stability and memory management
 to address training stalls.
 
-Author: Dr. [Author], NASA Arctic Research
+Author: [REDACTED_NAME], [REDACTED_AFFILIATION] Arctic Research
 """
 
 import tensorflow as tf

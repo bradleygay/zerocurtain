@@ -12,11 +12,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Personal info to redact
 PERSONAL_INFO = {
-    'your.email@nasa.gov': 'your.email@nasa.gov',
-    'Author Name': 'Author Name',
-    'Dr. [Author]': 'Dr. [Author]',
-    'username': 'username',
-    '/Users/username': '/path/to/user',
+    '[REDACTED_EMAIL]': '[REDACTED_EMAIL]',
+    '[REDACTED_NAME]': '[REDACTED_NAME]',
+    '[REDACTED_NAME]': '[REDACTED_NAME]',
+    '[REDACTED_USER]': '[REDACTED_USER]',
+    '/path/to/user': '/path/to/user',
 }
 
 # Emoji patterns to remove

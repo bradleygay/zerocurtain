@@ -52,7 +52,7 @@ def consolidate_emergency_saves(outputs_dir):
     print(f"\nConcatenating {len(all_events)} dataframes with {total_events:,} total events...")
     consolidated_df = pd.concat(all_events, ignore_index=True)
     
-    print(f"✅ Consolidated dataset: {len(consolidated_df):,} events")
+    print(f" Consolidated dataset: {len(consolidated_df):,} events")
     
     return consolidated_df
 
@@ -73,9 +73,9 @@ def verify_required_features(df):
         if feature in df.columns:
             non_null = df[feature].notna().sum()
             pct = (non_null / len(df)) * 100
-            print(f"  ✅ {feature}: {non_null:,}/{len(df):,} ({pct:.1f}% non-null)")
+            print(f"   {feature}: {non_null:,}/{len(df):,} ({pct:.1f}% non-null)")
         else:
-            print(f"  ❌ {feature}: MISSING")
+            print(f"   {feature}: MISSING")
             all_present = False
     
     if not all_present:
@@ -96,24 +96,24 @@ def verify_required_features(df):
         if feature in df.columns:
             non_null = df[feature].notna().sum()
             pct = (non_null / len(df)) * 100
-            print(f"  ✅ {feature}: {non_null:,}/{len(df):,} ({pct:.1f}% non-null)")
+            print(f"   {feature}: {non_null:,}/{len(df):,} ({pct:.1f}% non-null)")
         else:
-            print(f"  ⚠️  {feature}: not present")
+            print(f"    {feature}: not present")
     
     print("\nSpatiotemporal Features:")
     spatial_features = ['latitude', 'longitude', 'depth_zone', 'permafrost_zone', 'permafrost_probability']
     for feature in spatial_features:
         if feature in df.columns:
             non_null = df[feature].notna().sum()
-            print(f"  ✅ {feature}: {non_null:,}/{len(df):,} non-null")
+            print(f"   {feature}: {non_null:,}/{len(df):,} non-null")
     
     temporal_features = ['start_time', 'end_time']
     for feature in temporal_features:
         if feature in df.columns:
             non_null = df[feature].notna().sum()
-            print(f"  ✅ {feature}: {non_null:,}/{len(df):,} non-null")
+            print(f"   {feature}: {non_null:,}/{len(df):,} non-null")
     
-    print("\n✅ Feature verification complete")
+    print("\n Feature verification complete")
     return True
 
 
@@ -141,7 +141,7 @@ def add_derived_features(df):
         
         df['season'] = df['month'].apply(get_season)
         
-        print("  ✅ Temporal features: year, month, day_of_year, season")
+        print("   Temporal features: year, month, day_of_year, season")
     
     if 'intensity_percentile' in df.columns:
         df['intensity_category'] = pd.cut(
@@ -149,7 +149,7 @@ def add_derived_features(df):
             bins=[0, 0.25, 0.5, 0.75, 1.0],
             labels=['weak', 'moderate', 'strong', 'extreme']
         )
-        print("  ✅ Intensity category")
+        print("   Intensity category")
     
     if 'duration_hours' in df.columns:
         df['duration_category'] = pd.cut(
@@ -158,7 +158,7 @@ def add_derived_features(df):
             labels=['short', 'medium', 'long', 'extended']
         )
         df['duration_days'] = df['duration_hours'] / 24.0
-        print("  ✅ Duration category and duration_days")
+        print("   Duration category and duration_days")
     
     if 'spatial_extent_meters' in df.columns:
         df['extent_category'] = pd.cut(
@@ -166,7 +166,7 @@ def add_derived_features(df):
             bins=[0, 0.3, 0.8, 1.5, np.inf],
             labels=['shallow', 'moderate', 'deep', 'very_deep']
         )
-        print("  ✅ Spatial extent category")
+        print("   Spatial extent category")
     
     if 'latitude' in df.columns and 'longitude' in df.columns:
         df['lat_zone'] = pd.cut(
@@ -174,7 +174,7 @@ def add_derived_features(df):
             bins=[50, 60, 70, 80, 90],
             labels=['subarctic', 'low_arctic', 'mid_arctic', 'high_arctic']
         )
-        print("  ✅ Latitude zone")
+        print("   Latitude zone")
     
     if 'intensity_percentile' in df.columns and 'duration_hours' in df.columns and 'spatial_extent_meters' in df.columns:
         df['composite_severity'] = (
@@ -182,13 +182,13 @@ def add_derived_features(df):
             0.3 * (df['duration_hours'] / df['duration_hours'].max()) +
             0.3 * (df['spatial_extent_meters'] / df['spatial_extent_meters'].max())
         )
-        print("  ✅ Composite severity score")
+        print("   Composite severity score")
     
     if 'phase_change_energy' in df.columns and df['phase_change_energy'].notna().any():
         df['energy_intensity'] = np.log1p(df['phase_change_energy'].abs())
-        print("  ✅ Log-transformed energy intensity")
+        print("   Log-transformed energy intensity")
     
-    print(f"\n✅ Derived features added. Total columns: {len(df.columns)}")
+    print(f"\n Derived features added. Total columns: {len(df.columns)}")
     
     return df
 
@@ -283,7 +283,7 @@ def generate_comprehensive_statistics(df, output_dir):
     with open(stats_file, 'w') as f:
         json.dump(stats, f, indent=2)
     
-    print(f"\n✅ Statistics saved to: {stats_file}")
+    print(f"\n Statistics saved to: {stats_file}")
     
     return stats
 
@@ -348,9 +348,9 @@ def prepare_stratified_splits(df, output_dir, train_ratio=0.7, val_ratio=0.15, t
     val_df.to_parquet(val_file, index=False, compression='snappy')
     test_df.to_parquet(test_file, index=False, compression='snappy')
     
-    print(f"\n✅ Train set saved: {train_file}")
-    print(f"✅ Validation set saved: {val_file}")
-    print(f"✅ Test set saved: {test_file}")
+    print(f"\n Train set saved: {train_file}")
+    print(f" Validation set saved: {val_file}")
+    print(f" Test set saved: {test_file}")
     
     return train_df, val_df, test_df
 
@@ -359,7 +359,7 @@ def main():
     """
     Main consolidation workflow - operates on ENTIRE dataset.
     """
-    outputs_dir = "/Users/bagay/arctic_zero_curtain_pipeline/outputs"
+    outputs_dir = "/path/to/user/arctic_zero_curtain_pipeline/outputs"
     
     print("\nStep 1: Consolidating all emergency save files...")
     consolidated_df = consolidate_emergency_saves(outputs_dir)
@@ -380,7 +380,7 @@ def main():
     print("\nStep 5: Saving consolidated dataset...")
     consolidated_file = Path(outputs_dir) / 'physics_informed_zero_curtain_events_COMPLETE.parquet'
     enhanced_df.to_parquet(consolidated_file, index=False, compression='snappy')
-    print(f"✅ Complete dataset saved: {consolidated_file}")
+    print(f" Complete dataset saved: {consolidated_file}")
     print(f"   Size: {consolidated_file.stat().st_size / (1024**2):.1f} MB")
     
     print("\nStep 6: Preparing stratified train/val/test splits...")

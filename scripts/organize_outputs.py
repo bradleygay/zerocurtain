@@ -13,7 +13,7 @@ def organize_outputs_directory():
     print("ORGANIZING OUTPUTS DIRECTORY STRUCTURE")
     print("="*90)
     
-    base_outputs = Path("/Users/bagay/arctic_zero_curtain_pipeline/outputs")
+    base_outputs = Path("/path/to/user/arctic_zero_curtain_pipeline/outputs")
     
     subdirs = {
         'consolidated_datasets': 'Final consolidated physics-informed datasets',
@@ -29,7 +29,7 @@ def organize_outputs_directory():
     for subdir, description in subdirs.items():
         subdir_path = base_outputs / subdir
         subdir_path.mkdir(exist_ok=True)
-        print(f"  ✅ {subdir}/ - {description}")
+        print(f"   {subdir}/ - {description}")
     
     print("\nStep 2: Moving files to appropriate directories...")
     
@@ -97,7 +97,7 @@ def organize_outputs_directory():
         if not dest.exists():
             shutil.move(str(complete_dataset), str(dest))
             moved_files.append(('consolidated_datasets', complete_dataset.name))
-            print(f"  ✅ Moved complete dataset")
+            print(f"   Moved complete dataset")
     
     split_files = [
         "physics_informed_events_train.parquet",
@@ -111,7 +111,7 @@ def organize_outputs_directory():
             if not dest.exists():
                 shutil.move(str(src), str(dest))
                 moved_files.append(('splits', split_file))
-                print(f"  ✅ Moved {split_file}")
+                print(f"   Moved {split_file}")
     
     print("\nStep 3: Creating README files for each directory...")
     
@@ -312,7 +312,7 @@ Move old or superseded files here to keep the main outputs directory clean.
         readme_path = base_outputs / subdir / 'README.md'
         with open(readme_path, 'w') as f:
             f.write(content)
-        print(f"  ✅ Created README for {subdir}/")
+        print(f"   Created README for {subdir}/")
     
     print("\nStep 4: Creating master outputs README...")
     
@@ -326,13 +326,13 @@ Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 ## Directory Structure
 ```
 outputs/
-├── consolidated_datasets/    # Final complete datasets (1.7 GB)
-├── splits/                   # Train/val/test splits (2.7 GB total)
-├── statistics/               # Statistical summaries (JSON)
-├── metadata/                 # Configuration and site metadata
-├── emergency_saves/          # Emergency checkpoint files ({len(emergency_files)} files)
-├── incremental_saves/        # Incremental checkpoints ({len(incremental_files)} files)
-└── archive/                  # Archived intermediate results
+ consolidated_datasets/    # Final complete datasets (1.7 GB)
+ splits/                   # Train/val/test splits (2.7 GB total)
+ statistics/               # Statistical summaries (JSON)
+ metadata/                 # Configuration and site metadata
+ emergency_saves/          # Emergency checkpoint files ({len(emergency_files)} files)
+ incremental_saves/        # Incremental checkpoints ({len(incremental_files)} files)
+ archive/                  # Archived intermediate results
 ```
 
 ## Quick Access
@@ -400,7 +400,7 @@ See individual directory READMEs for detailed information.
     
     with open(master_readme, 'w') as f:
         f.write(master_content)
-    print(f"  ✅ Created master README.md")
+    print(f"   Created master README.md")
     
     print("\n" + "="*90)
     print("ORGANIZATION COMPLETE")
@@ -415,7 +415,7 @@ See individual directory READMEs for detailed information.
         file_count = len(list(subdir_path.glob("*"))) - 1
         print(f"  {subdir}/: {file_count} files")
     
-    print("\n✅ Outputs directory is now properly organized")
+    print("\n Outputs directory is now properly organized")
     print("="*90)
     
     return base_outputs

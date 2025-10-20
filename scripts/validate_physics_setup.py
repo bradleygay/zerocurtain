@@ -18,23 +18,23 @@ def validate_imports():
     
     try:
         from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
-        print("  ✅ PhysicsInformedZeroCurtainDetector")
+        print("   PhysicsInformedZeroCurtainDetector")
     except ImportError as e:
-        print(f"  ❌ PhysicsInformedZeroCurtainDetector: {e}")
+        print(f"   PhysicsInformedZeroCurtainDetector: {e}")
         return False
     
     try:
         from physics_detection.physics_config import DetectionConfig
-        print("  ✅ DetectionConfig")
+        print("   DetectionConfig")
     except ImportError as e:
-        print(f"  ❌ DetectionConfig: {e}")
+        print(f"   DetectionConfig: {e}")
         return False
     
     try:
         from orchestration.physics_detection_orchestrator import PhysicsDetectionOrchestrator
-        print("  ✅ PhysicsDetectionOrchestrator")
+        print("   PhysicsDetectionOrchestrator")
     except ImportError as e:
-        print(f"  ❌ PhysicsDetectionOrchestrator: {e}")
+        print(f"   PhysicsDetectionOrchestrator: {e}")
         return False
     
     return True
@@ -51,9 +51,9 @@ def validate_dependencies():
     for package in required:
         try:
             __import__(package)
-            print(f"  ✅ {package}")
+            print(f"   {package}")
         except ImportError:
-            print(f"  ❌ {package}")
+            print(f"   {package}")
             missing.append(package)
     
     if missing:
@@ -74,13 +74,13 @@ def validate_configuration():
     is_valid, missing = config.paths.validate_paths()
     
     if is_valid:
-        print("  ✅ All data paths validated")
+        print("   All data paths validated")
         print(f"     Permafrost raster: {config.paths.permafrost_prob_raster}")
         print(f"     Permafrost zones: {config.paths.permafrost_zones_shapefile}")
         print(f"     Snow data: {config.paths.snow_data_netcdf}")
         print(f"     In situ data: {config.paths.insitu_measurements_parquet}")
     else:
-        print("  ⚠️  Some data paths missing:")
+        print("    Some data paths missing:")
         for path in missing:
             print(f"     - {path}")
         print("\n  See data/auxiliary/DATA_SOURCES.md for download instructions")
@@ -99,7 +99,7 @@ def validate_detector_initialization():
         config = DetectionConfig()
         detector = PhysicsInformedZeroCurtainDetector(config=config)
         
-        print("  ✅ Detector initialized successfully")
+        print("   Detector initialized successfully")
         print(f"     Temperature threshold: ±{detector.TEMP_THRESHOLD}°C")
         print(f"     Minimum duration: {detector.MIN_DURATION_HOURS} hours")
         print(f"     CryoGrid enthalpy: {detector.use_cryogrid_enthalpy}")
@@ -107,7 +107,7 @@ def validate_detector_initialization():
         return True
         
     except Exception as e:
-        print(f"  ❌ Detector initialization failed: {e}")
+        print(f"   Detector initialization failed: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -133,15 +133,15 @@ def main():
     all_passed = all(results.values())
     
     for check, passed in results.items():
-        status = "✅ PASS" if passed else "❌ FAIL"
+        status = " PASS" if passed else " FAIL"
         print(f"{check.upper():20s}: {status}")
     
     if all_passed:
-        print("\n✅ All validation checks passed!")
+        print("\n All validation checks passed!")
         print("   Ready to run physics-informed detection.")
         return 0
     else:
-        print("\n⚠️  Some validation checks failed.")
+        print("\n  Some validation checks failed.")
         print("   Address issues above before running detection.")
         return 1
 

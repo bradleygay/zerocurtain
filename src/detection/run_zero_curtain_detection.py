@@ -12,7 +12,7 @@ Usage:
         --config configs/detection_config.yaml
 
 Author: Dr. Bradley Gay
-Institution: NASA Arctic Research
+Institution: [REDACTED_AFFILIATION] Arctic Research
 Date: October 2025
 """
 
@@ -92,14 +92,14 @@ class PINSZCPipeline:
         
         try:
             df = pd.read_parquet(input_path)
-            self.logger.info(f"✅ Loaded {len(df):,} measurements")
+            self.logger.info(f" Loaded {len(df):,} measurements")
             self.logger.info(f"   Columns: {list(df.columns)}")
             self.logger.info(f"   Date range: {df['datetime'].min()} to {df['datetime'].max()}")
             
             return df
             
         except Exception as e:
-            self.logger.error(f"❌ Failed to load input data: {e}")
+            self.logger.error(f" Failed to load input data: {e}")
             raise
     
     def filter_cold_season_data(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -117,7 +117,7 @@ class PINSZCPipeline:
         cold_months = self.config.processing.cold_season_months
         df_cold = df[df['datetime'].dt.month.isin(cold_months)].copy()
         
-        self.logger.info(f"✅ Cold season filter applied:")
+        self.logger.info(f" Cold season filter applied:")
         self.logger.info(f"   Months: {cold_months}")
         self.logger.info(f"   Before: {len(df):,} measurements")
         self.logger.info(f"   After: {len(df_cold):,} measurements")
@@ -164,7 +164,7 @@ class PINSZCPipeline:
         
         self.total_sites = len(site_groups_filtered)
         
-        self.logger.info(f"✅ Site identification complete:")
+        self.logger.info(f" Site identification complete:")
         self.logger.info(f"   Total unique sites: {len(site_groups):,}")
         self.logger.info(f"   Sites with ≥{min_measurements} measurements: {self.total_sites:,}")
         self.logger.info(f"   Latitude range: {site_groups_filtered['latitude'].min():.1f}° to "
@@ -216,7 +216,7 @@ class PINSZCPipeline:
         suitable_df = pd.DataFrame(suitable_sites)
         unsuitable_df = pd.DataFrame(unsuitable_sites)
         
-        self.logger.info(f"✅ Permafrost screening complete:")
+        self.logger.info(f" Permafrost screening complete:")
         self.logger.info(f"   Suitable sites: {len(suitable_df):,} "
                         f"({len(suitable_df)/len(sites)*100:.1f}%)")
         self.logger.info(f"   Unsuitable sites: {len(unsuitable_df):,}")
@@ -297,10 +297,10 @@ class PINSZCPipeline:
         # Create comprehensive event dataframe
         if all_events:
             events_df = pd.DataFrame(all_events)
-            self.logger.info(f"✅ Detection complete: {len(events_df):,} events detected")
+            self.logger.info(f" Detection complete: {len(events_df):,} events detected")
             return events_df
         else:
-            self.logger.warning("⚠️  No zero-curtain events detected")
+            self.logger.warning("  No zero-curtain events detected")
             return pd.DataFrame()
     
     def _report_progress(self):
@@ -335,7 +335,7 @@ class PINSZCPipeline:
                 compression=self.config.processing.compression,
                 index=False
             )
-            self.logger.info(f"💾 Checkpoint saved: {checkpoint_path}")
+            self.logger.info(f" Checkpoint saved: {checkpoint_path}")
         except Exception as e:
             self.logger.warning(f"Checkpoint save failed: {e}")
     
@@ -389,7 +389,7 @@ class PINSZCPipeline:
                 labels=['unstable', 'moderately_stable', 'stable', 'very_stable']
             )
         
-        self.logger.info(f"✅ Added {len([c for c in df.columns if 'category' in c])} "
+        self.logger.info(f" Added {len([c for c in df.columns if 'category' in c])} "
                         "categorical features")
         
         return df
@@ -416,7 +416,7 @@ class PINSZCPipeline:
         missing_features = [f for f in required_features if f not in events_df.columns]
         
         if missing_features:
-            self.logger.error(f"❌ Missing required features: {missing_features}")
+            self.logger.error(f" Missing required features: {missing_features}")
             validation['missing_features'] = missing_features
             validation['is_valid'] = False
             return validation
@@ -485,7 +485,7 @@ class PINSZCPipeline:
         if validation['n_unique_sites'] < 10:
             validation['warnings'].append("Low spatial coverage (<10 sites)")
         
-        self.logger.info("✅ Validation complete:")
+        self.logger.info(" Validation complete:")
         self.logger.info(f"   Events: {validation['n_events']:,}")
         self.logger.info(f"   Sites: {validation['n_unique_sites']:,}")
         self.logger.info(f"   Mean intensity: {validation['intensity_stats']['mean']:.3f}")
@@ -524,7 +524,7 @@ class PINSZCPipeline:
             compression=self.config.processing.compression,
             index=False
         )
-        self.logger.info(f"✅ PINSZC dataset: {output_path}")
+        self.logger.info(f" PINSZC dataset: {output_path}")
         
         # Save site suitability
         suitability_path = output_path.parent / f"{output_path.stem}_site_suitability.parquet"
@@ -532,7 +532,7 @@ class PINSZCPipeline:
         unsuitable_sites['is_suitable'] = False
         all_sites = pd.concat([suitable_sites, unsuitable_sites], ignore_index=True)
         all_sites.to_parquet(suitability_path, compression='snappy', index=False)
-        self.logger.info(f"✅ Site suitability: {suitability_path}")
+        self.logger.info(f" Site suitability: {suitability_path}")
         
         # Save validation metadata
         metadata_path = output_path.parent / f"{output_path.stem}_metadata.json"
@@ -553,13 +553,13 @@ class PINSZCPipeline:
         
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f, indent=2)
-        self.logger.info(f"✅ Metadata: {metadata_path}")
+        self.logger.info(f" Metadata: {metadata_path}")
         
         # Save configuration
         config_path = output_path.parent / f"{output_path.stem}_config.txt"
         with open(config_path, 'w') as f:
             f.write(self.config.summary())
-        self.logger.info(f"✅ Configuration: {config_path}")
+        self.logger.info(f" Configuration: {config_path}")
     
     def run(
         self,
@@ -596,7 +596,7 @@ class PINSZCPipeline:
         events_df = self.detect_zero_curtain_events(df_cold, suitable_sites)
         
         if events_df.empty:
-            self.logger.error("❌ No events detected - pipeline terminating")
+            self.logger.error(" No events detected - pipeline terminating")
             return pd.DataFrame()
         
         # Step 6: Add derived features
@@ -679,16 +679,16 @@ def main():
         )
         
         if not pinszc_df.empty:
-            print("\n✅ PINSZC dataset successfully generated")
+            print("\n PINSZC dataset successfully generated")
             print(f"   Output: {args.output}")
             print(f"   Events: {len(pinszc_df):,}")
             return 0
         else:
-            print("\n❌ Pipeline failed - no events detected")
+            print("\n Pipeline failed - no events detected")
             return 1
             
     except Exception as e:
-        print(f"\n❌ Pipeline failed with error: {e}")
+        print(f"\n Pipeline failed with error: {e}")
         import traceback
         traceback.print_exc()
         return 1

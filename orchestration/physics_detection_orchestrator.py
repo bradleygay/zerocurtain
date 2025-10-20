@@ -55,19 +55,19 @@ class PhysicsDetectionOrchestrator:
         paths_valid, missing = self.config.paths.validate_paths()
         
         if not paths_valid:
-            print("❌ Path validation failed. Missing files:")
+            print(" Path validation failed. Missing files:")
             for missing_path in missing:
                 print(f"  - {missing_path}")
             return False
         
-        print("✅ All required data paths validated successfully")
+        print(" All required data paths validated successfully")
         return True
     
     def initialize_detector(self):
         """Initialize the physics-informed detector with configuration."""
         print("Initializing Physics-Informed Zero-Curtain Detector...")
         self.detector = PhysicsInformedZeroCurtainDetector(config=self.config)
-        print("✅ Detector initialized successfully")
+        print(" Detector initialized successfully")
         print()
     
     def run_detection_pipeline(self) -> pd.DataFrame:
@@ -172,7 +172,7 @@ class PhysicsDetectionOrchestrator:
         with open(output_path, 'w') as f:
             json.dump(summary, f, indent=2, default=serialize)
         
-        print(f"✅ Summary report saved: {output_path}")
+        print(f" Summary report saved: {output_path}")
     
     def execute_complete_workflow(self) -> tuple[pd.DataFrame, dict]:
         """
@@ -226,7 +226,7 @@ def main():
         return results, summary
         
     except Exception as e:
-        print(f"\n❌ Error during workflow execution: {e}")
+        print(f"\n Error during workflow execution: {e}")
         import traceback
         traceback.print_exc()
         raise

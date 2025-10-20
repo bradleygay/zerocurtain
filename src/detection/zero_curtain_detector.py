@@ -10,7 +10,7 @@ class PhysicsInformedZeroCurtainDetector:
     def __init__(self, config):
         self.config = config
         self.thresholds = config.thresholds
-        print("✓ Detector initialized (minimal version)")
+        print(" Detector initialized (minimal version)")
     
     def get_site_permafrost_properties(self, lat: float, lon: float) -> Dict:
         """Check if site is in Arctic region (simplified)."""

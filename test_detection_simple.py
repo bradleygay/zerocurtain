@@ -45,7 +45,7 @@ def main():
     input_file = find_input_file()
     
     if input_file is None:
-        print("\n❌ ERROR: No input data files found!")
+        print("\n ERROR: No input data files found!")
         print("\nSearching for ANY parquet files in project...")
         
         all_parquet = list(Path(".").rglob("*.parquet"))
@@ -62,12 +62,12 @@ def main():
         
         return 1
     
-    print(f"\n✓ Found input file: {input_file}")
+    print(f"\n Found input file: {input_file}")
     
     # Load data
     print("\nLoading data...")
     df = pd.read_parquet(input_file)
-    print(f"✓ Loaded {len(df):,} measurements")
+    print(f" Loaded {len(df):,} measurements")
     print(f"  Columns: {list(df.columns)}")
     
     # Check required columns
@@ -75,25 +75,25 @@ def main():
     missing_cols = [col for col in required_cols if col not in df.columns]
     
     if missing_cols:
-        print(f"\n❌ ERROR: Missing required columns: {missing_cols}")
+        print(f"\n ERROR: Missing required columns: {missing_cols}")
         print(f"Available columns: {list(df.columns)}")
         return 1
     
     # Add depth zone if missing
     if 'soil_temp_depth_zone' not in df.columns:
-        print("\n⚠ Adding default depth zone (intermediate)...")
+        print("\n Adding default depth zone (intermediate)...")
         df['soil_temp_depth_zone'] = 'intermediate'
     
     # Add source if missing
     if 'source' not in df.columns:
-        print("⚠ Adding default source...")
+        print(" Adding default source...")
         df['source'] = 'unknown'
     
     # Filter for cold season
     print("\nFiltering for cold season...")
     cold_months = [9, 10, 11, 12, 1, 2, 3, 4, 5]
     df_cold = df[df['datetime'].dt.month.isin(cold_months)].copy()
-    print(f"✓ Cold season data: {len(df_cold):,} measurements")
+    print(f" Cold season data: {len(df_cold):,} measurements")
     
     # Sample for testing
     test_size = min(10000, len(df_cold))
@@ -104,16 +104,16 @@ def main():
     print("\nInitializing detector...")
     config = DetectionConfiguration()
     detector = PhysicsInformedZeroCurtainDetector(config)
-    print("✓ Detector initialized")
+    print(" Detector initialized")
     
     # Get sites
     print("\nIdentifying sites...")
     sites = df_test.groupby(['latitude', 'longitude', 'source']).size().reset_index(name='n_measurements')
     sites = sites[sites['n_measurements'] >= 20]  # Lowered threshold for testing
-    print(f"✓ Found {len(sites)} sites with ≥20 measurements")
+    print(f" Found {len(sites)} sites with ≥20 measurements")
     
     if len(sites) == 0:
-        print("\n⚠ No sites with sufficient data")
+        print("\n No sites with sufficient data")
         print("Trying with ANY available data points...")
         sites = df_test.groupby(['latitude', 'longitude', 'source']).size().reset_index(name='n_measurements')
         sites = sites.head(5)
@@ -148,7 +148,7 @@ def main():
         # Detect events
         try:
             events = detector.detect_zero_curtain_with_physics(site_data, lat, lon)
-            print(f"    ✓ Detected {len(events)} zero-curtain events")
+            print(f"     Detected {len(events)} zero-curtain events")
             
             for event in events:
                 event['latitude'] = lat
@@ -158,7 +158,7 @@ def main():
             all_events.extend(events)
             
         except Exception as e:
-            print(f"    ✗ Error: {e}")
+            print(f"     Error: {e}")
             import traceback
             traceback.print_exc()
     
@@ -183,12 +183,12 @@ def main():
         output_path = Path("outputs/test_detection_results.parquet")
         output_path.parent.mkdir(exist_ok=True)
         events_df.to_parquet(output_path, compression='snappy', index=False)
-        print(f"\n✓ Results saved to: {output_path}")
+        print(f"\n Results saved to: {output_path}")
         
-        print("\n✅ TEST SUCCESSFUL!")
+        print("\n TEST SUCCESSFUL!")
         return 0
     else:
-        print("\n⚠ No events detected in test")
+        print("\n No events detected in test")
         print("\nThis could mean:")
         print("  1. No permafrost-suitable sites in test subset")
         print("  2. No clear zero-curtain signatures in data")

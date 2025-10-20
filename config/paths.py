@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = Path('/Volumes/levelup/bradleygay')
 
 if not DATA_DIR.exists():
-    print(f"⚠️  WARNING: External drive not mounted at {DATA_DIR}")
+    print(f"  WARNING: External drive not mounted at {DATA_DIR}")
     sys.exit(1)
 
 OUTPUT_DIR = BASE_DIR / 'outputs'
@@ -44,7 +44,7 @@ def validate_paths():
         if not Path(path).exists():
             missing.append(f"{name}: {path}")
     if missing:
-        print(f"⚠️  Warning: {len(missing)} file(s) not found:")
+        print(f"  Warning: {len(missing)} file(s) not found:")
         for m in missing:
             print(f"  - {m}")
         return False
@@ -62,8 +62,8 @@ if __name__ == "__main__":
         if Path(path).exists():
             size_gb = Path(path).stat().st_size / 1024**3
             total_gb += size_gb
-            print(f"  ✓ {name}: {size_gb:.2f} GB")
+            print(f"   {name}: {size_gb:.2f} GB")
         else:
-            print(f"  ✗ {name}: NOT FOUND")
+            print(f"   {name}: NOT FOUND")
     
     print(f"\nTotal: {total_gb:.2f} GB")

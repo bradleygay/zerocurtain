@@ -1591,7 +1591,7 @@ def run_integrated_pipeline_with_physics(feather_path, output_dir, settings):
                 print("\n" + "="*90)
                 print("PHYSICS DETECTION CONFIGURATION VALIDATION FAILED")
                 print("="*90)
-                print("Required auxiliary data files not found in /Users/bagay/Downloads/:")
+                print("Required auxiliary data files not found in /path/to/user/Downloads/:")
                 print("  1. UiO_PEX_PERPROB_5.0_20181128_2000_2016_NH.tif (Permafrost probability)")
                 print("  2. UiO_PEX_PERZONES_5.0_20181128_2000_2016_NH.shp (Permafrost zones)")
                 print("  3. aa6ddc60e4ed01915fb9193bcc7f4146.nc (ERA5 snow data)")
@@ -1654,7 +1654,7 @@ if __name__ == "__main__":
             print("Use --help for usage information")
             sys.exit(1)
     
-    FEATHER_PATH = '/Users/bagay/Desktop/Research/Code/merged_compressed.feather'
+    FEATHER_PATH = '/path/to/user/Desktop/Research/Code/merged_compressed.feather'
     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
     MAX_WORKERS = None
     SUPER_BATCH_SIZE = None
