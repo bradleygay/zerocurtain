@@ -147,4 +147,11 @@ outputs/splits/*.parquet
 *PERZONES*.prj
 
 # Archive directory
-outputs/archive/*
+outputs/archive/*cache/
+cache/
+coverage_analysis/
+.coverage
+data/intermediate/*.parquet
+data/intermediate/*.csv
+logs/*.log
+logs/*.txt
