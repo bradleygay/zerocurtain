@@ -782,7 +782,7 @@ class ZeroCurtainHybridModel(nn.Module):
         self.geocryoai_enabled = True  # Toggle for ablation studies
         
         if self.geocryoai_enabled:
-            from geocryoai_integration import GeoCryoAIHybridGraphModel
+            from src.part2_geocryoai.geocryoai_integration import GeoCryoAIHybridGraphModel
             
             self.geocryoai_graph_model = GeoCryoAIHybridGraphModel(
                 node_features=d_model,
@@ -1187,7 +1187,7 @@ class ZeroCurtainDataset(Dataset):
 
         # PART II: Enhanced temporal pattern discrimination
             if enable_pattern_analysis and len(non_none_patterns) > 0:
-                from temporal_pattern_analyzer import TemporalPatternDiscriminator
+                from src.part2_geocryoai.temporal_pattern_analyzer import TemporalPatternDiscriminator
                 
                 self.pattern_discriminator = TemporalPatternDiscriminator(
                     rapid_max_duration=72.0,
@@ -2673,7 +2673,7 @@ def calculate_optimal_sequence_length(df, target_temporal_coverage='seasonal'):
             "Need: 'start_time' or equivalent temporal column".format(list(df.columns))
         )
 
-def main(config_path='../configs/part2_config.yaml'):
+def main(config_path='../config/part2_config.yaml'):
     """
     Main training pipeline for Part II: GeoCryoAI Teacher Forcing.
     
@@ -2687,7 +2687,7 @@ def main(config_path='../configs/part2_config.yaml'):
     print("=" * 60)
     
     # Load configuration
-    from config_loader import load_config
+    from src.part2_geocryoai.config_loader import load_config
     
     try:
         config = load_config(config_path)
@@ -2699,7 +2699,7 @@ def main(config_path='../configs/part2_config.yaml'):
         # Fallback to hardcoded config
         config = {
             'data': {
-                'parquet_file': "./outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet",
+                'parquet_file': "./outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet",
                 'batch_size': 128,
                 'temporal_coverage': 'seasonal'
             },
@@ -2731,7 +2731,7 @@ def main(config_path='../configs/part2_config.yaml'):
             },
             'output': {
                 'save_dir': './outputs',
-                'models_dir': './outputs/models'
+                'models_dir': './outputs/part2_geocryoai/models'
             }
         }
     
@@ -2773,7 +2773,7 @@ def main(config_path='../configs/part2_config.yaml'):
         
         # Load PINSZC ground truth from Part I
         pinszc_path = config['data'].get('pinszc_ground_truth', 
-                                         './outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
+                                         './outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
         
         if os.path.exists(pinszc_path):
             print(f" Loading PINSZC ground truth from: {pinszc_path}")
@@ -2857,7 +2857,7 @@ def main(config_path='../configs/part2_config.yaml'):
         
         # Load PINSZC ground truth from Part I
         pinszc_path = config['data'].get('pinszc_ground_truth', 
-                                         './outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
+                                         './outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
         
         if os.path.exists(pinszc_path):
             print(f" Loading PINSZC ground truth from: {pinszc_path}")

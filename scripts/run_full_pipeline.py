@@ -10,8 +10,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from config.paths import INPUT_PATHS, OUTPUT_PATHS
 from config.pipeline_parameters import SPLIT_RATIOS, STRATIFICATION, SEQUENCE_PARAMS, SEASONAL_FILTER
-from src.data_ingestion.inspect_parquet import inspect_parquet
-from src.modeling.teacher_forcing_prep import prepare_teacher_forcing_dataset
+from src.preprocessing.inspect_parquet import inspect_parquet
+from src.part2_geocryoai.teacher_forcing_prep import prepare_teacher_forcing_dataset
 
 
 def main():

@@ -13,16 +13,20 @@ def organize_outputs_directory():
     print("ORGANIZING OUTPUTS DIRECTORY STRUCTURE")
     print("="*90)
     
-    base_outputs = Path("/path/to/user/arctic_zero_curtain_pipeline/outputs")
+    base_outputs = Path(__file__).parent.parent / "outputs"
     
     subdirs = {
-        'consolidated_datasets': 'Final consolidated physics-informed datasets',
-        'emergency_saves': 'Emergency save files from detection runs',
-        'incremental_saves': 'Incremental checkpoint files',
-        'statistics': 'Statistical summaries and reports',
-        'metadata': 'Dataset metadata and configuration files',
-        'splits': 'Train/validation/test data splits',
-        'archive': 'Archived intermediate results'
+        'part1_pinszc/consolidated_datasets': 'Part I: Final consolidated PINSZC datasets',
+        'part1_pinszc/statistics': 'Part I: Statistical summaries and reports',
+        'part1_pinszc/metadata': 'Part I: Configuration and site metadata',
+        'part1_pinszc/splits': 'Part I: Train/validation/test data splits',
+        'part2_geocryoai/models': 'Part II: Trained GeoCryoAI models and checkpoints',
+        'part2_geocryoai/explainability': 'Part II: Model explainability outputs',
+        'part2_geocryoai/predictions': 'Part II: Model predictions and evaluations',
+        'part3_pirszc': 'Part III: Remote sensing zero-curtain detection (placeholder)',
+        'part4_integrated': 'Part IV: Integrated in situ + remote sensing (placeholder)',
+        'archive/emergency_saves': 'Archived: Emergency save files from detection runs',
+        'archive/incremental_saves': 'Archived: Incremental checkpoint files'
     }
     
     print("\nStep 1: Creating directory structure...")

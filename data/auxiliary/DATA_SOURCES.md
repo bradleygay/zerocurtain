@@ -27,7 +27,7 @@ The physics-informed detection module requires several large auxiliary datasets 
 ## Setup Instructions
 1. Download datasets from sources above
 2. Place in specified target locations
-3. Verify paths in `src/physics_detection/physics_config.py`
+3. Verify paths in `src/part1_physics_detection/physics_config.py`
 4. Run validation: `python scripts/run_physics_detection.py --validate-only`
 
 ## Alternative: Automatic Path Detection

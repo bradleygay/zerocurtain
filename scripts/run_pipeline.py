@@ -14,10 +14,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 from config.paths import PATHS
 from config.parameters import PARAMETERS
-from data_ingestion.data_inspection_module import inspect_parquet
-from transformations.transformation_module import transform_uavsar_nisar, transform_smap
-from processing.merging_module import merge_arctic_datasets
-from visualization.visualization_module import plot_arctic_projection, analyze_data_coverage
+from src.preprocessing.data_inspection_module import inspect_parquet
+from src.preprocessing.transformation_module import transform_uavsar_nisar, transform_smap
+from src.preprocessing.merging_module import merge_arctic_datasets
+from src.utils.visualization_module import plot_arctic_projection, analyze_data_coverage
 
 # Configure logging
 logging.basicConfig(

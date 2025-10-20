@@ -8,17 +8,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.detection.detection_config import DetectionConfiguration
-from src.detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.detection_config import DetectionConfiguration
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
 
 def find_input_file():
     """Find any available input file."""
     
     # Check for teacher forcing files first
     tf_files = [
-        "outputs/teacher_forcing_in_situ_database_train.parquet",
-        "outputs/teacher_forcing_in_situ_database_val.parquet",
-        "outputs/teacher_forcing_in_situ_database_test.parquet"
+        "outputs/part2_geocryoai/teacher_forcing_in_situ_database_train.parquet",
+        "outputs/part2_geocryoai/teacher_forcing_in_situ_database_val.parquet",
+        "outputs/part2_geocryoai/teacher_forcing_in_situ_database_test.parquet"
     ]
     
     for tf_file in tf_files:

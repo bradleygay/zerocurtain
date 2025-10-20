@@ -17,14 +17,14 @@ def validate_imports():
     print("Validating module imports...")
     
     try:
-        from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+        from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
         print("   PhysicsInformedZeroCurtainDetector")
     except ImportError as e:
         print(f"   PhysicsInformedZeroCurtainDetector: {e}")
         return False
     
     try:
-        from physics_detection.physics_config import DetectionConfig
+        from src.part1_physics_detection.physics_config import DetectionConfig
         print("   DetectionConfig")
     except ImportError as e:
         print(f"   DetectionConfig: {e}")
@@ -68,7 +68,7 @@ def validate_configuration():
     """Validate configuration and data paths."""
     print("\nValidating configuration...")
     
-    from physics_detection.physics_config import DetectionConfig
+    from src.part1_physics_detection.physics_config import DetectionConfig
     
     config = DetectionConfig()
     is_valid, missing = config.paths.validate_paths()
@@ -93,8 +93,8 @@ def validate_detector_initialization():
     print("\nValidating detector initialization...")
     
     try:
-        from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
-        from physics_detection.physics_config import DetectionConfig
+        from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+        from src.part1_physics_detection.physics_config import DetectionConfig
         
         config = DetectionConfig()
         detector = PhysicsInformedZeroCurtainDetector(config=config)

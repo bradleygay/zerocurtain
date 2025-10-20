@@ -6,7 +6,7 @@ Integrates physics-informed zero-curtain detection with the existing Arctic
 pipeline to generate PINSZC (Physics-Informed In Situ Zero-Curtain) dataframe.
 
 Usage:
-    python src/detection/run_zero_curtain_detection.py \
+    python src/part1_physics_detection/run_zero_curtain_detection.py \
         --input outputs/merged_compressed_corrected_final.parquet \
         --output outputs/pinszc_dataset.parquet \
         --config configs/detection_config.yaml
@@ -32,8 +32,8 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.detection.detection_config import DetectionConfiguration, DEFAULT_CONFIG
-from src.detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.detection_config import DetectionConfiguration, DEFAULT_CONFIG
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
 from src.utils.logging_config import setup_logger
 
 warnings.filterwarnings('ignore')

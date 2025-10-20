@@ -7,8 +7,8 @@ import pandas as pd
 
 sys.path.insert(0, '.')
 
-from src.detection.detection_config import DetectionConfiguration
-from src.detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.detection_config import DetectionConfiguration
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
 
 print("="*70)
 print("ZERO-CURTAIN DETECTION TEST - Real Data")
@@ -16,7 +16,7 @@ print("="*70)
 
 # Load your training data
 print("\n1. Loading data...")
-df = pd.read_parquet('outputs/teacher_forcing_in_situ_database_train.parquet')
+df = pd.read_parquet('outputs/part2_geocryoai/teacher_forcing_in_situ_database_train.parquet')
 print(f"    Loaded {len(df):,} measurements")
 print(f"   Columns: {list(df.columns)[:10]}...")
 

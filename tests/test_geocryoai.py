@@ -16,7 +16,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from geocryoai_integration import (
+from src.part2_geocryoai.geocryoai_integration import (
     GeoCryoAISpatialGraphEncoder,
     GeoCryoAITemporalGraphEncoder,
     GeoCryoAIHybridGraphModel

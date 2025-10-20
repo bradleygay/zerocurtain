@@ -3,8 +3,8 @@ Modeling module for Arctic zero-curtain pipeline.
 Auto-generated from Jupyter notebook.
 """
 
-from src.common.imports import *
-from src.common.utilities import *
+from src.utils.imports import *
+from src.utils.utilities import *
 
 from tensorflow.keras.utils import plot_model
 

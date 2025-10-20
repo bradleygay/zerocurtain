@@ -19,8 +19,8 @@ import shutil
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
-from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
 
 
 # ============================================================================

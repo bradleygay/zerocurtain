@@ -6,8 +6,8 @@ random_seed: 42
 
 # Data Configuration
 data:
-  parquet_file: "../outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
-  pinszc_ground_truth: "../outputs/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  parquet_file: "../outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  pinszc_ground_truth: "../outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
   
   # Train/Val/Test Split
   test_size: 0.2

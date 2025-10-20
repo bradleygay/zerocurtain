@@ -34,8 +34,8 @@ physics_detection/
 ## Usage
 ### Standalone Execution
 ```python
-from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
-from physics_detection.physics_config import DetectionConfig
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.physics_config import DetectionConfig
 # Create configuration
 config = DetectionConfig()
 # Initialize detector

@@ -77,7 +77,7 @@ Download required datasets (see `data/auxiliary/DATA_SOURCES.md`):
 - Permafrost probability raster (~85 GB)
 - Permafrost zones shapefile (~900 MB)
 - ERA5 snow data (~3-5 GB)
-Place in `/path/to/user/Downloads/` or configure paths in `src/physics_detection/physics_config.py`.
+Place in `/path/to/user/Downloads/` or configure paths in `src/part1_physics_detection/physics_config.py`.
 
 ### Validate Setup
 ```bash
@@ -92,7 +92,7 @@ python scripts/check_external_drive.py
 # Test data access
 python scripts/test_imports.py
 # Inspect data
-python src/data_ingestion/inspect_parquet.py
+python src/preprocessing/inspect_parquet.py
 # Run full pipeline
 python scripts/run_pipeline.py
 ```
@@ -120,14 +120,14 @@ python scripts/consolidate_physics_results.py
 
 # Dataset
 ### Complete Dataset
-- **Location**: `outputs/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet`
+- **Location**: `outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet`
 - **Size**: 1.7 GB
 - **Events**: 54,418,117
 - **Features**: 40
 ### Data Splits
-- **Training**: `outputs/splits/physics_informed_events_train.parquet` (70%, 1.9 GB)
-- **Validation**: `outputs/splits/physics_informed_events_val.parquet` (15%, 423 MB)
-- **Testing**: `outputs/splits/physics_informed_events_test.parquet` (15%, 423 MB)
+- **Training**: `outputs/part1_pinszc/splits/physics_informed_events_train.parquet` (70%, 1.9 GB)
+- **Validation**: `outputs/part1_pinszc/splits/physics_informed_events_val.parquet` (15%, 423 MB)
+- **Testing**: `outputs/part1_pinszc/splits/physics_informed_events_test.parquet` (15%, 423 MB)
 ### Coverage
 - **Spatial**: 713 Arctic sites (49.4°N to 81.6°N)
 - **Temporal**: 132.4 years (1891-2023)
@@ -192,12 +192,12 @@ python scripts/run_physics_detection.py
 python orchestration/orchestration_manager.py
 ```
 ### Configuration
-Edit `src/physics_detection/physics_config.py` to customize:
+Edit `src/part1_physics_detection/physics_config.py` to customize:
 - Detection thresholds
 - Physics model options
 - Data paths
 - Output formats
-See [Physics Detection Documentation](src/physics_detection/README.md) for details.
+See [Physics Detection Documentation](src/part1_physics_detection/README.md) for details.
 ### Output
 Detection results are saved to `outputs/` directory:
 - `zero_curtain_physics_informed_results.parquet`: Event detection results
@@ -222,7 +222,7 @@ flake8 src/ scripts/ tests/
 ```
 
 ## Contributing
-This is research code. For questions or collaboration inquiries, please open an issue and/or contact the PI (Bradley Gay) at: bradley.a.gay@nasa.gov.
+This is research code. For questions or collaboration inquiries, please open an issue and/or contact the PI ([RESEARCHER]) at: [RESEARCHER_EMAIL].
 
 ## License
 This project is licensed under the AGPL-3.0 GNU AFFERO GENERAL PUBLIC LICENSE - see LICENSE file for details.
@@ -232,7 +232,7 @@ If you use any of this code in your research, please cite:
 Gay, B., Miner, K., Rietze, N., Pastick, N., Poulter, B., & Miller, C. (2025). zerocurtain (Version 1.0.0) [Computer software]. https://doi.org/Nature Machine Intelligence (TBD)
 ```bibtex
 @software{Gay_zerocurtain_2025,
-author = {Gay, Bradley and Miner, Kimberley and Rietze, Nils and Pastick, Neal and Poulter, Ben and Miller, Charles},
+author = {[RESEARCHER] and Miner, Kimberley and Rietze, Nils and Pastick, Neal and Poulter, Ben and Miller, Charles},
 doi = {Nature Machine Intelligence (TBD)},
 month = oct,
 title = {{zerocurtain}},
@@ -275,4 +275,4 @@ trade, firm, or product names is for descriptive purposes only and does not impl
 ## Contact
 For questions about this research:
 - GitHub Issues: https://github.com/bradleygay/zerocurtain/issues
-- Email: bradley.a.gay@nasa.gov
+- Email: [RESEARCHER_EMAIL]

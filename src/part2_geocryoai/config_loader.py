@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 
-def load_config(config_path='../configs/part2_config.yaml'):
+def load_config(config_path='../config/part2_config.yaml'):
     """
     Load configuration from YAML file.
     

@@ -19,7 +19,7 @@ DATA_DIR = Path('/path/to/your/data')
 
 # Check if data directory exists
 if not DATA_DIR.exists():
-    print(f"⚠️  WARNING: Data directory not found at {DATA_DIR}")
+    print(f"  WARNING: Data directory not found at {DATA_DIR}")
     print("Please update DATA_DIR in config/paths.py")
     sys.exit(1)
 
@@ -61,7 +61,7 @@ def validate_paths():
         if not Path(path).exists():
             missing.append(f"{name}: {path}")
     if missing:
-        print(f"⚠️  Missing {len(missing)} file(s):")
+        print(f"  Missing {len(missing)} file(s):")
         for m in missing:
             print(f"  - {m}")
         return False

@@ -15,7 +15,7 @@ sys.path.insert(0, str(project_root / "orchestration"))
 sys.path.insert(0, str(project_root / "src"))
 
 from orchestration.physics_detection_orchestrator import PhysicsDetectionOrchestrator
-from src.physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
+from src.part1_physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
 
 
 def main():

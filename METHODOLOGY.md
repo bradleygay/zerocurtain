@@ -65,10 +65,10 @@ python scripts/run_full_pipeline.py
 ```
 
 **Outputs:**
-- `outputs/teacher_forcing_in_situ_database_train.parquet` (31.0M obs)
-- `outputs/teacher_forcing_in_situ_database_val.parquet` (8.9M obs)
-- `outputs/teacher_forcing_in_situ_database_test.parquet` (4.4M obs)
-- `outputs/teacher_forcing_in_situ_database_metadata.json`
+- `outputs/part2_geocryoai/teacher_forcing_in_situ_database_train.parquet` (31.0M obs)
+- `outputs/part2_geocryoai/teacher_forcing_in_situ_database_val.parquet` (8.9M obs)
+- `outputs/part2_geocryoai/teacher_forcing_in_situ_database_test.parquet` (4.4M obs)
+- `outputs/part2_geocryoai/teacher_forcing_in_situ_database_metadata.json`
 
 ## Scientific Rationale
 

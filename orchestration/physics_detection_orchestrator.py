@@ -12,8 +12,8 @@ from datetime import datetime
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
-from physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
+from src.part1_physics_detection.zero_curtain_detector import PhysicsInformedZeroCurtainDetector
+from src.part1_physics_detection.physics_config import DetectionConfig, DataPaths, PhysicsParameters
 
 
 class PhysicsDetectionOrchestrator:

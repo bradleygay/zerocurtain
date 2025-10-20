@@ -16,7 +16,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from zero_curtain_ml_model import (
+from src.part2_geocryoai.zero_curtain_ml_model import (
     PhysicsInformedLoss,
     PhysicsInformedTemporalConstraints
 )
