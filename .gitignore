@@ -1,8 +1,73 @@
-# Python
+# ============================================================================
+# Arctic Zero Curtain Detection Pipeline
+# 'Intelligent' File Exclusion
+# ============================================================================
+
+# ============================================================================
+# LARGE DATA FILES - Excluded from version control
+# ============================================================================
+
+# Geospatial raster data
+*.tif
+*.tiff
+*.grd
+*.nc
+*.h5
+*.hdf
+*.hdf5
+
+# Parquet datasets (>100MB)
+data/**/*.parquet
+outputs/**/*.parquet
+
+# Model checkpoints
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# Compressed archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Shapefile components
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+
+# ============================================================================
+# PLACEHOLDER SYSTEM - Keep these tracked
+# ============================================================================
+
+# Google Drive reference files (small JSON metadata)
+!**/*.gdrive
+
+# Placeholder directory markers
+!**/PLACEHOLDER.md
+
+# ============================================================================
+# PYTHON ENVIRONMENT
+# ============================================================================
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+.conda/
+
+# Compiled Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -16,142 +81,153 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# Virtual environments
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-isce3/
+# ============================================================================
+# JUPYTER NOTEBOOKS
+# ============================================================================
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
+# Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
 
-# IDEs
+# Jupyter execution artifacts
+*.ipynb_*.png
+*.ipynb_*.jpg
+
+# ============================================================================
+# IDE AND EDITOR
+# ============================================================================
+
+# VS Code
 .vscode/
+*.code-workspace
+
+# PyCharm
 .idea/
-*.swp
-*.swo
-*~
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================================================
+# OPERATING SYSTEM
+# ============================================================================
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# Data files (NEVER commit data!)
-*.parquet
-*.csv
-*.h5
-*.hdf5
-*.nc
-*.nc4
-*.tif
-*.tiff
-*.geotiff
-*.pkl
-*.pickle
-*.npy
-*.npz
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Cache and temporary files
-cache/
-*.cache
-tmp/
-temp/
+# Linux
+*~
+.directory
 
-# Outputs (generated files)
-outputs/
-results/
-figures/
-plots/
-models/*.pth
-models/*.h5
-models/*.pkl
+# ============================================================================
+# LOGS AND TEMPORARY FILES
+# ============================================================================
 
-# Logs
-logs/
+# Log files
 *.log
+logs/
 *.out
 *.err
 
-# Large files
-*.zip
-*.tar
-*.tar.gz
-*.rar
-
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# Backup files
-*.bak
-*.backup
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
 *~
 
-# Environment files with secrets
+# ============================================================================
+# SLURM AND HPC
+# ============================================================================
+
+# SLURM output files
+slurm-*.out
+*.sbatch.log
+
+# ============================================================================
+# SECURITY AND CREDENTIALS
+# ============================================================================
+
+# Environment variables
 .env
-secrets.py
-credentials.json
+.env.local
+.env.*.local
+
+# API keys and secrets
+secrets/
+credentials/
 *.key
+*.pem
 
-# Specific to this project
-/Volumes/
-merged_*.parquet
-final_*.parquet
-circumarctic_*.parquet
-zero_curtain_*.parquet
+# ============================================================================
+# CACHE DIRECTORIES
+# ============================================================================
 
-# Physics detection outputs
-outputs/zero_curtain_*INCREMENTAL*.parquet
-outputs/zero_curtain_*EMERGENCY*.parquet
-outputs/*_PROGRESS_*.txt
-
-# Large auxiliary data files (should be downloaded separately)
-data/auxiliary/UiO_PEX_*.tif
-data/auxiliary/UiO_PEX_*.shp
-data/auxiliary/*.nc
-data/auxiliary/*.pkl
-
-# Temporary detection files
-*.pkl
-*_debug_*.txt
-
-# Physics detection outputs - organized structure
-outputs/emergency_saves/*.parquet
-outputs/incremental_saves/*.parquet
-outputs/incremental_saves/*.txt
-outputs/consolidated_datasets/*.parquet
-outputs/splits/*.parquet
-
-# Keep directory structure and READMEs
-!outputs/*/README.md
-!outputs/README.md
-
-# Statistics and metadata (small files - can be committed)
-# outputs/statistics/*.json
-# outputs/metadata/*.txt
-
-# Large auxiliary data files
-*.nc
-*PERPROB*.tif
-*PERZONES*.shp
-*PERZONES*.shx
-*PERZONES*.dbf
-*PERZONES*.prj
-
-# Archive directory
-outputs/archive/*cache/
+# Application caches
 cache/
-coverage_analysis/
+.cache/
+*.cache
+
+# Model caches
+outputs/*/cache/
+outputs/*/sequence_cache/
+
+# ============================================================================
+# DOCUMENTATION BUILD ARTIFACTS
+# ============================================================================
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Coverage reports
+htmlcov/
 .coverage
-data/intermediate/*.parquet
-data/intermediate/*.csv
-logs/*.log
-logs/*.txt
+.coverage.*
+coverage.xml
+*.cover
+
+# ============================================================================
+# PROJECT-SPECIFIC EXCLUSIONS
+# ============================================================================
+
+# Preprocessed intermediate datasets
+outputs/*/intermediate/
+outputs/*/temp/
+
+# Large visualization outputs (keep smaller versions)
+outputs/**/*_full_resolution.png
+outputs/**/*_4k.png
+
+# Bayesian optimization trials
+outputs/**/bayesian_trials/
+
+# ============================================================================
+# EXCEPTIONS (include specific files)
+# ============================================================================
+
+# Keep small example datasets
+!data/examples/*.parquet
+
+# Keep model architecture diagrams
+!outputs/**/architecture/*.png
+
+# Keep key result summaries
+!outputs/**/summary.csv
+!outputs/**/metrics.json
