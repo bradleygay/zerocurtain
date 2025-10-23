@@ -1,0 +1,30 @@
+COMPREHENSIVE ZERO-CURTAIN STATISTICS SUMMARY REPORT\n================================================================================\n\nReport Generated: 2025-08-21 04:05:27\nTotal Statistics Entries: 63\n\nENTRY DISTRIBUTION:\n----------------------------------------\nBy Temporal Type:\n  monthly: 27\n  annual: 27\n  seasonal: 9\n\nBy Variable:\n  spatial_extent_meters: 21\n  duration_hours: 21\n  intensity_percentile: 21\n\nBy Method:\n  Combinatorial Hybridized Multi-Modal Interpolation: 63\n\nCOVERAGE SUMMARY:\n----------------------------------------\n                                          mean  std        min        max
+temporal_type variable                                                   
+annual        duration_hours         40.444173  0.0  40.444173  40.444173
+              intensity_percentile   40.444173  0.0  40.444173  40.444173
+              spatial_extent_meters  40.444173  0.0  40.444173  40.444173
+monthly       duration_hours         40.444173  0.0  40.444173  40.444173
+              intensity_percentile   40.444173  0.0  40.444173  40.444173
+              spatial_extent_meters  40.444173  0.0  40.444173  40.444173
+seasonal      duration_hours         40.444173  0.0  40.444173  40.444173
+              intensity_percentile   40.444173  0.0  40.444173  40.444173
+              spatial_extent_meters  40.444173  0.0  40.444173  40.444173\n\nDATA QUALITY SUMMARY:\n----------------------------------------\n                                         mean       std       min  max
+temporal_type variable                                                
+annual        duration_hours         0.991947  0.024159  0.927524  1.0
+              intensity_percentile   0.987605  0.037186  0.888443  1.0
+              spatial_extent_meters  0.985988  0.036007  0.890279  1.0
+monthly       duration_hours         0.993743  0.010969  0.972101  1.0
+              intensity_percentile   1.000000  0.000000  1.000000  1.0
+              spatial_extent_meters  1.000000  0.000000  1.000000  1.0
+seasonal      duration_hours         0.998345  0.002866  0.995036  1.0
+              intensity_percentile   1.000000  0.000000  1.000000  1.0
+              spatial_extent_meters  0.999248  0.000763  0.998474  1.0\n\nPHYSICS COMPLIANCE RATE (%):\n----------------------------------------\ntemporal_type  variable             
+annual         duration_hours           100.0
+               intensity_percentile     100.0
+               spatial_extent_meters    100.0
+monthly        duration_hours           100.0
+               intensity_percentile     100.0
+               spatial_extent_meters    100.0
+seasonal       duration_hours           100.0
+               intensity_percentile     100.0
+               spatial_extent_meters    100.0\n\nVALUE RANGES BY VARIABLE:\n----------------------------------------\nspatial_extent_meters:\n  Mean range: 1.453395 to 2.151503\n  Coverage range: 40.44% to 40.44%\n  Quality score range: 0.890 to 1.000\n\nduration_hours:\n  Mean range: 316.335467 to 860.884151\n  Coverage range: 40.44% to 40.44%\n  Quality score range: 0.928 to 1.000\n\nintensity_percentile:\n  Mean range: 0.160051 to 0.476427\n  Coverage range: 40.44% to 40.44%\n  Quality score range: 0.888 to 1.000\n\n

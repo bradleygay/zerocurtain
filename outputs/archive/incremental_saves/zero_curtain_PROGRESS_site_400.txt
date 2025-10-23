@@ -1,0 +1,13 @@
+INCREMENTAL SAVE PROGRESS REPORT
+========================================
+total_sites_processed: 400
+sites_with_events: 400
+total_events: 175453
+detection_rate_percent: 100.0
+events_per_site: 438.6325
+timestamp: 2025-08-17 00:20:05.109618
+total_suitable_sites: 745
+total_unsuitable_sites: 5
+
+Features saved: ['start_time', 'end_time', 'duration_hours', 'intensity_percentile', 'spatial_extent_meters', 'depth_zone', 'mean_temperature', 'temperature_variance', 'permafrost_probability', 'permafrost_zone', 'phase_change_energy', 'freeze_penetration_depth', 'thermal_diffusivity', 'snow_insulation_factor', 'cryogrid_thermal_conductivity', 'cryogrid_heat_capacity', 'cryogrid_enthalpy_stability', 'surface_energy_balance', 'lateral_thermal_effects', 'soil_freezing_characteristic', 'adaptive_timestep_used', 'van_genuchten_alpha', 'van_genuchten_n', 'latitude', 'longitude', 'source', 'site_index', 'detection_method', 'fallback_criterion', 'intensity_category', 'duration_category', 'extent_category', 'thermal_conductivity_category', 'enthalpy_stability_category']
+Main features verified: ['intensity_percentile', 'duration_hours', 'spatial_extent_meters']

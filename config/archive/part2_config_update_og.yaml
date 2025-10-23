@@ -1,0 +1,207 @@
+experiment_name: geocryoai_teacher_forcing_discover_v1
+random_seed: 42
+data:
+  parquet_file: outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet
+  pinszc_ground_truth: outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet
+  test_size: 0.2
+  val_size: 0.1
+  sequence_length: null
+  temporal_coverage: seasonal
+  batch_size: 512
+  num_workers: 12
+  pin_memory: true
+  prefetch_factor: 2
+  persistent_workers: true
+model:
+  input_features: 21
+  d_model: 256
+  n_heads: 8
+  n_layers: 6
+  liquid_hidden: 512
+  dropout: 0.1
+  geocryoai:
+    enabled: true
+    spatial_threshold_km: 50.0
+    spatial_hidden: 128
+    temporal_hidden: 128
+    num_graph_layers: 4
+  pattern_analysis:
+    enabled: true
+    rapid_max_duration: 72.0
+    extended_min_duration: 168.0
+    consecutive_gap_threshold: 48.0
+teacher_forcing:
+  enabled: true
+  initial_ratio: 0.9
+  min_ratio: 0.1
+  decay_rate: 0.95
+  curriculum_schedule: exponential
+  decay_epochs: 15
+training:
+  epochs: 25
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  gradient_accumulation_steps: 1
+  loss_weights:
+    alpha_mse: 1.0
+    alpha_physics: 0.1
+    alpha_temporal: 0.05
+    alpha_pattern: 0.1
+  optimizer: adamw
+  scheduler: cosine_annealing
+  scheduler_params:
+    T_0: 10
+    T_mult: 2
+    eta_min: 1.0e-06
+  early_stopping:
+    patience: 15
+    min_delta: 0.001
+  use_amp: true
+  amp_dtype: float16
+  max_grad_norm: 1.0
+  checkpoint_frequency: 5
+  save_best_only: false
+  cudnn_benchmark: true
+  deterministic: false
+bayesian_optimization:
+  enabled: false
+  n_calls: 30
+  n_initial_points: 10
+  random_state: 42
+  search_space:
+    learning_rate:
+    - 1.0e-05
+    - 0.005
+    n_heads:
+    - 4
+    - 16
+    n_layers:
+    - 3
+    - 8
+    d_model:
+    - 128
+    - 512
+    liquid_hidden:
+    - 128
+    - 1024
+    dropout:
+    - 0.05
+    - 0.3
+    alpha_physics:
+    - 0.05
+    - 0.5
+    alpha_temporal:
+    - 0.01
+    - 0.2
+    batch_size:
+    - 256
+    - 768
+  acquisition_function: EI
+  n_jobs: 1
+  verbose: true
+explainability:
+  enabled: false
+  run_after_training: true
+  lime:
+    enabled: true
+    num_features: 10
+    num_samples: 100
+  shap:
+    enabled: true
+    sample_size: 100
+    background_samples: 50
+output:
+  save_dir: outputs/part2_geocryoai
+  models_dir: outputs/part2_geocryoai/models
+  predictions_dir: outputs/part2_geocryoai/predictions
+  explainability_dir: outputs/part2_geocryoai/explainability
+  checkpoints_dir: outputs/part2_geocryoai/checkpoints
+  save_frequency: 5
+  save_best_only: false
+  keep_last_n_checkpoints: 5
+  log_level: INFO
+  log_frequency: 10
+  tensorboard: true
+  tensorboard_dir: outputs/part2_geocryoai/tensorboard
+  wandb:
+    enabled: false
+    project: zero-curtain-part2-discover
+    entity: null
+    tags:
+    - discover
+    - a100
+    - dual-gpu
+    - bayesian-opt
+reproducibility:
+  deterministic: false
+  benchmark: true
+  seed_workers: true
+compute:
+  device: cuda
+  multi_gpu: true
+  gpu_ids:
+  - 0
+  - 1
+  use_data_parallel: true
+  use_distributed: false
+  empty_cache_frequency: 100
+  max_split_size_mb: 2048
+  compile_model: false
+  channels_last: false
+monitoring:
+  track_gpu_memory: true
+  track_cpu_memory: true
+  log_system_stats: true
+  log_frequency: 50
+  gpu_memory_threshold: 0.9
+  training_time_estimate: true
+augmentation:
+  enabled: false
+  techniques:
+  - temporal_jitter
+  - feature_noise
+  noise_std: 0.01
+  jitter_max_hours: 2.0
+validation:
+  frequency: 1
+  compute_metrics: true
+  save_predictions: true
+  metrics:
+  - mse
+  - mae
+  - r2
+  - physics_consistency
+  - temporal_smoothness
+testing:
+  compute_full_metrics: true
+  save_predictions: true
+  generate_plots: true
+  analyze_by_category:
+  - intensity_category
+  - duration_category
+  - permafrost_zone
+  - season
+debug:
+  enabled: false
+  detect_anomaly: false
+  profile: false
+  log_gradients: false
+  check_finite: false
+slurm:
+  job_id: null
+  array_task_id: null
+  node_list: null
+  checkpoint_on_signal: true
+  signals:
+  - SIGTERM
+  - SIGUSR1
+advanced:
+  gradient_checkpointing: false
+  quantization:
+    enabled: false
+    dtype: int8
+  distillation:
+    enabled: false
+    teacher_model: null
+    temperature: 2.0
+    alpha: 0.5

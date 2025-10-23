@@ -387,11 +387,11 @@ def update_datetime_values(df):
         df.loc[season_mask, 'datetime'] = pd.to_datetime(df.loc[season_mask, 'year'].astype(int).astype(str) + f'-{month}-15')
     return df
 def main():
-    gtnp_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp'
-    siberia_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/siberia'
-    alt_base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources'
-    calm_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/calm.csv'
-    coordinates_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp_coordinates.csv'
+    gtnp_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp'
+    siberia_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/siberia'
+    alt_base_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources'
+    calm_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/calm.csv'
+    coordinates_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/gtnp_coordinates.csv'
     print("Processing Combined ALT Data...")
     alt_data = process_combined_alt_data(gtnp_path, alt_base_path, calm_path)
     print("\nProcessing Borehole Data...")
@@ -416,7 +416,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources/'
+base_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/alt_sources/'
 alt_sources = {
     'calm': 'CALM',
     'rocha': 'ABoVE_Rocha',
@@ -435,7 +435,7 @@ for folder, source_name in alt_sources.items():
 
 tundra_cols = ['date', 'yr_data', 'latitude', 'longitude', 'plot_id', 'dataset_id', 'dataset_name',
                'soil_temp_10cm', 'water_table', 'soil_moist', 'ALT_mean']
-tundrafielddb = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/Tundra_field_database.csv')[tundra_cols]
+tundrafielddb = pd.read_csv('/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/preprocessing_raw_data/Tundra_field_database.csv')[tundra_cols]
 
 tundrafielddb['date'] = tundrafielddb['date'].astype(str)
 invalid_months = tundrafielddb[tundrafielddb['date'].str[4:6] == '00']
@@ -854,9 +854,9 @@ def match_borehole_with_metadata(processed_df, metadata_dir):
         print(f"Still missing coordinates for {len(missing_datasets)} datasets: {missing_datasets}")
     return processed_df
 
-borehole_df = process_gtnp_borehole_files('/Users/bgay/Downloads/zerocurtain/gtnp', 'processed_borehole_temp.csv')
+borehole_df = process_gtnp_borehole_files('/Users/[USER]/Downloads/zerocurtain/gtnp', 'processed_borehole_temp.csv')
 borehole_df
-borehole_df = match_borehole_with_metadata(borehole_df, '/Users/bgay/Downloads/zerocurtain/gtnp')
+borehole_df = match_borehole_with_metadata(borehole_df, '/Users/[USER]/Downloads/zerocurtain/gtnp')
 borehole_df.isna().sum()
 borehole_df
 borehole_df.to_csv('matched_processed_borehole_gtnp_soiltemp_insitu_df.csv', index=False)
@@ -1360,28 +1360,28 @@ def enhanced_standardize_thickness(df, thickness_col='thickness_m', output_col='
     return result_df
 
 import shutil
-fixed_files = identify_and_fix_problematic_files('/Users/bgay/Downloads/zerocurtain/gtnp', '/Users/bgay/Downloads/zerocurtain/gtnp_fixed_files')
+fixed_files = identify_and_fix_problematic_files('/Users/[USER]/Downloads/zerocurtain/gtnp', '/Users/[USER]/Downloads/zerocurtain/gtnp_fixed_files')
 if fixed_files:
     print(f"Fixed {len(fixed_files)} files")
 else:
     print("No files were fixed")
-processed_df = process_gtnp_active_layer_files('/Users/bgay/Downloads/zerocurtain/gtnp_fixed_files', 'processed_active_layer_data.csv')
+processed_df = process_gtnp_active_layer_files('/Users/[USER]/Downloads/zerocurtain/gtnp_fixed_files', 'processed_active_layer_data.csv')
 processed_df.site_name.unique()
 problematic_filenames = [os.path.basename(f) for f in fixed_files]
-orig_files = glob.glob('/Users/bgay/Downloads/zerocurtain/gtnp/Activelayer*.csv')
+orig_files = glob.glob('/Users/[USER]/Downloads/zerocurtain/gtnp/Activelayer*.csv')
 copied_count = 0
 for file in orig_files:
     filename = os.path.basename(file)
     if filename not in problematic_filenames:
-        dest_path = os.path.join('/Users/bgay/Downloads/zerocurtain/gtnp_fixed_files', filename)
+        dest_path = os.path.join('/Users/[USER]/Downloads/zerocurtain/gtnp_fixed_files', filename)
         shutil.copy2(file, dest_path)
         copied_count += 1
 print(f"Copied {copied_count} non-problematic files to the fixed directory")
-processed_df = process_gtnp_active_layer_files('/Users/bgay/Downloads/zerocurtain/gtnp_fixed_files', 'processed_active_layer_data.csv')
+processed_df = process_gtnp_active_layer_files('/Users/[USER]/Downloads/zerocurtain/gtnp_fixed_files', 'processed_active_layer_data.csv')
 processed_df[(processed_df.measurement_flag=='suspicious') & (processed_df.thickness_m<-4)]
 processed_df = processed_df.iloc[~processed_df.index.isin(processed_df[(processed_df.measurement_flag == 'suspicious') & (processed_df.thickness_m < -4)].index)]
 processed_df = processed_df[['datetime', 'year', 'frequency', 'temporal_res', 'site_name', 'dataset_id', 'utm_x', 'utm_y', 'thickness_cm', 'thickness_m', 'depth_location', 'temperature', 'depth_m', 'measurement_flag', 'measurement_method', 'data_source']]
-processed_df = match_dataset_with_metadata(processed_df, '/Users/bgay/Downloads/zerocurtain/gtnp')
+processed_df = match_dataset_with_metadata(processed_df, '/Users/[USER]/Downloads/zerocurtain/gtnp')
 processed_df = processed_df[processed_df.latitude>=49].sort_values('datetime').reset_index(drop=True)
 processed_df = processed_df[['datetime', 'year', 'frequency', 'temporal_res', 'site_name', 'dataset_id', 'data_source', 'utm_x', 'utm_y', 'latitude', 'longitude', 'thickness_cm', 'thickness_m', 'measurement_flag', 'measurement_method']]
 processed_df = processed_df.sort_values('datetime').reset_index(drop=True)
@@ -1822,7 +1822,7 @@ def assign_depth_zone(depth):
     else:
         return 'very_deep'
 
-def get_file_paths(directory='/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/zerocurtain/siberia', pattern='HPIP_'):
+def get_file_paths(directory='/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/zerocurtain/siberia', pattern='HPIP_'):
     if not os.path.exists(directory):
         print(f"Directory does not exist: {directory}")
         return []
@@ -2328,7 +2328,7 @@ def main_processing_pipeline():
     processed_df = prepare_dataframe_for_parquet(new_combined_df)
     processed_df.to_parquet('combined_df.parquet', compression='snappy', engine='pyarrow', index=False)
     
-    filtered_data = filter_by_permafrost('/Users/bgay/nsidc/permaice.shp', processed_df)
+    filtered_data = filter_by_permafrost('/Users/[USER]/nsidc/permaice.shp', processed_df)
     filtered_data.datetime = pd.to_datetime(filtered_data.datetime, format='mixed')
     filtered_data = filtered_data[pd.to_datetime(filtered_data.datetime) <= '2024-12-31 00:00:00']
     filtered_data = filtered_data.sort_values(['datetime', 'latitude', 'longitude'])
@@ -2423,7 +2423,7 @@ def assign_season(month):
 
 if __name__ == "__main__":
     print("Initializing parser...")
-    parser = ALTDataParser('/Users/bgay/Downloads/calm/alt')
+    parser = ALTDataParser('/Users/[USER]/Downloads/calm/alt')
     print("Processing files...")
     alt_data = parser.process_r_series(start_r=1, end_r=61)
     parser.print_validation_summary()
@@ -2434,14 +2434,14 @@ if __name__ == "__main__":
     print("\nDate range:")
     print(f"Earliest: {alt_data['datetime'].min()}")
     print(f"Latest: {alt_data['datetime'].max()}")
-    output_path = Path('/Users/bgay/Downloads/calm/processed/CALM_ALT_master.csv')
+    output_path = Path('/Users/[USER]/Downloads/calm/processed/CALM_ALT_master.csv')
     alt_data.to_csv(output_path, index=False)
     print(f"\nProcessed data saved to: {output_path}")
 
-df = pd.read_csv('/Users/bgay/Downloads/calm/processed/CALM_ALT_master.csv')
+df = pd.read_csv('/Users/[USER]/Downloads/calm/processed/CALM_ALT_master.csv')
 df.alt = df.alt/100
 
-df1 = pd.read_excel('/Users/bgay/Downloads/calm/alt/R18A_ALT_2003-2022.xls', sheet_name='data')
+df1 = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R18A_ALT_2003-2022.xls', sheet_name='data')
 df1 = df1.iloc[4:-6,1:]
 df1.columns = df1.iloc[0]
 df1 = df1[1:].reset_index(drop=True).melt()
@@ -2453,7 +2453,7 @@ df1.datetime = pd.to_datetime(df1.datetime)
 df1 = df1.sort_values('datetime').reset_index(drop=True)
 df1.to_csv('R18A_alt_data.csv', index=False)
 
-df2 = pd.read_excel('/Users/bgay/Downloads/calm/alt/R38b_(Burn)_ALT_2003_2017.xls', sheet_name='data')
+df2 = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R38b_(Burn)_ALT_2003_2017.xls', sheet_name='data')
 df2 = df2.iloc[4:-6,1:]
 df2.columns = df2.iloc[0]
 df2 = df2[1:].reset_index(drop=True).melt()
@@ -2464,7 +2464,7 @@ df2.datetime = pd.to_datetime(df2.datetime)
 df2 = df2.sort_values('datetime').reset_index(drop=True)
 df2.to_csv('R38B_alt_data.csv', index=False)
 
-df3 = pd.read_excel('/Users/bgay/Downloads/calm/alt/R40_Igarka_alt_2008_2023.xlsx', sheet_name='data')
+df3 = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R40_Igarka_alt_2008_2023.xlsx', sheet_name='data')
 df3 = df3.iloc[:-6,6:].melt()
 df3.columns=['datetime','alt']
 df3['site_id']='R40'
@@ -2473,7 +2473,7 @@ df3.datetime = pd.to_datetime(df3.datetime)
 df3 = df3.sort_values('datetime').reset_index(drop=True)
 df3.to_csv('R40_alt_data.csv', index=False)
 
-df4 = pd.read_excel('/Users/bgay/Downloads/calm/alt/R3_Marre-Sale_ALT_1995_2023.xls', sheet_name='ALT Data')
+df4 = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R3_Marre-Sale_ALT_1995_2023.xls', sheet_name='ALT Data')
 df4 = df4.iloc[:-6,7:-1].melt()
 df4.columns=['datetime','alt']
 df4['site_id']='R3'
@@ -2486,7 +2486,7 @@ df4.to_csv('R3_alt_data.csv', index=False)
 df5_sheets = ['Skip VD-1(R5a)', 'Skip VD-2(R5b)', 'Skip VD-3(R5c)', 'PeatVD(R5d)']
 df5_list = []
 for sheet in df5_sheets:
-    temp_df = pd.read_excel('/Users/bgay/Downloads/calm/alt/R5_alt_2007-2022.xlsx', sheet_name=sheet)
+    temp_df = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R5_alt_2007-2022.xlsx', sheet_name=sheet)
     temp_df = temp_df.iloc[:-6,1:]
     temp_df.columns = temp_df.iloc[0]
     temp_df = temp_df[1:].reset_index(drop=True).melt()
@@ -2500,7 +2500,7 @@ for sheet in df5_sheets:
 df5 = pd.concat(df5_list, ignore_index=True).sort_values('datetime').reset_index(drop=True)
 df5.to_csv('R5_alt_data.csv', index=False)
 
-df6 = pd.read_excel('/Users/bgay/Downloads/calm/alt/R6_labaz_lake.xls', sheet_name='lab_al94')
+df6 = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R6_labaz_lake.xls', sheet_name='lab_al94')
 df6 = df6.iloc[:-11,:]
 df6.columns = df6.iloc[0]
 df6 = df6[1:].reset_index(drop=True).melt()
@@ -2538,7 +2538,7 @@ month_list = [pd.to_datetime(standardized_df.datetime[i]).month for i in range(l
 seasons = [assign_season(month) for month in month_list]
 standardized_df['season']=seasons
 
-latlon = pd.read_excel('/Users/bgay/Downloads/calm/calm_siteid_sitename_lat_lon.xlsx', engine='openpyxl', index_col=0)
+latlon = pd.read_excel('/Users/[USER]/Downloads/calm/calm_siteid_sitename_lat_lon.xlsx', engine='openpyxl', index_col=0)
 latlon = latlon.reset_index()
 latlon.columns=['site_id','site_name','latitude','longitude']
 latlon['clean_site_id'] = latlon['site_id'].str.replace(' ', '')
@@ -3630,7 +3630,7 @@ if __name__ == "__main__":
 #         'datetime_max': end,
 #         'duration_hours': event_duration,
 #         'observation_count': len(event_data),
-#         'observations_per_day': len(event_data) / (event_duration / 24) if event_duration > 0 else...
+# 'observations_per_day': len(event_data) / (event_duration / 24) if...
 #         'soil_temp_mean': event_data['soil_temp_standardized'].mean(),
 #         'soil_temp_min': event_data['soil_temp_standardized'].min(),
 #         'soil_temp_max': event_data['soil_temp_standardized'].max(),
@@ -3707,7 +3707,7 @@ if __name__ == "__main__":
     
 #     return event_info
 
-# Create a detailed component diagram showing the different layers within each component
+# Create a detailed component diagram showing the...
 def create_component_diagram():
     fig, ax = plt.subplots(figsize=(15, 10))
     
@@ -3884,7 +3884,7 @@ def create_component_diagram():
 
 create_component_diagram()
 
-# Now create a flowchart-style visualization for a clearer understanding of the data flow
+# Now create a flowchart-style visualization for a...
 def create_flowchart_visualization():
     import matplotlib.patches as patches
     
@@ -5726,7 +5726,7 @@ if __name__ == "__main__":
 #         return None
 
 # def get_unique_site_depths(feather_path, include_moisture=True):
-#     """Get unique site-depth combinations with both temperature and moisture capabilities"""
+# """Get unique site-depth combinations with both temperature...
 #     print("Finding unique site-depth combinations")
 #     print(f"Memory before processing: {memory_usage():.1f} MB")
     
@@ -5798,7 +5798,7 @@ if __name__ == "__main__":
 #             cols.extend(['soil_moist_depth'])
             
 #         # Add coordinate columns if we have them
-#         # Important: Don't reference df here since it might not exist if the exception occurred ea...
+# # Don't reference df here since it...
 #         try:
 #             # Try to peek at the feather file to see what columns exist
 #             peek_df = pd.read_feather(feather_path, nrows=1)
@@ -5985,7 +5985,7 @@ if __name__ == "__main__":
 #     return closest_depth
 
 # def load_site_depth_data(feather_path, site, temp_depth, include_moisture=True, verbose=False):
-#     """Load ONLY data for a specific site and depth with moisture data when available"""
+# """Load ONLY data for a specific site...
 #     if verbose:
 #         print(f"Loading data for site: {site}, depth: {temp_depth}")
 #         print(f"Memory before loading: {memory_usage():.1f} MB")
@@ -6012,7 +6012,7 @@ if __name__ == "__main__":
 #             )
             
 #             if not has_moisture:
-#                 # Need to get moisture data separately - find optimal depth first
+# # Need to get moisture data separately...
 #                 # Create a small sample to check for available moisture depths
 #                 sample_moisture = dataset.to_table(
 #                     filter=site_filter,
@@ -6116,7 +6116,7 @@ if __name__ == "__main__":
 #                 print("Trying with chunks...")
             
 #             # Try with chunks if full read fails
-#             for i in range(0, 100000000, chunk_size):  # Arbitrary large number
+# for i in range(0, 100000000, chunk_size): #...
 #                 try:
 #                     chunk = pd.read_feather(
 #                         feather_path, 
@@ -6191,21 +6191,21 @@ if __name__ == "__main__":
 #     # Report moisture data only if verbose
 #     if verbose and include_moisture and 'soil_moist_standardized' in filtered_df.columns:
 #         valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#         pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #         print(f"  Moisture data coverage: {valid_moisture}/{len(filtered_df)} ({pct:.1f}%)")
     
 #     return filtered_df
 
 # # zero_curtain_processing.py
 # # Critical fixes to ensure soil moisture is preserved throughout the workflow
-# # Fix 1: Update the process_site_for_zero_curtain function to properly use moisture data
+# # Fix 1: Update the process_site_for_zero_curtain function...
 # def process_site_for_zero_curtain(site_df, site, temp_depth, max_gap_hours=8, interpolation_method...
-#     """Process a single site-depth for zero curtain events with moisture integration"""
+# """Process a single site-depth for zero curtain...
 #     # Initialize list to store events
 #     site_events = []
     
 #     # Skip if too few points
-#     if len(site_df) < 24:  # Require at least 24 measurements for meaningful analysis
+# if len(site_df) < 24: # Require at...
 #         return []
     
 #     # Sort by time
@@ -6284,7 +6284,7 @@ if __name__ == "__main__":
 #                             temp_end = after_row['soil_temp_standardized']
 #                             temp_values = np.linspace(temp_start, temp_end, n_intervals + 2)[1:-1]
                     
-#                     # CRITICAL FIX: ALWAYS interpolate moisture data when available (not condition...
+# # CRITICAL FIX: ALWAYS interpolate moisture data...
 #                     moist_values = None
 #                     if has_moisture:
 #                         moist_start = before_row.get('soil_moist_standardized', np.nan)
@@ -6327,7 +6327,7 @@ if __name__ == "__main__":
 #     site_df['temp_gradient'] = site_df['soil_temp_standardized'].diff() / \
 #                              (site_df['datetime'].diff().dt.total_seconds() / 3600)
     
-#     # CRITICAL FIX: Always calculate moisture gradient when moisture data exists
+# # CRITICAL FIX: Always calculate moisture gradient...
 #     if has_moisture:
 #         site_df['moist_gradient'] = site_df['soil_moist_standardized'].diff() / \
 #                                    (site_df['datetime'].diff().dt.total_seconds() / 3600)
@@ -6339,7 +6339,7 @@ if __name__ == "__main__":
 #     # CRITICAL FIX: Properly integrate moisture in zero curtain detection
 #     if has_moisture:
 #         # Use moisture gradient for phase change detection
-#         mask_moisture = (site_df['moist_gradient'].abs() >= 0.0005)  # Moisture changing during ph...
+# mask_moisture = (site_df['moist_gradient'].abs() >= 0.0005) # Moisture...
         
 #         # Combined detection criteria
 #         combined_mask = mask_temp & (mask_gradient | mask_moisture)
@@ -6406,7 +6406,7 @@ if __name__ == "__main__":
 #         'datetime_max': end,
 #         'duration_hours': event_duration,
 #         'observation_count': len(event_data),
-#         'observations_per_day': len(event_data) / (event_duration / 24) if event_duration > 0 else...
+# 'observations_per_day': len(event_data) / (event_duration / 24) if...
 #         'soil_temp_mean': event_data['soil_temp_standardized'].mean(),
 #         'soil_temp_min': event_data['soil_temp_standardized'].min(),
 #         'soil_temp_max': event_data['soil_temp_standardized'].max(),
@@ -6419,7 +6419,7 @@ if __name__ == "__main__":
 #     }
     
 #     # CRITICAL FIX: Always include moisture fields to avoid suppression
-#     # This ensures consistent data structure even when moisture data isn't available
+# # This ensures consistent data structure even...
     
 #     # Add moisture metrics when available
 #     if has_moisture and not event_data['soil_moist_standardized'].isna().all():
@@ -6443,7 +6443,7 @@ if __name__ == "__main__":
 #             event_info['soil_moist_gradient_max'] = event_data['moist_gradient'].abs().max()
 #     else:
 #         # Set empty moisture values BUT PRESERVE THE COLUMNS
-#         # This is critical - we don't want to suppress the moisture data structure
+# # This is critical - we don't...
 #         event_info['soil_moist_mean'] = np.nan
 #         event_info['soil_moist_std'] = np.nan
 #         event_info['soil_moist_min'] = np.nan
@@ -6499,7 +6499,7 @@ if __name__ == "__main__":
 # # Fix 3: Function to prepare ML features with moisture preservation
 # def prepare_ml_features(events_df, output_dir=None):
 #     """
-#     Prepare features and labels for ML ensuring soil moisture features are preserved
+# Prepare features and labels for ML ensuring...
 #     """
 #     print("Preparing ML features with moisture data integration")
     
@@ -6522,7 +6522,7 @@ if __name__ == "__main__":
 #     # Add all standard columns except non-numeric ones
 #     exclude_cols = ['datetime_min', 'datetime_max', 'source', 'year_month']
 #     for col in events_df.columns:
-#         if col not in exclude_cols and col != 'duration_hours':  # duration is our target
+# if col not in exclude_cols and col...
 #             feature_cols.append(col)
     
 #     # Create a training dataset
@@ -6643,7 +6643,7 @@ if __name__ == "__main__":
 #     print("=" * 80)
 #     print(f"Initial memory usage: {memory_usage():.1f} MB")
 
-#     # Define a more aggressive cleanup function that stays in this function's scope
+# # Define a more aggressive cleanup function...
 #     def aggressive_cleanup():
 #         """Aggressively clean up memory"""
 #         # Call garbage collection multiple times
@@ -6767,7 +6767,7 @@ if __name__ == "__main__":
 #             site = site_depths.iloc[site_idx]['source']
 #             temp_depth = site_depths.iloc[site_idx]['soil_temp_depth']
             
-#             # Only print detailed progress every 10 sites or if verbose mode is on
+# # Only print detailed progress every 10...
 #             if verbose or (site_idx % 10 == 0):
 #                 print(f"\nProcessing site {site_idx+1}/{total_combinations}: {site}, depth: {temp_...
             
@@ -6777,7 +6777,7 @@ if __name__ == "__main__":
 #                 if 'has_moisture_data' in site_depths.columns:
 #                     has_moisture = site_depths.iloc[site_idx]['has_moisture_data']
                 
-#                 # Load site data efficiently - with soil moisture data if available
+# # Load site data efficiently - with...
 #                 site_df = load_site_depth_data(
 #                     feather_path, site, temp_depth, 
 #                     include_moisture=(include_moisture and has_moisture),
@@ -6785,7 +6785,7 @@ if __name__ == "__main__":
 #                 )
                 
 #                 # Skip if insufficient data
-#                 if len(site_df) < 24:  # Require at least 24 observations (minimum 1 day)
+# if len(site_df) < 24: # Require at...
 #                     if verbose:
 #                         print(f"  Insufficient data ({len(site_df)} rows), skipping")
 #                     processed_indices.add(site_idx)
@@ -6892,7 +6892,7 @@ if __name__ == "__main__":
     
 #     return events_df
 
-# # This function fixes the reference to 'verbose' in the load_site_depth_data call
+# # This function fixes the reference to...
 
 # def run_memory_efficient_pipeline_fixed(feather_path, output_dir=None, 
 #                                   site_batch_size=10, checkpoint_interval=5, 
@@ -6934,7 +6934,7 @@ if __name__ == "__main__":
 #     print("=" * 80)
 #     print(f"Initial memory usage: {memory_usage():.1f} MB")
     
-#     # Define a more aggressive cleanup function that stays in this function's scope
+# # Define a more aggressive cleanup function...
 #     def aggressive_cleanup():
 #         """Aggressively clean up memory"""
 #         # Call garbage collection multiple times
@@ -7058,7 +7058,7 @@ if __name__ == "__main__":
 #             site = site_depths.iloc[site_idx]['source']
 #             temp_depth = site_depths.iloc[site_idx]['soil_temp_depth']
             
-#             # Only print detailed progress every 10 sites or if verbose mode is on
+# # Only print detailed progress every 10...
 #             if verbose or (site_idx % 10 == 0):
 #                 print(f"\nProcessing site {site_idx+1}/{total_combinations}: {site}, depth: {temp_...
             
@@ -7068,7 +7068,7 @@ if __name__ == "__main__":
 #                 if 'has_moisture_data' in site_depths.columns:
 #                     has_moisture = site_depths.iloc[site_idx]['has_moisture_data']
                 
-#                 # Load site data efficiently - with soil moisture data if available
+# # Load site data efficiently - with...
 #                 # IMPORTANT: Don't pass verbose parameter here!
 #                 site_df = load_site_depth_data(
 #                     feather_path=feather_path, 
@@ -7078,7 +7078,7 @@ if __name__ == "__main__":
 #                 )
                 
 #                 # Skip if insufficient data
-#                 if len(site_df) < 24:  # Require at least 24 observations (minimum 1 day)
+# if len(site_df) < 24: # Require at...
 #                     if verbose:
 #                         print(f"  Insufficient data ({len(site_df)} rows), skipping")
 #                     processed_indices.add(site_idx)
@@ -7191,7 +7191,7 @@ if __name__ == "__main__":
 
 # # Modified load_site_depth_data function to handle moisture data properly
 # def load_site_depth_data(feather_path, site, temp_depth, include_moisture=True):
-#     """Load ONLY data for a specific site and depth with moisture data when available"""
+# """Load ONLY data for a specific site...
 #     print(f"Loading data for site: {site}, depth: {temp_depth}")
 #     print(f"Memory before loading: {memory_usage():.1f} MB")
     
@@ -7349,7 +7349,7 @@ if __name__ == "__main__":
 #     # Report moisture data
 #     if include_moisture and 'soil_moist_standardized' in filtered_df.columns:
 #         valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#         pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #         print(f"  Moisture data coverage: {valid_moisture}/{len(filtered_df)} ({pct:.1f}%)")
     
 #     return filtered_df
@@ -7392,14 +7392,14 @@ if __name__ == "__main__":
 # #         checkpoint_interval=10,
 # #         max_gap_hours=max_gap_hours,
 # #         interpolation_method='cubic',
-# #         include_moisture=True  # This parameter should exist in your current implementation
+# # include_moisture=True # This parameter should exist...
 # #     )
     
 # #     # Force garbage collection
 # #     for _ in range(3):
 # #         gc.collect()
     
-# #     # Check if we need to load from file (if run_memory_efficient_pipeline returned empty df)
+# # # Check if we need to...
 # #     if len(events_df) == 0:
 # #         events_path = os.path.join(events_dir, 'zero_curtain_events.csv')
 # #         if os.path.exists(events_path):
@@ -7475,14 +7475,14 @@ if __name__ == "__main__":
 #         max_gap_hours=max_gap_hours,
 #         interpolation_method='cubic',
 #         include_moisture=True,
-#         verbose=verbose  # This parameter is handled properly in the fixed function
+# verbose=verbose # This parameter is handled properly...
 #     )
     
 #     # Force aggressive cleanup
 #     for _ in range(3):
 #         gc.collect()
     
-#     # Check if we need to load from file (if run_memory_efficient_pipeline returned empty df)
+# # Check if we need to load...
 #     if len(events_df) == 0:
 #         events_path = os.path.join(events_dir, 'zero_curtain_events.csv')
 #         if os.path.exists(events_path):
@@ -7540,7 +7540,7 @@ if __name__ == "__main__":
 
 # def run_pipeline_with_fixed_moisture(feather_path, site_depths_path, output_dir):
 #     """
-#     Run the zero curtain pipeline using the fixed site_depths with correct moisture detection.
+# Run the zero curtain pipeline using the...
     
 #     Parameters:
 #     -----------
@@ -7624,7 +7624,7 @@ if __name__ == "__main__":
 #             print(f"\nProcessing site {site_idx+1}/{total_sites}: {site}, depth: {temp_depth}")
             
 #             try:
-#                 # Check if site has moisture capabilities - using corrected detection
+# # Check if site has moisture capabilities...
 #                 has_moisture = False
 #                 if 'has_moisture_data' in site_depths.columns:
 #                     has_moisture = site_depths.iloc[site_idx]['has_moisture_data']
@@ -7697,7 +7697,7 @@ if __name__ == "__main__":
 #             print(f"Saved interim results to {interim_path}")
             
 #             # Check moisture data in intermediate results
-#             moisture_cols = [col for col in interim_df.columns if 'moist' in col.lower()]
+# moisture_cols = [col for col in interim_df.columns...
 #             if moisture_cols:
 #                 for col in moisture_cols:
 #                     valid = pd.to_numeric(interim_df[col], errors='coerce').notna().sum()
@@ -7715,7 +7715,7 @@ if __name__ == "__main__":
 #         print(f"Created events dataframe with {len(events_df)} total events")
         
 #         # Report on moisture data
-#         moisture_cols = [col for col in events_df.columns if 'moist' in col.lower()]
+# moisture_cols = [col for col in events_df.columns...
 #         if moisture_cols:
 #             print("\nMoisture data in final results:")
 #             for col in moisture_cols:
@@ -7746,7 +7746,7 @@ if __name__ == "__main__":
 #     print(f"\nExecution completed in {execution_time:.1f} seconds ({execution_time/60:.1f} minutes...
 #     print(f"Final memory usage: {memory_usage():.1f} MB")
     
-# # Implement the optimized load_site_depth_data function specifically for moisture handling
+# # Implement the optimized load_site_depth_data function specifically...
 # def load_site_depth_data(feather_path, site, temp_depth, include_moisture=True):
 #     """Optimized function to load site data with proper moisture handling"""
 #     print(f"Loading data for site: {site}, depth: {temp_depth}")
@@ -7869,7 +7869,7 @@ if __name__ == "__main__":
 #     # Report moisture data
 #     if include_moisture and 'soil_moist_standardized' in filtered_df.columns:
 #         valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#         pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #         print(f"  Moisture data coverage: {valid_moisture}/{len(filtered_df)} ({pct:.1f}%)")
     
 #     return filtered_df
@@ -7890,11 +7890,11 @@ if __name__ == "__main__":
 # #         feather_path=feather_path,
 # #         output_dir=output_dir,
 # #         max_gap_hours=8,           # Literature-based parameter
-# #         site_batch_size=10,        # Smaller batch size for lower memory usage
+# # site_batch_size=10, # Smaller batch size for...
 # #         verbose=False              # Only print essential messages
 # #     )
     
-# #     print(f"Detected {len(events)} zero curtain events with integrated soil moisture")
+# # print(f"Detected {len(events)} zero curtain events with...
 
 # #     print(f"  Starting memory: {memory_usage():.1f} MB")
     
@@ -7907,8 +7907,8 @@ if __name__ == "__main__":
 # # Main execution
 # if __name__ == "__main__":
 #     # Define paths
-#     feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
-#     site_depths_path = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/z...
+#     feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
+#     site_depths_path = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/z...
 #     output_dir = 'zero_curtain_results_fixed'
     
 #     # Run the pipeline with fixed moisture detection
@@ -8079,7 +8079,7 @@ if __name__ == "__main__":
 #         return None
 
 # def get_unique_site_depths(feather_path, include_moisture=True):
-#     """Get unique site-depth combinations with both temperature and moisture capabilities"""
+# """Get unique site-depth combinations with both temperature...
 #     print("Finding unique site-depth combinations")
 #     print(f"Memory before processing: {memory_usage():.1f} MB")
     
@@ -8151,7 +8151,7 @@ if __name__ == "__main__":
 #             cols.extend(['soil_moist_depth'])
             
 #         # Add coordinate columns if we have them
-#         # Important: Don't reference df here since it might not exist if the exception occurred ea...
+# # Don't reference df here since it...
 #         try:
 #             # Try to peek at the feather file to see what columns exist
 #             peek_df = pd.read_feather(feather_path, nrows=1)
@@ -8338,7 +8338,7 @@ if __name__ == "__main__":
 #     return closest_depth
 
 # def load_site_depth_data(feather_path, site, temp_depth, include_moisture=True, verbose=False):
-#     """Load ONLY data for a specific site and depth with moisture data when available"""
+# """Load ONLY data for a specific site...
 #     if verbose:
 #         print(f"Loading data for site: {site}, depth: {temp_depth}")
 #         print(f"Memory before loading: {memory_usage():.1f} MB")
@@ -8365,7 +8365,7 @@ if __name__ == "__main__":
 #             )
             
 #             if not has_moisture:
-#                 # Need to get moisture data separately - find optimal depth first
+# # Need to get moisture data separately...
 #                 # Create a small sample to check for available moisture depths
 #                 sample_moisture = dataset.to_table(
 #                     filter=site_filter,
@@ -8469,7 +8469,7 @@ if __name__ == "__main__":
 #                 print("Trying with chunks...")
             
 #             # Try with chunks if full read fails
-#             for i in range(0, 100000000, chunk_size):  # Arbitrary large number
+# for i in range(0, 100000000, chunk_size): #...
 #                 try:
 #                     chunk = pd.read_feather(
 #                         feather_path, 
@@ -8544,21 +8544,21 @@ if __name__ == "__main__":
 #     # Report moisture data only if verbose
 #     if verbose and include_moisture and 'soil_moist_standardized' in filtered_df.columns:
 #         valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#         pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #         print(f"  Moisture data coverage: {valid_moisture}/{len(filtered_df)} ({pct:.1f}%)")
     
 #     return filtered_df
 
 # # zero_curtain_processing.py
 # # Critical fixes to ensure soil moisture is preserved throughout the workflow
-# # Fix 1: Update the process_site_for_zero_curtain function to properly use moisture data
+# # Fix 1: Update the process_site_for_zero_curtain function...
 # def process_site_for_zero_curtain(site_df, site, temp_depth, max_gap_hours=8, interpolation_method...
-#     """Process a single site-depth for zero curtain events with moisture integration"""
+# """Process a single site-depth for zero curtain...
 #     # Initialize list to store events
 #     site_events = []
     
 #     # Skip if too few points
-#     if len(site_df) < 24:  # Require at least 24 measurements for meaningful analysis
+# if len(site_df) < 24: # Require at...
 #         return []
     
 #     # Sort by time
@@ -8637,7 +8637,7 @@ if __name__ == "__main__":
 #                             temp_end = after_row['soil_temp_standardized']
 #                             temp_values = np.linspace(temp_start, temp_end, n_intervals + 2)[1:-1]
                     
-#                     # CRITICAL FIX: ALWAYS interpolate moisture data when available (not condition...
+# # CRITICAL FIX: ALWAYS interpolate moisture data...
 #                     moist_values = None
 #                     if has_moisture:
 #                         moist_start = before_row.get('soil_moist_standardized', np.nan)
@@ -8680,7 +8680,7 @@ if __name__ == "__main__":
 #     site_df['temp_gradient'] = site_df['soil_temp_standardized'].diff() / \
 #                              (site_df['datetime'].diff().dt.total_seconds() / 3600)
     
-#     # CRITICAL FIX: Always calculate moisture gradient when moisture data exists
+# # CRITICAL FIX: Always calculate moisture gradient...
 #     if has_moisture:
 #         site_df['moist_gradient'] = site_df['soil_moist_standardized'].diff() / \
 #                                    (site_df['datetime'].diff().dt.total_seconds() / 3600)
@@ -8692,7 +8692,7 @@ if __name__ == "__main__":
 #     # CRITICAL FIX: Properly integrate moisture in zero curtain detection
 #     if has_moisture:
 #         # Use moisture gradient for phase change detection
-#         mask_moisture = (site_df['moist_gradient'].abs() >= 0.0005)  # Moisture changing during ph...
+# mask_moisture = (site_df['moist_gradient'].abs() >= 0.0005) # Moisture...
         
 #         # Combined detection criteria
 #         combined_mask = mask_temp & (mask_gradient | mask_moisture)
@@ -8759,7 +8759,7 @@ if __name__ == "__main__":
 #         'datetime_max': end,
 #         'duration_hours': event_duration,
 #         'observation_count': len(event_data),
-#         'observations_per_day': len(event_data) / (event_duration / 24) if event_duration > 0 else...
+# 'observations_per_day': len(event_data) / (event_duration / 24) if...
 #         'soil_temp_mean': event_data['soil_temp_standardized'].mean(),
 #         'soil_temp_min': event_data['soil_temp_standardized'].min(),
 #         'soil_temp_max': event_data['soil_temp_standardized'].max(),
@@ -8772,7 +8772,7 @@ if __name__ == "__main__":
 #     }
     
 #     # CRITICAL FIX: Always include moisture fields to avoid suppression
-#     # This ensures consistent data structure even when moisture data isn't available
+# # This ensures consistent data structure even...
     
 #     # Add moisture metrics when available
 #     if has_moisture and not event_data['soil_moist_standardized'].isna().all():
@@ -8796,7 +8796,7 @@ if __name__ == "__main__":
 #             event_info['soil_moist_gradient_max'] = event_data['moist_gradient'].abs().max()
 #     else:
 #         # Set empty moisture values BUT PRESERVE THE COLUMNS
-#         # This is critical - we don't want to suppress the moisture data structure
+# # This is critical - we don't...
 #         event_info['soil_moist_mean'] = np.nan
 #         event_info['soil_moist_std'] = np.nan
 #         event_info['soil_moist_min'] = np.nan
@@ -8852,7 +8852,7 @@ if __name__ == "__main__":
 # # Fix 3: Function to prepare ML features with moisture preservation
 # def prepare_ml_features(events_df, output_dir=None):
 #     """
-#     Prepare features and labels for ML ensuring soil moisture features are preserved
+# Prepare features and labels for ML ensuring...
 #     """
 #     print("Preparing ML features with moisture data integration")
     
@@ -8875,7 +8875,7 @@ if __name__ == "__main__":
 #     # Add all standard columns except non-numeric ones
 #     exclude_cols = ['datetime_min', 'datetime_max', 'source', 'year_month']
 #     for col in events_df.columns:
-#         if col not in exclude_cols and col != 'duration_hours':  # duration is our target
+# if col not in exclude_cols and col...
 #             feature_cols.append(col)
     
 #     # Create a training dataset
@@ -8995,7 +8995,7 @@ if __name__ == "__main__":
 #     print("=" * 80)
 #     print(f"Initial memory usage: {memory_usage():.1f} MB")
     
-#     # Define a more aggressive cleanup function that stays in this function's scope
+# # Define a more aggressive cleanup function...
 #     def aggressive_cleanup():
 #         """Aggressively clean up memory"""
 #         # Call garbage collection multiple times
@@ -9119,7 +9119,7 @@ if __name__ == "__main__":
 #             site = site_depths.iloc[site_idx]['source']
 #             temp_depth = site_depths.iloc[site_idx]['soil_temp_depth']
             
-#             # Only print detailed progress every 10 sites or if verbose mode is on
+# # Only print detailed progress every 10...
 #             if verbose or (site_idx % 10 == 0):
 #                 print(f"\nProcessing site {site_idx+1}/{total_combinations}: {site}, depth: {temp_...
             
@@ -9129,7 +9129,7 @@ if __name__ == "__main__":
 #                 if 'has_moisture_data' in site_depths.columns:
 #                     has_moisture = site_depths.iloc[site_idx]['has_moisture_data']
                 
-#                 # Load site data efficiently - with soil moisture data if available
+# # Load site data efficiently - with...
 #                 # IMPORTANT: Don't pass verbose parameter here!
 #                 site_df = load_site_depth_data(
 #                     feather_path=feather_path, 
@@ -9139,7 +9139,7 @@ if __name__ == "__main__":
 #                 )
                 
 #                 # Skip if insufficient data
-#                 if len(site_df) < 24:  # Require at least 24 observations (minimum 1 day)
+# if len(site_df) < 24: # Require at...
 #                     if verbose:
 #                         print(f"  Insufficient data ({len(site_df)} rows), skipping")
 #                     processed_indices.add(site_idx)
@@ -9252,7 +9252,7 @@ if __name__ == "__main__":
 
 # # Modified load_site_depth_data function to handle moisture data properly
 # def load_site_depth_data(feather_path, site, temp_depth, include_moisture=True):
-#     """Load ONLY data for a specific site and depth with moisture data when available"""
+# """Load ONLY data for a specific site...
 #     print(f"Loading data for site: {site}, depth: {temp_depth}")
 #     print(f"Memory before loading: {memory_usage():.1f} MB")
     
@@ -9410,7 +9410,7 @@ if __name__ == "__main__":
 #     # Report moisture data
 #     if include_moisture and 'soil_moist_standardized' in filtered_df.columns:
 #         valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#         pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #         print(f"  Moisture data coverage: {valid_moisture}/{len(filtered_df)} ({pct:.1f}%)")
     
 #     return filtered_df
@@ -9512,7 +9512,7 @@ if __name__ == "__main__":
 
 # # 3. FIX: ENHANCED SITE DATA LOADING WITH BETTER MOISTURE INTEGRATION
 # def load_site_depth_data_improved(feather_path, site, temp_depth, include_moisture=True, moisture_...
-#     """Load data for specific site and depth with improved moisture handling"""
+# """Load data for specific site and depth...
 #     print(f"Loading data for site: {site}, depth: {temp_depth}")
     
 #     # First determine if this site has moisture capability
@@ -9542,7 +9542,7 @@ if __name__ == "__main__":
 #         table = dataset.to_table(filter=combined_filter, columns=columns)
 #         filtered_df = table.to_pandas()
         
-#         # If we need moisture data and don't have it yet, try to fetch it separately
+# # If we need moisture data and...
 #         if include_moisture and has_moisture_capability and len(filtered_df) > 0:
 #             # Check if we already have adequate moisture data
 #             has_sufficient_moisture = (
@@ -9589,7 +9589,7 @@ if __name__ == "__main__":
 #                                 filtered_df = filtered_df.sort_values('datetime')
 #                                 moisture_depth_df = moisture_depth_df.sort_values('datetime')
                                 
-#                                 # Merge with temperature data using merge_asof for nearest time ma...
+# # Merge with temperature data using merge_asof...
 #                                 merged_df = pd.merge_asof(
 #                                     filtered_df,
 #                                     moisture_depth_df[['datetime', 'soil_moist_standardized', 'soi...
@@ -9641,7 +9641,7 @@ if __name__ == "__main__":
 #         # Report on moisture data if present
 #         if 'soil_moist_standardized' in filtered_df.columns:
 #             valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#             pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #             print(f"  Final moisture data coverage: {valid_moisture}/{len(filtered_df)} rows ({pct...
         
 #         return filtered_df
@@ -10031,7 +10031,7 @@ if __name__ == "__main__":
 #         del df
 #         gc.collect()
         
-#         # If we need moisture data and don't have it yet, try to fetch it separately
+# # If we need moisture data and...
 #         if include_moisture and has_moisture_capability and len(filtered_df) > 0:
 #             # Check if we already have adequate moisture data
 #             has_sufficient_moisture = (
@@ -10077,7 +10077,7 @@ if __name__ == "__main__":
 #                                 filtered_df = filtered_df.sort_values('datetime')
 #                                 moisture_depth_df = moisture_depth_df.sort_values('datetime')
                                 
-#                                 # Merge with temperature data using merge_asof for nearest time ma...
+# # Merge with temperature data using merge_asof...
 #                                 merged_df = pd.merge_asof(
 #                                     filtered_df,
 #                                     moisture_depth_df[['datetime', 'soil_moist_standardized', 'soi...
@@ -10135,7 +10135,7 @@ if __name__ == "__main__":
 #         # Report on moisture data if present
 #         if 'soil_moist_standardized' in filtered_df.columns:
 #             valid_moisture = filtered_df['soil_moist_standardized'].notna().sum()
-#             pct = valid_moisture / len(filtered_df) * 100 if len(filtered_df) > 0 else 0
+# pct = valid_moisture / len(filtered_df) * 100...
 #             print(f"  Final moisture data coverage: {valid_moisture}/{len(filtered_df)} rows ({pct...
         
 #         return filtered_df
@@ -10189,7 +10189,7 @@ if __name__ == "__main__":
 #                 print(f"  Loaded {len(filtered_df)} rows using chunked approach")
 #                 return filtered_df
 #             else:
-#                 return pd.DataFrame()  # Return empty DataFrame if no data found
+# return pd.DataFrame() # Return empty DataFrame if...
                 
 #         except Exception as chunk_error:
 #             print(f"  Error in chunked loading: {str(chunk_error)}")
@@ -10432,13 +10432,13 @@ if __name__ == "__main__":
 # # TensorFlow Performance Troubleshooting Guide for Apple Silicon (M1/M2)
 
 # """
-# This guide contains functions and tips to resolve common TensorFlow performance issues,
+# This guide contains functions and tips to...
 # especially on Apple Silicon (M1/M2) Macs.
 
 # Functions:
 # - diagnose_tf_environment: Print detailed information about TensorFlow and system
 # - enable_metal_gpu: Configure TensorFlow to use Metal GPU acceleration
-# - optimize_model_build: Test and optimize model building with progressive complexity
+# - optimize_model_build: Test and optimize model building...
 # - check_memory_leak: Test for memory leaks during model training
 # - benchmark_performance: Benchmark model performance with different configurations
 # """
@@ -10535,7 +10535,7 @@ if __name__ == "__main__":
 #                        ('arm64' in platform.machine() or 'ARM64' in platform.machine()))
     
 #     if not is_apple_silicon:
-#         print("Not running on Apple Silicon - skipping Metal GPU configuration")
+# print("Not running on Apple Silicon - skipping...
 #         return False
     
 #     # Set environment variables for TensorFlow Metal plugin
@@ -10603,7 +10603,7 @@ if __name__ == "__main__":
 
 # def enhanced_zero_curtain_detection_with_interpolation(df, output_dir=None, max_gap_hours=6, inter...
 #     """
-#     Physics-based zero curtain detection with interpolation to improve transition precision.
+# Physics-based zero curtain detection with interpolation to...
     
 #     Parameters:
 #     -----------
@@ -10693,7 +10693,7 @@ if __name__ == "__main__":
 #                     elif interpolation_method == 'cubic' or interpolation_method == 'spline':
 #                         # Need more points for cubic/spline interpolation
 #                         if len(group) >= 5:
-#                             # Get a few points before and after for better interpolation
+# # Get a few points before and...
 #                             idx_loc = group.index.get_loc(idx)
 #                             start_idx = max(0, idx_loc - 3)
 #                             end_idx = min(len(group), idx_loc + 2)
@@ -10708,7 +10708,7 @@ if __name__ == "__main__":
                             
 #                             # Perform cubic interpolation
 #                             from scipy.interpolate import interp1d
-#                             if len(time_points) >= 4:  # Need at least 4 points for cubic
+# if len(time_points) >= 4: # Need at...
 #                                 try:
 #                                     interp_func = interp1d(time_points, temp_points, 
 #                                                          kind='cubic', bounds_error=False)
@@ -10770,10 +10770,10 @@ if __name__ == "__main__":
 #         group['temp_gradient'] = group['soil_temp_standardized'].diff() / \
 #                                (group['datetime'].diff().dt.total_seconds() / 3600)
         
-#         # The rest of the processing remains the same, with improved precision due to interpolatio...
+# # The rest of the processing remains...
 #         # Identify potential phase change periods
 #         mask_temp = (group['soil_temp_standardized'].abs() <= 0.5)
-#         mask_gradient = (group['temp_gradient'].abs() <= 0.02)  # Reduced rate of change
+# mask_gradient = (group['temp_gradient'].abs() <= 0.02) # Reduced...
         
 #         # Find corresponding soil moisture data for this site, if available
 #         use_moisture = False
@@ -10828,7 +10828,7 @@ if __name__ == "__main__":
 #             if len(event_data) < 3:
 #                 continue
             
-#             # Create event information dictionary with comprehensive soil temperature stats
+# # Create event information dictionary with comprehensive...
 #             event_info = {
 #                 'source': site,
 #                 'soil_temp_depth': temp_depth,
@@ -10933,7 +10933,7 @@ if __name__ == "__main__":
 
 # def prepare_data_for_deep_learning(merged_df, enhanced_events, sequence_length=6):
 #     """
-#     Prepare time series data for deep learning model by creating sliding window sequences
+# Prepare time series data for deep learning...
 #     that incorporate both soil temperature and moisture information.
     
 #     Parameters:
@@ -11024,7 +11024,7 @@ if __name__ == "__main__":
 #             # Extract sequence data
 #             sequence = group.iloc[i:i+sequence_length][feature_cols].values
             
-#             # Check if this sequence overlaps with any known zero curtain event
+# # Check if this sequence overlaps with...
 #             is_zero_curtain = 0
 #             if (site, temp_depth) in event_map:
 #                 for event_start, event_end in event_map[(site, temp_depth)]:
@@ -11061,7 +11061,7 @@ if __name__ == "__main__":
 # def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
 #     """
 #     Advanced model architecture combining ConvLSTM, Transformers, and 
-#     Variational Autoencoder components to better capture complex zero curtain dynamics.
+# Variational Autoencoder components to better capture complex...
     
 #     Parameters:
 #     -----------
@@ -11318,15 +11318,15 @@ if __name__ == "__main__":
 #     print("Preparing data for deep learning model...")
     
 #     # Prepare sequences with sliding window
-#     sequence_length = 24  # 24 time steps - adjust based on your data frequency
+# sequence_length = 24 # 24 time steps...
 #     X, y, metadata = prepare_data_for_deep_learning(merged_df, enhanced_events, sequence_length)
     
-#     print(f"Prepared {len(X)} sequences with {X.shape[1]} time steps and {X.shape[2]} features eac...
+# print(f"Prepared {len(X)} sequences with {X.shape[1]} time steps...
 #     print(f"Positive examples (zero curtain): {sum(y)}/{len(y)} ({sum(y)/len(y)*100:.1f}%)")
     
 #     # Split data into train, validation, and test sets
 #     print("Splitting data into train/validation/test sets...")
-#     X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42, stra...
+# X_train, X_temp, y_train, y_temp = train_test_split(X, y,...
 #     X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42...
     
 #     # Build model
@@ -11363,7 +11363,7 @@ if __name__ == "__main__":
 #         epochs=epochs,
 #         batch_size=batch_size,
 #         callbacks=callbacks,
-#         class_weight={0: 1, 1: len(y_train)/sum(y_train) if sum(y_train) > 0 else 1},  # Handle cl...
+# class_weight={0: 1, 1: len(y_train)/sum(y_train) if sum(y_train) >...
 #         verbose=0  # Set to 0 because we're using TqdmCallback
 #     )
     
@@ -11557,7 +11557,7 @@ if __name__ == "__main__":
 #                     'longitude': event['longitude']
 #                 }
 #             else:
-#                 # Check if this event overlaps or is close to the current event
+# # Check if this event overlaps or...
 #                 time_gap = (event['datetime_min'] - current_event['datetime_max']).total_seconds()...
                 
 #                 if time_gap <= gap_threshold:
@@ -11642,7 +11642,7 @@ if __name__ == "__main__":
 
 # def create_final_visualization(events_df, output_filename=None):
 #     """
-#     Create an optimized visualization for zero curtain events with correct handling
+# Create an optimized visualization for zero curtain...
 #     of the duration distribution.
     
 #     Parameters:
@@ -11950,7 +11950,7 @@ if __name__ == "__main__":
     
 #     # Calculate full statistics
 #     stats_df = pd.DataFrame({
-#         'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max', 'Q1', 'Q3', 'IQR'],
+# 'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max',...
 #         'Value': [
 #             duration_values.mean(),
 #             np.median(duration_values),
@@ -12144,12 +12144,12 @@ if __name__ == "__main__":
 #     day_effect = np.sum(duration_values % 24 == 0) / n_events * 100
 #     if day_effect > 50:
 #         print("\nDiagnosis: Strong daily measurement effect detected.")
-#         print(f"  {day_effect:.1f}% of durations are exact multiples of 24 hours.")
+# print(f" {day_effect:.1f}% of durations are exact multiples...
 #         print("  This suggests temporal aliasing due to measurement frequency.")
 #         print("\nRecommendation:")
 #         print("  1. Review zero_curtain_detection temporal parameters")
-#         print("  2. Decrease 'max_gap_hours' to allow for more fine-grained detection")
-#         print("  3. Apply interpolation to estimate more precise event transitions")
+# print(" 2. Decrease 'max_gap_hours' to allow for...
+# print(" 3. Apply interpolation to estimate more...
     
 #     # Check for binning or rounding
 #     if n_unique / n_events < 0.1:
@@ -12158,7 +12158,7 @@ if __name__ == "__main__":
 #         print("\nRecommendation:")
 #         print("  1. Check for explicit rounding in duration calculations")
 #         print("  2. Use higher precision timestamps for event boundaries")
-#         print("  3. Consider continuous time representation instead of discrete bins")
+# print(" 3. Consider continuous time representation instead...
     
 #     # Check for IQR issues
 #     q1 = np.percentile(duration_values, 25)
@@ -12167,10 +12167,10 @@ if __name__ == "__main__":
     
 #     if iqr < 1e-6:
 #         print("\nDiagnosis: Zero or near-zero IQR detected.")
-#         print(f"  Q1 and Q3 are both {q1:.2f}, creating visualization challenges.")
+# print(f" Q1 and Q3 are both {q1:.2f},...
 #         print("\nRecommendation:")
 #         print("  1. Use percentile-based visualization bounds instead of IQR")
-#         print("  2. For visualization, force a minimum range based on domain knowledge")
+# print(" 2. For visualization, force a minimum...
 #         print("  3. Consider a non-linear transformation of duration values")
     
 #     # Return diagnostic results
@@ -12212,7 +12212,7 @@ if __name__ == "__main__":
 #     results = {}
     
 #     # Add a progress indicator for the overall workflow
-#     stages = ['Enhanced Detection', 'Model Training', 'Model Application', 'Visualization', 'Compa...
+# stages = ['Enhanced Detection', 'Model Training', 'Model...
     
 #     with tqdm(total=len(stages), desc="Overall Progress") as pbar:
 #         # Stage 1: Enhanced physical detection
@@ -12387,7 +12387,7 @@ if __name__ == "__main__":
 #     # Identify potential phase change periods
 #     # Zero curtain = temp near 0°C AND reduced temperature gradient
 #     mask_temp = (site_df['soil_temp_standardized'].abs() <= 0.5)
-#     mask_gradient = (site_df['temp_gradient'].abs() <= 0.02)  # Reduced rate of change
+# mask_gradient = (site_df['temp_gradient'].abs() <= 0.02) # Reduced...
     
 #     # Find corresponding soil moisture data for this site, if available
 #     use_moisture = False
@@ -12408,7 +12408,7 @@ if __name__ == "__main__":
 #             # If explicit depth not available, note as missing
 #             site_df['closest_moist_depth'] = np.nan
         
-#         # Moisture changes during phase change (phase change affects moisture readings)
+# # Moisture changes during phase change (phase...
 #         mask_moisture = (site_df['moist_gradient'].abs() >= 0.0005)
         
 #         # Combined mask with moisture information
@@ -12449,7 +12449,7 @@ if __name__ == "__main__":
 #         if len(event_data) < 3:
 #             continue
         
-#         # Create event information dictionary with comprehensive soil temperature stats
+# # Create event information dictionary with comprehensive...
 #         event_info = {
 #             'source': site,
 #             'soil_temp_depth': temp_depth,
@@ -12458,7 +12458,7 @@ if __name__ == "__main__":
 #             'datetime_max': end,
 #             'duration_hours': event_duration,
 #             'observation_count': len(event_data),
-#             'observations_per_day': len(event_data) / (event_duration / 24) if event_duration > 0 ...
+# 'observations_per_day': len(event_data) / (event_duration / 24) if...
 #             'soil_temp_mean': event_data['soil_temp_standardized'].mean(),
 #             'soil_temp_min': event_data['soil_temp_standardized'].min(),
 #             'soil_temp_max': event_data['soil_temp_standardized'].max(),
@@ -12602,7 +12602,7 @@ if __name__ == "__main__":
 #     print(f"Found {len(completed_stages)} completed stages: {completed_stages}")
     
 #     # Add a progress indicator for the overall workflow
-#     stages = ['Enhanced Detection', 'Model Training', 'Model Application', 'Visualization', 'Compa...
+# stages = ['Enhanced Detection', 'Model Training', 'Model...
     
 #     with tqdm(total=len(stages), desc="Overall Progress", initial=len(completed_stages)) as pbar:
 #         # Stage 1: Enhanced physical detection
@@ -12638,7 +12638,7 @@ if __name__ == "__main__":
 #                             site_df = merged_df[(merged_df['source'] == site) & 
 #                                               (merged_df['soil_temp_depth'] == temp_depth)].copy()
                             
-#                             if len(site_df) < 10:  # Skip sites with insufficient data
+# if len(site_df) < 10: # Skip sites...
 #                                 continue
                             
 #                             # Process this site using process_single_site function
@@ -12677,7 +12677,7 @@ if __name__ == "__main__":
 #                     else:
 #                         enhanced_events = pd.DataFrame()  # Empty DataFrame
 #                 else:
-#                     # If enhanced_events was loaded from checkpoint and it's a list, convert to Da...
+# # If enhanced_events was loaded from checkpoint...
 #                     if isinstance(enhanced_events, list):
 #                         if enhanced_events:
 #                             enhanced_events = pd.DataFrame(enhanced_events)
@@ -12986,7 +12986,7 @@ if __name__ == "__main__":
 #                 except Exception as e:
 #                     print(f"Error in comparison: {str(e)}")
 #             else:
-#                 print("Skipping comparison: Either enhanced events or model predictions not availa...
+# print("Skipping comparison: Either enhanced events or model...
             
 #             results['comparison_time'] = time.time() - start_time
             
@@ -13034,7 +13034,7 @@ if __name__ == "__main__":
 #         print(f"  Deep Learning Model: {model_count} events detected")
     
 #     comparison = results.get('comparison')
-#     if comparison is not None and 'overlap_metrics' in comparison and 'jaccard_index' in compariso...
+# if comparison is not None and 'overlap_metrics'...
 #         overlap = comparison['overlap_metrics']['jaccard_index']
 #         print(f"  Method Agreement: {overlap*100:.1f}% overlap between methods")
     
@@ -13049,7 +13049,7 @@ if __name__ == "__main__":
 #         if model_count > 0:
 #             f.write(f"Deep Learning Model: {model_count} events detected\n")
         
-#         if comparison is not None and 'overlap_metrics' in comparison and 'jaccard_index' in compa...
+# if comparison is not None and 'overlap_metrics'...
 #             overlap = comparison['overlap_metrics']['jaccard_index']
 #             f.write(f"Method Agreement: {overlap*100:.1f}% overlap between methods\n")
     
@@ -13287,7 +13287,7 @@ def prepare_data_for_deep_learning_efficiently(feather_path, events_df, sequence
     print("Finding unique site-depth combinations")
     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-    # Use a function that efficiently gets unique site-depths without loading all data
+    # Use a function that efficiently gets unique...
     site_depths = get_unique_site_depths(feather_path)
     total_combinations = len(site_depths)
     
@@ -15803,7 +15803,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                                                output_dir=None, batch_size=500, start_batch=0):
 #     """
 #     Memory-efficient version of prepare_data_for_deep_learning that processes
-#     site-depths in batches and saves intermediate results without accumulating all data in memory.
+# site-depths in batches and saves intermediate results...
 #     """
 #     import numpy as np
 #     from tqdm.auto import tqdm
@@ -15838,7 +15838,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #     print("Finding unique site-depth combinations")
 #     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-#     # Use a function that efficiently gets unique site-depths without loading all data
+# # Use a function that efficiently gets...
 #     site_depths = get_unique_site_depths(feather_path)
 #     total_combinations = len(site_depths)
     
@@ -15934,12 +15934,12 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                     # Extract sequence data
 #                     sequence = group.iloc[j:j+sequence_length][feature_cols].values
                     
-#                     # Check if this sequence overlaps with known zero curtain event
+# # Check if this sequence overlaps with...
 #                     is_zero_curtain = 0
 #                     if (site, temp_depth) in event_map:
 #                         for event_start, event_end in event_map[(site, temp_depth)]:
 #                             # Ensure proper datetime comparison
-#                             # Check for significant overlap (at least 50% of sequence)
+# # Check for significant overlap (at least...
 #                             if (min(end_time, event_end) - max(start_time, event_start)).total_sec...
 #                                0.5 * (end_time - start_time).total_seconds():
 #                                 is_zero_curtain = 1
@@ -16125,7 +16125,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #         print("No batch files found to merge")
 #         return None
         
-# output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+# output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
 # data_dir = os.path.join(output_base_dir, 'ml_data')
 # X = np.load(os.path.join(data_dir, 'X_features.npy'))
 # y = np.load(os.path.join(data_dir, 'y_labels.npy'))
@@ -16135,7 +16135,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
 #     """
 #     Advanced model architecture combining ConvLSTM, Transformers, and 
-#     Variational Autoencoder components to better capture complex zero curtain dynamics.
+# Variational Autoencoder components to better capture complex...
     
 #     Parameters:
 #     -----------
@@ -16710,7 +16710,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                     if os.path.exists(csv_path):
 #                         enhanced_events = pd.read_csv(csv_path, parse_dates=['datetime_min', 'date...
 #                     else:
-#                         print("Warning: No enhanced events found, cannot proceed with deep learnin...
+# print("Warning: No enhanced events found, cannot proceed...
 #                         enhanced_events = pd.DataFrame()
 #                 results['enhanced_events'] = enhanced_events
         
@@ -16727,7 +16727,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                     X, y, metadata = prepare_data_for_deep_learning_efficiently(
 #                         feather_path=feather_path,
 #                         events_df=enhanced_events,
-#                         sequence_length=24,  # Use 24 time steps as in your original code
+# sequence_length=24, # Use 24 time steps as...
 #                         output_dir=os.path.join(output_base_dir, 'ml_data'),
 #                         batch_size=batch_size
 #                     )
@@ -16871,7 +16871,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # def apply_model_to_new_data_efficiently(model, feather_path, sequence_length=6, 
 #                                         output_dir=None, batch_size=50):
 #     """
-#     Apply a trained model to detect zero curtain events in new data with memory efficiency.
+# Apply a trained model to detect zero...
     
 #     Parameters:
 #     -----------
@@ -17133,7 +17133,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                     'longitude': event['longitude']
 #                 }
 #             else:
-#                 # Check if this event overlaps or is close to the current event
+# # Check if this event overlaps or...
 #                 time_gap = (event['datetime_min'] - current_event['datetime_max']).total_seconds()...
                 
 #                 if time_gap <= gap_threshold:
@@ -17383,7 +17383,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 
 # def compare_detection_methods_efficiently(physical_events_file, model_events_file, output_dir=None...
 #     """
-#     Compare zero curtain events detected by different methods with memory efficiency.
+# Compare zero curtain events detected by different...
     
 #     Parameters:
 #     -----------
@@ -17670,7 +17670,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                 del X, y, metadata, enhanced_events
 #                 gc.collect()
 #             else:
-#                 print("No enhanced events file found, cannot proceed with data preparation")
+# print("No enhanced events file found, cannot proceed...
 #                 results['data_prep_error'] = "No enhanced events file found"
             
 #             # Save checkpoint
@@ -17901,11 +17901,11 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # #     # Extract spatiotemporal features
 # #     timestamps = np.array([meta['start_time'] for meta in metadata])
     
-# #     latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is not None else 0 for...
-# #     longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is not None else 0 ...
-# #     depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is not None...
+# # latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude')...
+# # longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude')...
+# # depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth')...
     
-# #     has_geo_info = (np.count_nonzero(latitudes) > 0 and np.count_nonzero(longitudes) > 0)
+# # has_geo_info = (np.count_nonzero(latitudes) > 0 and...
     
 # #     # Temporal ordering - sort everything by time
 # #     sorted_time_indices = np.argsort(timestamps)
@@ -17955,20 +17955,20 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # #     weights = 1.0 / (density + 0.01)
 # #     weights = weights / np.sum(weights) * len(weights)
     
-# #     months = np.array([ts.month if hasattr(ts, 'month') else ts.to_pydatetime().month for ts in ...
+# # months = np.array([ts.month if hasattr(ts, 'month')...
 # #     seasons = np.digitize(months, bins=[3, 6, 9, 12])
     
 # #     if has_geo_info:
 # #         regions = np.zeros_like(latitudes_remaining, dtype=int)
 # #         regions[(latitudes_remaining >= 66.5)] = 3
-# #         regions[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)] = 2
-# #         regions[(latitudes_remaining >= 50) & (latitudes_remaining < 60)] = 1
+# # regions[(latitudes_remaining >= 60) & (latitudes_remaining <...
+# # regions[(latitudes_remaining >= 50) & (latitudes_remaining <...
 # #     else:
 # #         regions = np.zeros_like(depths_remaining, dtype=int)
     
 # #     depth_zones = np.digitize(depths_remaining, bins=[0.2, 0.5, 1.0, 2.0])
 # #     density_quantiles = np.digitize(density, bins=np.percentile(density, [20, 40, 60, 80]))
-# #     strata = seasons * 1000 + regions * 100 + depth_zones * 10 + density_quantiles
+# # strata = seasons * 1000 +...
 # #     unique_strata = np.unique(strata)
     
 # #     val_size = int(n_samples * val_fraction)
@@ -18015,9 +18015,9 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # val_fraction=0.15
 # timestamps = np.array([meta['start_time'] for meta in metadata])
 
-# latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is not None else 0 for meta ...
-# longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is not None else 0 for me...
-# depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is not None else ...
+# latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is...
+# longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is...
+# depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is...
 # has_geo_info = (np.count_nonzero(latitudes) > 0 and np.count_nonzero(longitudes) > 0)
 # sorted_time_indices = np.argsort(timestamps, kind='mergesort')
 # timestamps = timestamps[sorted_time_indices]
@@ -18046,7 +18046,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # import json
 # import pickle
 # import numpy as np
-# from scipy.spatial import cKDTree  # Use cKDTree instead of BallTree for better performance
+# from scipy.spatial import cKDTree # Use cKDTree...
 # from tqdm import tqdm
 # import psutil
 # import threading
@@ -18181,9 +18181,9 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #     return cartesian_to_haversine_distance(distances)
 
 # def calculate_optimal_batch_size(total_points, available_memory_mb=None):
-#     """Calculate optimal batch size based on available memory and dataset size."""
+# """Calculate optimal batch size based on available...
 #     if available_memory_mb is None:
-#         # Use 20% of available memory if not specified (to leave room for parallelism)
+# # Use 20% of available memory if...
 #         available_memory_mb = psutil.virtual_memory().available / (1024 * 1024) * 0.2
     
 #     # Estimate memory per point (assuming float64 coordinates and distances)
@@ -18245,7 +18245,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #     if batch_size is None:
 #         batch_size = calculate_optimal_batch_size(n_points)
     
-#     # Adjust batch size to create a reasonable number of batches (target ~200 batches)
+# # Adjust batch size to create a...
 #     if n_points / batch_size > 200:
 #         batch_size = max(batch_size, n_points // 200)
     
@@ -18311,7 +18311,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 #                 print(f"Processing batches in parallel with {n_jobs} jobs")
                 
 #                 # Process in smaller chunks to avoid memory issues
-#                 chunk_size = min(20, len(remaining_batch_indices))  # Smaller chunks for better mo...
+# chunk_size = min(20, len(remaining_batch_indices)) # Smaller chunks...
 #                 num_chunks = int(np.ceil(len(remaining_batch_indices) / chunk_size))
                 
 #                 for chunk_idx in range(num_chunks):
@@ -18389,7 +18389,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
             
 #             # Load checkpoints in chunks to avoid memory issues
 #             all_batches = sorted(list(range(num_batches)))
-#             chunk_size = min(1000, num_batches)  # Adjust based on available memory
+# chunk_size = min(1000, num_batches) # Adjust based...
 #             num_chunks = int(np.ceil(len(all_batches) / chunk_size))
             
 #             all_distances = []
@@ -18428,7 +18428,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # # Determine optimal number of jobs based on available CPU cores and memory
 # n_cpus = os.cpu_count()
 # available_memory_gb = psutil.virtual_memory().available / (1024*1024*1024)
-# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb / 8)))  # More conservative
+# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb...
 # print(f"Available CPUs: {n_cpus}, Available memory: {available_memory_gb:.2f} GB")
 # print(f"Recommended parallel jobs: {recommended_jobs}")
 
@@ -18464,7 +18464,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.7min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.9min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 10.6min remaining:  2.7min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 13.2min finished
 # Chunk processed 2139700 points in 794.85 seconds
 # Performance: 2691.94 points/second
@@ -18473,7 +18473,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  5.1min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.7min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 10.3min remaining:  2.6min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 12.7min finished
 # Chunk processed 2139700 points in 763.62 seconds
 # Performance: 2802.04 points/second
@@ -18482,7 +18482,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.8min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.3min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed:  9.8min remaining:  2.5min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 12.2min finished
 # Chunk processed 2139700 points in 732.70 seconds
 # Performance: 2920.31 points/second
@@ -18491,7 +18491,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.8min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.3min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed:  9.8min remaining:  2.5min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 12.3min finished
 # Chunk processed 2139700 points in 740.43 seconds
 # Performance: 2889.82 points/second
@@ -18500,7 +18500,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.9min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.5min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 10.1min remaining:  2.5min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 12.5min finished
 # Chunk processed 2139700 points in 748.53 seconds
 # Performance: 2858.53 points/second
@@ -18509,7 +18509,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.8min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  7.2min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed:  9.6min remaining:  2.4min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 11.6min finished
 # Chunk processed 2139700 points in 699.34 seconds
 # Performance: 3059.60 points/second
@@ -18518,7 +18518,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  4.1min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  6.4min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed:  9.5min remaining:  2.4min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 12.1min finished
 # Chunk processed 2139700 points in 729.42 seconds
 # Performance: 2933.44 points/second
@@ -18527,7 +18527,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  5.3min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  8.3min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 11.3min remaining:  2.8min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 14.0min finished
 # Chunk processed 2139700 points in 838.00 seconds
 # Performance: 2553.34 points/second
@@ -18536,7 +18536,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  5.7min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  9.0min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 11.9min remaining:  3.0min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 14.6min finished
 # Chunk processed 2139700 points in 876.84 seconds
 # Performance: 2440.25 points/second
@@ -18545,7 +18545,7 @@ def run_complete_pipeline(feather_path, output_base_dir='results'):
 # [Parallel(n_jobs=4)]: Using backend LokyBackend with 4 concurrent workers.
 # [Parallel(n_jobs=4)]: Done   5 tasks      | elapsed:  5.4min
 # [Parallel(n_jobs=4)]: Done  10 tasks      | elapsed:  8.2min
-# [Parallel(n_jobs=4)]: Done  16 out of  20 | elapsed: 11.2min remaining:  2.8min
+# [Parallel(n_jobs=4)]: Done 16 out of 20 |...
 # [Parallel(n_jobs=4)]: Done  20 out of  20 | elapsed: 14.1min finished
 # Chunk processed 2139700 points in 848.58 seconds
 # Performance: 2521.50 points/second
@@ -18824,7 +18824,7 @@ def prepare_data_for_deep_learning_efficiently(feather_path, events_df, sequence
     print("Finding unique site-depth combinations")
     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-    # Use a function that efficiently gets unique site-depths without loading all data
+    # Use a function that efficiently gets unique...
     site_depths = get_unique_site_depths(feather_path)
     total_combinations = len(site_depths)
     
@@ -21443,7 +21443,7 @@ def efficient_balanced_training(model, X_file, y_file, train_indices, val_indice
 #         history_log.append(chunk_metrics)
         
 #         # Save model periodically instead of after every chunk
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             model_path = os.path.join(checkpoints_dir, f"model_checkpoint_{chunk_idx+1}.h5")
 #             model.save(model_path)
 #             print(f"Model saved to {model_path}")
@@ -21460,7 +21460,7 @@ def efficient_balanced_training(model, X_file, y_file, train_indices, val_indice
 #                     pickle.dump(history_log, f)
         
 #         # Generate predictions only for selected chunks to save time
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             chunk_preds = model.predict(chunk_X, batch_size=batch_size)
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_predictions.npy"), chunk_p...
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_indices.npy"), chunk_indic...
@@ -21524,7 +21524,7 @@ def efficient_balanced_training(model, X_file, y_file, train_indices, val_indice
         
 #         # Evaluate
 #         metrics = model.evaluate(test_X, test_y, verbose=1)
-#         metrics_dict = {name: value for name, value in zip(model.metrics_names, metrics)}
+# metrics_dict = {name: value for name, value...
         
 #         # Weight metrics by batch size
 #         for key in ['loss', 'accuracy']:
@@ -22021,7 +22021,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                                                output_dir=None, batch_size=500, start_batch=0):
 #     """
 #     Memory-efficient version of prepare_data_for_deep_learning that processes
-#     site-depths in batches and saves intermediate results without accumulating all data in memory.
+# site-depths in batches and saves intermediate results...
 #     """
 #     import numpy as np
 #     from tqdm.auto import tqdm
@@ -22056,7 +22056,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #     print("Finding unique site-depth combinations")
 #     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-#     # Use a function that efficiently gets unique site-depths without loading all data
+# # Use a function that efficiently gets...
 #     site_depths = get_unique_site_depths(feather_path)
 #     total_combinations = len(site_depths)
     
@@ -22152,12 +22152,12 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     # Extract sequence data
 #                     sequence = group.iloc[j:j+sequence_length][feature_cols].values
                     
-#                     # Check if this sequence overlaps with known zero curtain event
+# # Check if this sequence overlaps with...
 #                     is_zero_curtain = 0
 #                     if (site, temp_depth) in event_map:
 #                         for event_start, event_end in event_map[(site, temp_depth)]:
 #                             # Ensure proper datetime comparison
-#                             # Check for significant overlap (at least 50% of sequence)
+# # Check for significant overlap (at least...
 #                             if (min(end_time, event_end) - max(start_time, event_start)).total_sec...
 #                                0.5 * (end_time - start_time).total_seconds():
 #                                 is_zero_curtain = 1
@@ -22346,7 +22346,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
 #     """
 #     Advanced model architecture combining ConvLSTM, Transformers, and 
-#     Variational Autoencoder components to better capture complex zero curtain dynamics.
+# Variational Autoencoder components to better capture complex...
     
 #     Parameters:
 #     -----------
@@ -22923,7 +22923,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     if os.path.exists(csv_path):
 #                         enhanced_events = pd.read_csv(csv_path, parse_dates=['datetime_min', 'date...
 #                     else:
-#                         print("Warning: No enhanced events found, cannot proceed with deep learnin...
+# print("Warning: No enhanced events found, cannot proceed...
 #                         enhanced_events = pd.DataFrame()
 #                 results['enhanced_events'] = enhanced_events
         
@@ -22940,7 +22940,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     X, y, metadata = prepare_data_for_deep_learning_efficiently(
 #                         feather_path=feather_path,
 #                         events_df=enhanced_events,
-#                         sequence_length=24,  # Use 24 time steps as in your original code
+# sequence_length=24, # Use 24 time steps as...
 #                         output_dir=os.path.join(output_base_dir, 'ml_data'),
 #                         batch_size=batch_size
 #                     )
@@ -23084,7 +23084,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # def apply_model_to_new_data_efficiently(model, feather_path, sequence_length=6, 
 #                                         output_dir=None, batch_size=50):
 #     """
-#     Apply a trained model to detect zero curtain events in new data with memory efficiency.
+# Apply a trained model to detect zero...
     
 #     Parameters:
 #     -----------
@@ -23346,7 +23346,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     'longitude': event['longitude']
 #                 }
 #             else:
-#                 # Check if this event overlaps or is close to the current event
+# # Check if this event overlaps or...
 #                 time_gap = (event['datetime_min'] - current_event['datetime_max']).total_seconds()...
                 
 #                 if time_gap <= gap_threshold:
@@ -23596,7 +23596,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 
 # def compare_detection_methods_efficiently(physical_events_file, model_events_file, output_dir=None...
 #     """
-#     Compare zero curtain events detected by different methods with memory efficiency.
+# Compare zero curtain events detected by different...
     
 #     Parameters:
 #     -----------
@@ -23883,7 +23883,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                 del X, y, metadata, enhanced_events
 #                 gc.collect()
 #             else:
-#                 print("No enhanced events file found, cannot proceed with data preparation")
+# print("No enhanced events file found, cannot proceed...
 #                 results['data_prep_error'] = "No enhanced events file found"
             
 #             # Save checkpoint
@@ -24093,12 +24093,12 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 
 # # Add at the beginning of your code
 # def configure_tensorflow_memory():
-#     """Configure TensorFlow to use memory growth and limit GPU memory allocation"""
+# """Configure TensorFlow to use memory growth and...
 #     physical_devices = tf.config.list_physical_devices('GPU')
 #     if physical_devices:
 #         for device in physical_devices:
 #             try:
-#                 # Allow memory growth - prevents TF from allocating all GPU memory at once
+# # Allow memory growth - prevents TF...
 #                 tf.config.experimental.set_memory_growth(device, True)
                 
 #                 # Optional: Set memory limit (e.g., 4GB)
@@ -24128,7 +24128,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # with open("zero_curtain_pipeline/modeling/checkpoints/spatial_density.pkl", "rb") as f:
 #     weights_data = pickle.load(f)
 
-# data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
+# data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
 
 # # Initialize generators
 # X_file = os.path.join(data_dir, 'X_features.npy')
@@ -24163,7 +24163,6 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # # Free memory
 # del train_y, val_y, test_y
 # gc.collect()
-
 
 
 # def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
@@ -24328,7 +24327,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # plot_model(model, to_file='zero_curtain_pipeline/modeling/spatial_model/insitu_model_plot.png', sh...
 #            show_layer_names=True, expand_nested=True, dpi=300, layer_range=None, show_layer_activa...
 
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
 
 # # Set up callbacks
 # callbacks = [
@@ -24390,7 +24389,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #     # Get input shape from first sample
 #     sample_start = time.time()
 #     input_shape = X[indices[0]].shape
-#     print(f"  Input shape: {input_shape}, obtained in {time.time() - sample_start:.2f} seconds")
+# print(f" Input shape: {input_shape}, obtained in {time.time()...
     
 #     # Define generator function with progress reporting
 #     def generator():
@@ -24467,7 +24466,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                                      batch_size=256, chunks=20, epochs_per_chunk=5,
 #                                      callbacks=None, class_weight=None, sample_weights=None):
 #     """
-#     Train model sequentially in chunks using TensorFlow datasets with detailed progress logging.
+# Train model sequentially in chunks using TensorFlow...
 #     """
 #     import time
 #     from datetime import timedelta
@@ -24521,7 +24520,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #         print(f"Memory usage after creating dataset: {memory_usage():.1f} MB")
         
 #         # Count batches for progress reporting
-#         steps_per_epoch = len(chunk_indices) // batch_size + (1 if len(chunk_indices) % batch_size...
+# steps_per_epoch = len(chunk_indices) // batch_size + (1...
 #         print(f"Steps per epoch: {steps_per_epoch}")
         
 #         # Create a custom callback to log batch progress
@@ -24710,7 +24709,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #         history_log.append(chunk_metrics)
         
 #         # Save model periodically instead of after every chunk
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             model_path = os.path.join(checkpoints_dir, f"model_checkpoint_{chunk_idx+1}.h5")
 #             model.save(model_path)
 #             print(f"Model saved to {model_path}")
@@ -24727,7 +24726,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     pickle.dump(history_log, f)
         
 #         # Generate predictions only for selected chunks to save time
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             chunk_preds = model.predict(chunk_X, batch_size=batch_size)
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_predictions.npy"), chunk_p...
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_indices.npy"), chunk_indic...
@@ -24791,7 +24790,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
         
 #         # Evaluate
 #         metrics = model.evaluate(test_X, test_y, verbose=1)
-#         metrics_dict = {name: value for name, value in zip(model.metrics_names, metrics)}
+# metrics_dict = {name: value for name, value...
         
 #         # Weight metrics by batch size
 #         for key in ['loss', 'accuracy']:
@@ -24894,7 +24893,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #             print(f"Error configuring GPU: {e}")
 
 # # Data paths
-# data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
+# data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
 # X_file = os.path.join(data_dir, 'X_features.npy')
 # y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -25111,7 +25110,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #         history_log.append(chunk_metrics)
         
 #         # Save model periodically instead of after every chunk
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             model_path = os.path.join(checkpoints_dir, f"model_checkpoint_{chunk_idx+1}.h5")
 #             model.save(model_path)
 #             print(f"Model saved to {model_path}")
@@ -25128,7 +25127,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #                     pickle.dump(history_log, f)
         
 #         # Generate predictions only for selected chunks to save time
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             chunk_preds = model.predict(chunk_X, batch_size=batch_size)
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_predictions.npy"), chunk_p...
 #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_indices.npy"), chunk_indic...
@@ -25321,10 +25320,10 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #     return all_metrics
 
 # # Define output directory
-# output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
+# output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
 
 # # Data paths
-# data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
+# data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
 # X_file = os.path.join(data_dir, 'X_features.npy')
 # y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -25461,7 +25460,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
         
 #         # Evaluate
 #         metrics = model.evaluate(test_X, test_y, verbose=0)
-#         metrics_dict = {name: value for name, value in zip(model.metrics_names, metrics)}
+# metrics_dict = {name: value for name, value...
         
 #         # Weight metrics by batch size
 #         for key in ['loss', 'accuracy']:
@@ -25755,7 +25754,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #             print(f"Loading most recent checkpoint: {latest_checkpoint}")
 #             try:
 #                 model = tf.keras.models.load_model(latest_checkpoint)
-#                 print("Checkpoint loaded successfully - will resume training from this point")
+# print("Checkpoint loaded successfully - will resume training...
 #             except Exception as e:
 #                 print(f"Error loading checkpoint: {str(e)}")
 #                 print("Will start training from scratch")
@@ -25956,7 +25955,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
         
 #         # Verify weights array
 #         if self.weights is not None:
-#             assert len(self.weights) == len(self.indices), "Weights array must match indices lengt...
+# assert len(self.weights) == len(self.indices), "Weights array must...
         
 #         # Load as memory-mapped arrays
 #         self.X = np.load(self.X_file, mmap_mode='r')
@@ -26019,7 +26018,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
     
 #     return pos_encoding
 
-# data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
+# data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
 
 # # Initialize generators
 # X_file = os.path.join(data_dir, 'X_features.npy')
@@ -26120,7 +26119,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #             batch = data_generator[batch_index]
 #             # If batch is a tuple, yield elements individually
 #             if isinstance(batch, tuple):
-#                 for i in range(len(batch[0])):  # For each example in the batch
+# for i in range(len(batch[0])): # For each...
 #                     # Extract individual items from the batch
 #                     if len(batch) == 2:  # (x, y)
 #                         yield batch[0][i], batch[1][i]
@@ -26164,7 +26163,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #     output_signature=(features_signature, label_signature)
 # )
 
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
 
 # # Set up callbacks
 # callbacks = [
@@ -26436,7 +26435,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #             batch = data_generator[batch_index]
 #             # If batch is a tuple, yield elements individually
 #             if isinstance(batch, tuple):
-#                 for i in range(len(batch[0])):  # For each example in the batch
+# for i in range(len(batch[0])): # For each...
 #                     # Extract individual items from the batch
 #                     if len(batch) == 2:  # (x, y)
 #                         yield batch[0][i], batch[1][i]
@@ -26480,7 +26479,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 #     output_signature=(features_signature, label_signature)
 # )
 
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
 
 # # Set up callbacks
 # callbacks = [
@@ -26545,7 +26544,7 @@ def create_model_evaluation_report(output_dir, train_indices, test_indices, X_fi
 # Epoch 1/100
 # 2025-03-11 21:30:35.199106: W tensorflow/core/platform/profile_utils/cpu_utils.cc:128] Failed to g...
 # 2025-03-11 21:30:36.957083: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry....
-#  1158/13593 [=>............................] - ETA: 67:48:06 - loss: 1780956.1250 - accuracy: 0.96...
+# 1158/13593 [=>............................] - ETA: 67:48:06 - loss:...
 
 y_pred_prob = np.vstack(all_preds)
 y_test = np.concatenate(all_true)
@@ -26760,7 +26759,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                                                output_dir=None, batch_size=500, start_batch=0):
 #     """
 #     Memory-efficient version of prepare_data_for_deep_learning that processes
-#     site-depths in batches and saves intermediate results without accumulating all data in memory.
+# site-depths in batches and saves intermediate results...
 #     """
 #     import numpy as np
 #     from tqdm.auto import tqdm
@@ -26795,7 +26794,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     print("Finding unique site-depth combinations")
 #     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-#     # Use a function that efficiently gets unique site-depths without loading all data
+# # Use a function that efficiently gets...
 #     site_depths = get_unique_site_depths(feather_path)
 #     total_combinations = len(site_depths)
     
@@ -26891,12 +26890,12 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                     # Extract sequence data
 #                     sequence = group.iloc[j:j+sequence_length][feature_cols].values
                     
-#                     # Check if this sequence overlaps with known zero curtain event
+# # Check if this sequence overlaps with...
 #                     is_zero_curtain = 0
 #                     if (site, temp_depth) in event_map:
 #                         for event_start, event_end in event_map[(site, temp_depth)]:
 #                             # Ensure proper datetime comparison
-#                             # Check for significant overlap (at least 50% of sequence)
+# # Check for significant overlap (at least...
 #                             if (min(end_time, event_end) - max(start_time, event_start)).total_sec...
 #                                0.5 * (end_time - start_time).total_seconds():
 #                                 is_zero_curtain = 1
@@ -27085,7 +27084,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 # def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
 #     """
 #     Advanced model architecture combining ConvLSTM, Transformers, and 
-#     Variational Autoencoder components to better capture complex zero curtain dynamics.
+# Variational Autoencoder components to better capture complex...
     
 #     Parameters:
 #     -----------
@@ -27662,7 +27661,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                     if os.path.exists(csv_path):
 #                         enhanced_events = pd.read_csv(csv_path, parse_dates=['datetime_min', 'date...
 #                     else:
-#                         print("Warning: No enhanced events found, cannot proceed with deep learnin...
+# print("Warning: No enhanced events found, cannot proceed...
 #                         enhanced_events = pd.DataFrame()
 #                 results['enhanced_events'] = enhanced_events
         
@@ -27679,7 +27678,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                     X, y, metadata = prepare_data_for_deep_learning_efficiently(
 #                         feather_path=feather_path,
 #                         events_df=enhanced_events,
-#                         sequence_length=24,  # Use 24 time steps as in your original code
+# sequence_length=24, # Use 24 time steps as...
 #                         output_dir=os.path.join(output_base_dir, 'ml_data'),
 #                         batch_size=batch_size
 #                     )
@@ -27823,7 +27822,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 # def apply_model_to_new_data_efficiently(model, feather_path, sequence_length=6, 
 #                                         output_dir=None, batch_size=50):
 #     """
-#     Apply a trained model to detect zero curtain events in new data with memory efficiency.
+# Apply a trained model to detect zero...
     
 #     Parameters:
 #     -----------
@@ -28085,7 +28084,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                     'longitude': event['longitude']
 #                 }
 #             else:
-#                 # Check if this event overlaps or is close to the current event
+# # Check if this event overlaps or...
 #                 time_gap = (event['datetime_min'] - current_event['datetime_max']).total_seconds()...
                 
 #                 if time_gap <= gap_threshold:
@@ -28335,7 +28334,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 
 # def compare_detection_methods_efficiently(physical_events_file, model_events_file, output_dir=None...
 #     """
-#     Compare zero curtain events detected by different methods with memory efficiency.
+# Compare zero curtain events detected by different...
     
 #     Parameters:
 #     -----------
@@ -28622,7 +28621,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                 del X, y, metadata, enhanced_events
 #                 gc.collect()
 #             else:
-#                 print("No enhanced events file found, cannot proceed with data preparation")
+# print("No enhanced events file found, cannot proceed...
 #                 results['data_prep_error'] = "No enhanced events file found"
             
 #             # Save checkpoint
@@ -28876,13 +28875,13 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 
 # merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 
-# output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+# output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
 # data_dir = os.path.join(output_base_dir, 'ml_data')
 # X = np.load(os.path.join(data_dir, 'X_features.npy'))
 # y = np.load(os.path.join(data_dir, 'y_labels.npy'))
 # with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
 #     metadata = pickle.load(f)
-# # y labels are binary, i.e., 0 is False for has_moisture_data and 1 is True for has_moisture_data
+# # y labels are binary, i.e., 0...
 
 # import os
 # import gc
@@ -29018,7 +29017,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     return 2 * np.arcsin(distance_cartesian / 2)
 
 # def process_batch(tree, batch_points, k):
-#     """Process a single batch of points using KDTree, excluding self-matches."""
+# """Process a single batch of points using...
 #     # Query k+1 neighbors to include self (which will be removed)
 #     distances, _ = tree.query(batch_points, k=k+1)
     
@@ -29029,9 +29028,9 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     return cartesian_to_haversine_distance(nn_distances)
 
 # def calculate_optimal_batch_size(total_points, available_memory_mb=None):
-#     """Calculate optimal batch size based on available memory and dataset size."""
+# """Calculate optimal batch size based on available...
 #     if available_memory_mb is None:
-#         # Use 20% of available memory if not specified (to leave room for parallelism)
+# # Use 20% of available memory if...
 #         available_memory_mb = psutil.virtual_memory().available / (1024 * 1024) * 0.2
     
 #     # Estimate memory per point (assuming float64 coordinates and distances)
@@ -29096,7 +29095,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
     
 #     # Never overwrite existing checkpoints - we need them to resume processing
 #     if overwrite:
-#         print("WARNING: Overwrite flag ignored - checkpoints are preserved for resuming processing...
+# print("WARNING: Overwrite flag ignored - checkpoints are...
 #         # Do NOT remove checkpoints regardless of the overwrite flag
     
 #     # Convert input arrays to numpy if they aren't already
@@ -29112,7 +29111,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     if batch_size is None:
 #         batch_size = calculate_optimal_batch_size(n_points)
     
-#     # Adjust batch size to create a reasonable number of batches (target ~200 batches)
+# # Adjust batch size to create a...
 #     if n_points / batch_size > 200:
 #         batch_size = max(batch_size, n_points // 200)
     
@@ -29182,7 +29181,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                 print(f"Processing batches in parallel with {n_jobs} jobs")
                 
 #                 # Process in smaller chunks to avoid memory issues
-#                 chunk_size = min(20, len(remaining_batch_indices))  # Smaller chunks for better mo...
+# chunk_size = min(20, len(remaining_batch_indices)) # Smaller chunks...
 #                 num_chunks = int(np.ceil(len(remaining_batch_indices) / chunk_size))
                 
 #                 for chunk_idx in range(num_chunks):
@@ -29257,7 +29256,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #         # At this point, all batches should be processed and saved to disk
 #         # We have two options:
 #         # 1. Load all checkpoints into memory (might be too large)
-#         # 2. Calculate density from checkpoints directly (more memory efficient)
+# # 2. Calculate density from checkpoints directly...
         
 #         # Option 2: Calculate density directly from checkpoints
 #         print("Calculating density from checkpoints...")
@@ -29480,7 +29479,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     )
     
 #     # If labels are binary, include them in strata
-#     if len(np.unique(labels)) <= 5:  # Few enough classes to use for stratification
+# if len(np.unique(labels)) <= 5: # Few enough...
 #         strata = strata * 10 + labels
     
 #     unique_strata = np.unique(strata)
@@ -29578,7 +29577,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 # # Determine optimal number of jobs based on available CPU cores and memory
 # n_cpus = os.cpu_count()
 # available_memory_gb = psutil.virtual_memory().available / (1024*1024*1024)
-# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb / 8)))  # More conservative
+# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb...
 # print(f"Available CPUs: {n_cpus}, Available memory: {available_memory_gb:.2f} GB")
 # print(f"Recommended parallel jobs: {recommended_jobs}")
 
@@ -29614,21 +29613,21 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 # #spatialdensity.get('density')
 # #spatialdensity.get('weights')
 
-# events_df derives zero-curtain events from this main dataframe, composed of multiple data sources ...
+# events_df derives zero-curtain events from this main...
 # pd.read_feather('merged_compressed.feather')
 
 # datetime	year	season	latitude	longitude	thickness_m	thickness_m_standardized	soil_temp	soil_temp_s...
-# 0	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-10.5	-10.5	0.8	deep	NaN	NaN	NaN	...
-# 1	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	2.4	2.4	3.2	very_deep	NaN	NaN	NaN...
-# 2	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-0.5	-0.5	1.6	very_deep	NaN	NaN	N...
-# 3	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-13.4	-13.4	0.4	intermediate	NaN	...
-# 4	1891-02-14 00:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-11.7	-11.7	0.8	deep	NaN	NaN	NaN	...
+# 0 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 1 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 2 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 3 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 4 1891-02-14 00:00:00 1891.0 Winter 52.283299 104.300003...
 # ...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
-# 62708663	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	7.59	0.0...
-# 62708664	2024-12-31 00:00:00	2024.0	Winter	63.875800	-149.213350	NaN	NaN	NaN	NaN	NaN	None	0.00	0.0...
-# 62708665	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	4.69	0.0...
-# 62708666	2024-12-31 00:00:00	2024.0	Winter	71.282410	-156.619360	NaN	NaN	NaN	NaN	NaN	None	1.66	0.0...
-# 62708667	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	28.13	0....
+# 62708663 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
+# 62708664 2024-12-31 00:00:00 2024.0 Winter 63.875800 -149.213350...
+# 62708665 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
+# 62708666 2024-12-31 00:00:00 2024.0 Winter 71.282410 -156.619360...
+# 62708667 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
 # 62708668 rows × 16 columns
 
 # import os
@@ -30061,7 +30060,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #         'datetime_max': end,
 #         'duration_hours': event_duration,
 #         'observation_count': len(event_data),
-#         'observations_per_day': len(event_data) / (event_duration / 24) if event_duration > 0 else...
+# 'observations_per_day': len(event_data) / (event_duration / 24) if...
 #         'soil_temp_mean': event_data['soil_temp_standardized'].mean(),
 #         'soil_temp_min': event_data['soil_temp_standardized'].min(),
 #         'soil_temp_max': event_data['soil_temp_standardized'].max(),
@@ -30412,7 +30411,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
     
 #     # Calculate full statistics
 #     stats_df = pd.DataFrame({
-#         'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max', 'Q1', 'Q3', 'IQR'],
+# 'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max',...
 #         'Value': [
 #             duration_values.mean(),
 #             np.median(duration_values),
@@ -30606,12 +30605,12 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     day_effect = np.sum(duration_values % 24 == 0) / n_events * 100
 #     if day_effect > 50:
 #         print("\nDiagnosis: Strong daily measurement effect detected.")
-#         print(f"  {day_effect:.1f}% of durations are exact multiples of 24 hours.")
+# print(f" {day_effect:.1f}% of durations are exact multiples...
 #         print("  This suggests temporal aliasing due to measurement frequency.")
 #         print("\nRecommendation:")
 #         print("  1. Review zero_curtain_detection temporal parameters")
-#         print("  2. Decrease 'max_gap_hours' to allow for more fine-grained detection")
-#         print("  3. Apply interpolation to estimate more precise event transitions")
+# print(" 2. Decrease 'max_gap_hours' to allow for...
+# print(" 3. Apply interpolation to estimate more...
     
 #     # Check for binning or rounding
 #     if n_unique / n_events < 0.1:
@@ -30620,7 +30619,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #         print("\nRecommendation:")
 #         print("  1. Check for explicit rounding in duration calculations")
 #         print("  2. Use higher precision timestamps for event boundaries")
-#         print("  3. Consider continuous time representation instead of discrete bins")
+# print(" 3. Consider continuous time representation instead...
     
 #     # Check for IQR issues
 #     q1 = np.percentile(duration_values, 25)
@@ -30629,10 +30628,10 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
     
 #     if iqr < 1e-6:
 #         print("\nDiagnosis: Zero or near-zero IQR detected.")
-#         print(f"  Q1 and Q3 are both {q1:.2f}, creating visualization challenges.")
+# print(f" Q1 and Q3 are both {q1:.2f},...
 #         print("\nRecommendation:")
 #         print("  1. Use percentile-based visualization bounds instead of IQR")
-#         print("  2. For visualization, force a minimum range based on domain knowledge")
+# print(" 2. For visualization, force a minimum...
 #         print("  3. Consider a non-linear transformation of duration values")
     
 #     # Return diagnostic results
@@ -30702,18 +30701,18 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 
 # pd.read_csv('zero_curtain_pipeline/zero_curtain_events_sorted.csv')
 
-# datetime_min	datetime_max	duration_hours	year	month	year_month	season	latitude	longitude	lat_band	...
-# 0	1907-04-15 00:00:00	1907-06-15 00:00:00	1464.0	1907.0	4	1907.0-04	Spring	52.283299	104.300003	<5...
-# 1	1910-01-15 12:00:00	1910-06-15 00:00:00	3612.0	1910.0	1	1910.0-01	Winter	52.283299	104.300003	<5...
-# 2	1910-07-15 12:00:00	1911-02-14 00:00:00	5124.0	1910.0	7	1910.0-07	Summer	54.716701	128.933304	<5...
-# 3	1911-08-15 12:00:00	1912-01-15 12:00:00	3672.0	1911.0	8	1911.0-08	Summer	54.716701	128.933304	<5...
-# 4	1913-04-15 00:00:00	1913-06-15 00:00:00	1464.0	1913.0	4	1913.0-04	Spring	52.283299	104.300003	<5...
-# ...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
-# 87858	2023-05-12 00:00:00.000000000	2023-05-25 00:00:00.000000000	312.0	2023.0	5	2023.0-05	Spring	...
-# 87859	2023-05-20 00:00:00.000000000	2023-07-19 00:00:00.000000000	1440.0	2023.0	5	2023.0-05	Spring...
-# 87860	2023-05-23 00:00:00.000000000	2023-05-30 00:00:00.000000000	168.0	2023.0	5	2023.0-05	Spring	...
-# 87861	2023-06-07 00:00:00.000000000	2023-06-20 00:00:00.000000000	312.0	2023.0	6	2023.0-06	Summer	...
-# 87862	2023-07-15 00:00:00.000000000	2023-07-31 00:00:00.000000000	384.0	2023.0	7	2023.0-07	Summer	...
+# datetime_min datetime_max duration_hours year month year_month season...
+# 0 1907-04-15 00:00:00 1907-06-15 00:00:00 1464.0 1907.0...
+# 1 1910-01-15 12:00:00 1910-06-15 00:00:00 3612.0 1910.0...
+# 2 1910-07-15 12:00:00 1911-02-14 00:00:00 5124.0 1910.0...
+# 3 1911-08-15 12:00:00 1912-01-15 12:00:00 3672.0 1911.0...
+# 4 1913-04-15 00:00:00 1913-06-15 00:00:00 1464.0 1913.0...
+# ... ... ... ... ... ... ......
+# 87858 2023-05-12 00:00:00.000000000 2023-05-25 00:00:00.000000000 312.0 2023.0...
+# 87859 2023-05-20 00:00:00.000000000 2023-07-19 00:00:00.000000000 1440.0 2023.0...
+# 87860 2023-05-23 00:00:00.000000000 2023-05-30 00:00:00.000000000 168.0 2023.0...
+# 87861 2023-06-07 00:00:00.000000000 2023-06-20 00:00:00.000000000 312.0 2023.0...
+# 87862 2023-07-15 00:00:00.000000000 2023-07-31 00:00:00.000000000 384.0 2023.0...
 # 87863 rows × 28 columns
 
 
@@ -31075,7 +31074,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #             print(f"Loading most recent checkpoint: {latest_checkpoint}")
 #             try:
 #                 model = tf.keras.models.load_model(latest_checkpoint)
-#                 print("Checkpoint loaded successfully - will resume training from this point")
+# print("Checkpoint loaded successfully - will resume training...
 #             except Exception as e:
 #                 print(f"Error loading checkpoint: {str(e)}")
 #                 print("Will start training from scratch")
@@ -31429,7 +31428,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
         
 #         # Verify weights array
 #         if self.weights is not None:
-#             assert len(self.weights) == len(self.indices), "Weights array must match indices lengt...
+# assert len(self.weights) == len(self.indices), "Weights array must...
         
 #         # Load as memory-mapped arrays
 #         self.X = np.load(self.X_file, mmap_mode='r')
@@ -31492,7 +31491,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
     
 #     return pos_encoding
 
-# data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
+# data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_da...
 
 # # Initialize generators
 # X_file = os.path.join(data_dir, 'X_features.npy')
@@ -31647,7 +31646,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #             batch = data_generator[batch_index]
 #             # If batch is a tuple, yield elements individually
 #             if isinstance(batch, tuple):
-#                 for i in range(len(batch[0])):  # For each example in the batch
+# for i in range(len(batch[0])): # For each...
 #                     # Extract individual items from the batch
 #                     if len(batch) == 2:  # (x, y)
 #                         yield batch[0][i], batch[1][i]
@@ -31707,7 +31706,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     output_signature=(features_signature, label_signature)
 # )
 
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
 
 # # Set up callbacks
 # callbacks = [
@@ -31857,7 +31856,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                 if len(batch) == 2:  # (x, y) format
 #                     X_batch, y_batch = batch
 #                     for i in range(len(X_batch)):
-#                         # If weights are expected but not provided, use dummy weights
+# # If weights are expected but not...
 #                         if has_weights:
 #                             yield X_batch[i], y_batch[i], 1.0
 #                         else:
@@ -31943,54 +31942,54 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 
 # Starting model training...
 # Epoch 1/100
-#       9/Unknown - 1s 80ms/step - loss: 9246419.0000 - accuracy: 0.5985 - auc: 0.6100  
+# 9/Unknown - 1s 80ms/step - loss: 9246419.0000...
 # 2025-03-10 17:18:47.088847: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry....
-# 9/9 [==============================] - 9s 1s/step - loss: 9246419.0000 - accuracy: 0.5985 - auc: 0...
+# 9/9 [==============================] - 9s 1s/step - loss:...
 # Epoch 2/100
-# 9/9 [==============================] - 7s 809ms/step - loss: 5390313.0000 - accuracy: 0.8663 - auc...
+# 9/9 [==============================] - 7s 809ms/step - loss:...
 # Epoch 3/100
-# 9/9 [==============================] - 7s 792ms/step - loss: 4335007.0000 - accuracy: 0.8675 - auc...
+# 9/9 [==============================] - 7s 792ms/step - loss:...
 # Epoch 4/100
-# 9/9 [==============================] - 7s 790ms/step - loss: 3801146.5000 - accuracy: 0.8677 - auc...
+# 9/9 [==============================] - 7s 790ms/step - loss:...
 # Epoch 5/100
-# 9/9 [==============================] - 7s 783ms/step - loss: 3362294.2500 - accuracy: 0.8680 - auc...
+# 9/9 [==============================] - 7s 783ms/step - loss:...
 # Epoch 6/100
-# 9/9 [==============================] - 7s 809ms/step - loss: 3142311.7500 - accuracy: 0.8684 - auc...
+# 9/9 [==============================] - 7s 809ms/step - loss:...
 # Epoch 7/100
-# 9/9 [==============================] - 7s 807ms/step - loss: 2929097.2500 - accuracy: 0.8689 - auc...
+# 9/9 [==============================] - 7s 807ms/step - loss:...
 # Epoch 8/100
-# 9/9 [==============================] - 7s 786ms/step - loss: 2771868.7500 - accuracy: 0.8729 - auc...
+# 9/9 [==============================] - 7s 786ms/step - loss:...
 # Epoch 9/100
-# 9/9 [==============================] - 7s 786ms/step - loss: 2643040.0000 - accuracy: 0.8815 - auc...
+# 9/9 [==============================] - 7s 786ms/step - loss:...
 # Epoch 10/100
-# 9/9 [==============================] - 7s 781ms/step - loss: 2519734.2500 - accuracy: 0.8913 - auc...
+# 9/9 [==============================] - 7s 781ms/step - loss:...
 # Epoch 11/100
-# 9/9 [==============================] - 7s 782ms/step - loss: 2429415.2500 - accuracy: 0.9058 - auc...
+# 9/9 [==============================] - 7s 782ms/step - loss:...
 # Epoch 12/100
-# 9/9 [==============================] - 6s 779ms/step - loss: 2325136.0000 - accuracy: 0.9203 - auc...
+# 9/9 [==============================] - 6s 779ms/step - loss:...
 # Epoch 13/100
-# 9/9 [==============================] - 7s 779ms/step - loss: 2290334.7500 - accuracy: 0.9247 - auc...
+# 9/9 [==============================] - 7s 779ms/step - loss:...
 # Epoch 14/100
-# 9/9 [==============================] - 6s 777ms/step - loss: 2249495.5000 - accuracy: 0.9292 - auc...
+# 9/9 [==============================] - 6s 777ms/step - loss:...
 # Epoch 15/100
-# 9/9 [==============================] - 7s 783ms/step - loss: 2187842.7500 - accuracy: 0.9332 - auc...
+# 9/9 [==============================] - 7s 783ms/step - loss:...
 # Epoch 16/100
-# 9/9 [==============================] - 6s 777ms/step - loss: 2141003.2500 - accuracy: 0.9371 - auc...
+# 9/9 [==============================] - 6s 777ms/step - loss:...
 # Epoch 17/100
-# 9/9 [==============================] - 7s 787ms/step - loss: 2085697.5000 - accuracy: 0.9385 - auc...
+# 9/9 [==============================] - 7s 787ms/step - loss:...
 # Epoch 18/100
-# 9/9 [==============================] - 6s 777ms/step - loss: 2046315.0000 - accuracy: 0.9460 - auc...
+# 9/9 [==============================] - 6s 777ms/step - loss:...
 # Epoch 19/100
-# 9/9 [==============================] - 7s 782ms/step - loss: 1998005.2500 - accuracy: 0.9479 - auc...
+# 9/9 [==============================] - 7s 782ms/step - loss:...
 
 # # Evaluate on test set in batches
 # print("Evaluating model on test set...")
 # evaluation = model.evaluate(test_gen, verbose=1)
 
 # Evaluating model on test set...
-#    1/4180 [..............................] - ETA: 19:36 - loss: 0.3147 - accuracy: 0.8379 - auc: 0...
+# 1/4180 [..............................] - ETA: 19:36 - loss:...
 # 2025-03-10 17:29:54.545697: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry....
-# 4180/4180 [==============================] - 20s 5ms/step - loss: 0.2406 - accuracy: 0.8654 - auc:...
+# 4180/4180 [==============================] - 20s 5ms/step - loss:...
 
 # print("Test performance:")
 # for metric, value in zip(model.metrics_names, evaluation):
@@ -32215,22 +32214,22 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #         'model_only_days': len(model_days - physical_days),
 #         'overlap_days': len(overlap_days),
 #         'jaccard_index': len(overlap_days) / len(physical_days.union(model_days)) if len(physical_...
-#         'precision': len(overlap_days) / len(model_days) if len(model_days) > 0 else 0,
-#         'recall': len(overlap_days) / len(physical_days) if len(physical_days) > 0 else 0,
-#         'f1_score': 2 * len(overlap_days) / (len(physical_days) + len(model_days)) if (len(physica...
+# 'precision': len(overlap_days) / len(model_days) if len(model_days) >...
+# 'recall': len(overlap_days) / len(physical_days) if len(physical_days) >...
+# 'f1_score': 2 * len(overlap_days) / (len(physical_days) +...
 #     }
     
 #     # Calculate site-specific overlap
 #     site_level_comparison = {}
     
 #     # Extract unique sites for analysis
-#     all_sites = set([s for s, _, _ in physical_days]).union(set([s for s, _, _ in model_days]))
+# all_sites = set([s for s, _, _...
 #     print(f"Analyzing {len(all_sites)} unique sites...")
     
 #     for site in all_sites:
 #         # Get days for this site
-#         site_physical = set([(s, d, day) for s, d, day in physical_days if s == site])
-#         site_model = set([(s, d, day) for s, d, day in model_days if s == site])
+# site_physical = set([(s, d, day) for s,...
+# site_model = set([(s, d, day) for s,...
 #         site_overlap = site_physical.intersection(site_model)
         
 #         if len(site_physical) == 0 and len(site_model) == 0:
@@ -32241,8 +32240,8 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #             'model_days': len(site_model),
 #             'overlap_days': len(site_overlap),
 #             'jaccard': len(site_overlap) / len(site_physical.union(site_model)) if len(site_physic...
-#             'precision': len(site_overlap) / len(site_model) if len(site_model) > 0 else 0,
-#             'recall': len(site_overlap) / len(site_physical) if len(site_physical) > 0 else 0
+# 'precision': len(site_overlap) / len(site_model) if len(site_model) >...
+# 'recall': len(site_overlap) / len(site_physical) if len(site_physical) >...
 #         }
     
 #     # Analyze temporal distribution
@@ -32253,7 +32252,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #     model_months = [day.month for _, _, day in model_days]
     
 #     # Count events by month
-#     month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'D...
+# month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',...
 #     physical_month_counts = [physical_months.count(i+1) for i in range(12)]
 #     model_month_counts = [model_months.count(i+1) for i in range(12)]
     
@@ -32348,7 +32347,7 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #         x = np.arange(len(top_sites))
         
 #         p1 = ax.bar(x - width/2, top_sites['physical_days'], width, label='Physics-based', color='...
-#         p2 = ax.bar(x + width/2, top_sites['model_days'], width, label='Deep Learning', color='red...
+# p2 = ax.bar(x + width/2, top_sites['model_days'], width,...
 #         p3 = ax.bar(x, top_sites['overlap_days'], width/2, label='Overlap', color='purple', alpha=...
         
 #         ax.set_xlabel('Site ID', fontsize=12)
@@ -32383,21 +32382,21 @@ full_comparison_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
 #                 f.write(f"- {key}: {value}\n")
             
 #             f.write("\n## Summary\n")
-#             f.write(f"The two methods show a Jaccard similarity index of {overlap_metrics['jaccard...
+# f.write(f"The two methods show a Jaccard similarity...
 #             f.write(f"with a precision of {overlap_metrics['precision']:.4f} and recall of {overla...
             
 #             f.write("\nThis indicates that ")
 #             if overlap_metrics['jaccard_index'] > 0.7:
-#                 f.write("the methods have strong agreement in detecting zero curtain events.\n")
+# f.write("the methods have strong agreement in detecting...
 #             elif overlap_metrics['jaccard_index'] > 0.4:
-#                 f.write("the methods have moderate agreement in detecting zero curtain events.\n")
+# f.write("the methods have moderate agreement in detecting...
 #             else:
-#                 f.write("the methods have relatively low agreement in detecting zero curtain event...
+# f.write("the methods have relatively low agreement in...
                 
 #             f.write("\nPossible explanations for differences include:\n")
-#             f.write("1. Physics-based detection using fixed thresholds vs. ML pattern recognition\...
+# f.write("1. Physics-based detection using fixed thresholds vs....
 #             f.write("2. Different sensitivities to signal noise\n")
-#             f.write("3. Model's ability to recognize patterns that may not strictly adhere to phys...
+# f.write("3. Model's ability to recognize patterns that...
 #             f.write("4. Seasonal variability in detection accuracy\n")
             
 #     # Clean up to free memory
@@ -32512,13 +32511,13 @@ if output_dir:
 print(f"Memory after training: {memory_usage():.1f} MB")
 return model, history, evaluation
 
-# output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+# output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
 # data_dir = os.path.join(output_base_dir, 'ml_data')
 # X = np.load(os.path.join(data_dir, 'X_features.npy'))
 # y = np.load(os.path.join(data_dir, 'y_labels.npy'))
 # with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
 #     metadata = pickle.load(f)
-# # y labels are binary, i.e., 0 is False for has_moisture_data and 1 is True for has_moisture_data
+# # y labels are binary, i.e., 0...
 
 # import os
 # import gc
@@ -32654,7 +32653,7 @@ return model, history, evaluation
 #     return 2 * np.arcsin(distance_cartesian / 2)
 
 # def process_batch(tree, batch_points, k):
-#     """Process a single batch of points using KDTree, excluding self-matches."""
+# """Process a single batch of points using...
 #     # Query k+1 neighbors to include self (which will be removed)
 #     distances, _ = tree.query(batch_points, k=k+1)
     
@@ -32665,9 +32664,9 @@ return model, history, evaluation
 #     return cartesian_to_haversine_distance(nn_distances)
 
 # def calculate_optimal_batch_size(total_points, available_memory_mb=None):
-#     """Calculate optimal batch size based on available memory and dataset size."""
+# """Calculate optimal batch size based on available...
 #     if available_memory_mb is None:
-#         # Use 20% of available memory if not specified (to leave room for parallelism)
+# # Use 20% of available memory if...
 #         available_memory_mb = psutil.virtual_memory().available / (1024 * 1024) * 0.2
     
 #     # Estimate memory per point (assuming float64 coordinates and distances)
@@ -32732,7 +32731,7 @@ return model, history, evaluation
     
 #     # Never overwrite existing checkpoints - we need them to resume processing
 #     if overwrite:
-#         print("WARNING: Overwrite flag ignored - checkpoints are preserved for resuming processing...
+# print("WARNING: Overwrite flag ignored - checkpoints are...
 #         # Do NOT remove checkpoints regardless of the overwrite flag
     
 #     # Convert input arrays to numpy if they aren't already
@@ -32748,7 +32747,7 @@ return model, history, evaluation
 #     if batch_size is None:
 #         batch_size = calculate_optimal_batch_size(n_points)
     
-#     # Adjust batch size to create a reasonable number of batches (target ~200 batches)
+# # Adjust batch size to create a...
 #     if n_points / batch_size > 200:
 #         batch_size = max(batch_size, n_points // 200)
     
@@ -32818,7 +32817,7 @@ return model, history, evaluation
 #                 print(f"Processing batches in parallel with {n_jobs} jobs")
                 
 #                 # Process in smaller chunks to avoid memory issues
-#                 chunk_size = min(20, len(remaining_batch_indices))  # Smaller chunks for better mo...
+# chunk_size = min(20, len(remaining_batch_indices)) # Smaller chunks...
 #                 num_chunks = int(np.ceil(len(remaining_batch_indices) / chunk_size))
                 
 #                 for chunk_idx in range(num_chunks):
@@ -32893,7 +32892,7 @@ return model, history, evaluation
 #         # At this point, all batches should be processed and saved to disk
 #         # We have two options:
 #         # 1. Load all checkpoints into memory (might be too large)
-#         # 2. Calculate density from checkpoints directly (more memory efficient)
+# # 2. Calculate density from checkpoints directly...
         
 #         # Option 2: Calculate density directly from checkpoints
 #         print("Calculating density from checkpoints...")
@@ -33116,7 +33115,7 @@ return model, history, evaluation
 #     )
     
 #     # If labels are binary, include them in strata
-#     if len(np.unique(labels)) <= 5:  # Few enough classes to use for stratification
+# if len(np.unique(labels)) <= 5: # Few enough...
 #         strata = strata * 10 + labels
     
 #     unique_strata = np.unique(strata)
@@ -33214,7 +33213,7 @@ return model, history, evaluation
 # # Determine optimal number of jobs based on available CPU cores and memory
 # n_cpus = os.cpu_count()
 # available_memory_gb = psutil.virtual_memory().available / (1024*1024*1024)
-# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb / 8)))  # More conservative
+# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb...
 # print(f"Available CPUs: {n_cpus}, Available memory: {available_memory_gb:.2f} GB")
 # print(f"Recommended parallel jobs: {recommended_jobs}")
 
@@ -33521,7 +33520,7 @@ return model, history, evaluation
 #             print(f"Loading most recent checkpoint: {latest_checkpoint}")
 #             try:
 #                 model = tf.keras.models.load_model(latest_checkpoint)
-#                 print("Checkpoint loaded successfully - will resume training from this point")
+# print("Checkpoint loaded successfully - will resume training...
 #             except Exception as e:
 #                 print(f"Error loading checkpoint: {str(e)}")
 #                 print("Will start training from scratch")
@@ -33685,14 +33684,14 @@ return model, history, evaluation
 # # Example usage
 # if __name__ == "__main__":
 #     # Load data
-#     data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'm...
+#     data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'm...
 #     X = np.load(os.path.join(data_dir, 'X_features.npy'))
 #     y = np.load(os.path.join(data_dir, 'y_labels.npy'))
 #     with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
 #         metadata = pickle.load(f)
     
 #     # Train model with spatial balancing
-#     output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', ...
+#     output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', ...
 #     os.makedirs(output_dir, exist_ok=True)
     
 #     model, history, evaluation = train_with_spatial_balancing(
@@ -33750,12 +33749,12 @@ return model, history, evaluation
 
 # # Configure TensorFlow memory growth
 # def configure_tensorflow_memory():
-#     """Configure TensorFlow to use memory growth and limit GPU memory allocation"""
+# """Configure TensorFlow to use memory growth and...
 #     physical_devices = tf.config.list_physical_devices('GPU')
 #     if physical_devices:
 #         for device in physical_devices:
 #             try:
-#                 # Allow memory growth - prevents TF from allocating all GPU memory at once
+# # Allow memory growth - prevents TF...
 #                 tf.config.experimental.set_memory_growth(device, True)
 #                 print(f"Memory growth enabled for {device}")
 #             except Exception as e:
@@ -34181,7 +34180,7 @@ return model, history, evaluation
 #     # Get input shape from first sample
 #     sample_start = time.time()
 #     input_shape = X[indices[0]].shape
-#     print(f"  Input shape: {input_shape}, obtained in {time.time() - sample_start:.2f} seconds")
+# print(f" Input shape: {input_shape}, obtained in {time.time()...
     
 #     # Prepare data tensors
 #     X_subset = np.array([X[idx] for idx in indices])
@@ -34228,7 +34227,7 @@ return model, history, evaluation
 #     """
 #     Resumable training function with TensorFlow Datasets for efficient processing.
     
-#     Parameters are the same as the previous implementation, with enhanced dataset handling.
+# Parameters are the same as the previous...
 #     """
 #     import os
 #     import gc
@@ -34325,7 +34324,7 @@ return model, history, evaluation
 #         history_log.append(chunk_metrics)
         
 #         # Save model and history periodically
-#         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #             model_path = os.path.join(checkpoints_dir, f"model_checkpoint_{chunk_idx+1}.h5")
 #             model.save(model_path)
             
@@ -34366,7 +34365,7 @@ return model, history, evaluation
         
 #         # Evaluate
 #         metrics = model.evaluate(test_X, test_y, verbose=1)
-#         metrics_dict = {name: value for name, value in zip(model.metrics_names, metrics)}
+# metrics_dict = {name: value for name, value...
         
 #         # Weight metrics by batch size
 #         for key in ['loss', 'accuracy']:
@@ -34593,7 +34592,7 @@ return model, history, evaluation
 #         # Store chunk metrics
 #         chunk_metrics = {
 #             'chunk': chunk_idx+1,
-#             'metrics': {k: [float(v) for v in vals] for k, vals in history.history.items()}
+# 'metrics': {k: [float(v) for v in vals]...
 #         }
 #         training_history['chunks'].append(chunk_metrics)
         
@@ -34702,7 +34701,7 @@ return model, history, evaluation
 # #                                output_dir, batch_size=256, chunk_size=25000, epochs_per_chunk=2, 
 # #                                save_frequency=5, class_weight=None, start_chunk=0):
 # #     """
-# #     Resumable training function with memory-efficient processing and advanced techniques.
+# # Resumable training function with memory-efficient processing...
     
 # #     Parameters:
 # #     -----------
@@ -34849,7 +34848,7 @@ return model, history, evaluation
 # #         history_log.append(chunk_metrics)
         
 # #         # Save model periodically
-# #         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# # if (chunk_idx + 1) % save_frequency...
 # #             model_path = os.path.join(checkpoints_dir, f"model_checkpoint_{chunk_idx+1}.h5")
 # #             model.save(model_path)
 # #             print(f"Model saved to {model_path}")
@@ -34862,7 +34861,7 @@ return model, history, evaluation
 # #                 print(f"Warning: Could not save history: {e}")
         
 # #         # Generate predictions 
-# #         if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# # if (chunk_idx + 1) % save_frequency...
 # #             chunk_preds = model.predict(chunk_X, batch_size=batch_size)
 # #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_predictions.npy"), chunk...
 # #             np.save(os.path.join(predictions_dir, f"chunk_{chunk_idx+1}_indices.npy"), chunk_ind...
@@ -34901,7 +34900,7 @@ return model, history, evaluation
         
 # #         # Evaluate
 # #         metrics = model.evaluate(test_X, test_y, verbose=1)
-# #         metrics_dict = {name: value for name, value in zip(model.metrics_names, metrics)}
+# # metrics_dict = {name: value for name,...
         
 # #         # Weight metrics by batch size
 # #         for key in ['loss', 'accuracy']:
@@ -35285,7 +35284,7 @@ return model, history, evaluation
             
 #             # Check required columns
 #             required_columns = ['datetime', 'source', 'soil_temp_standardized', 'soil_temp_depth']
-#             missing_columns = [col for col in required_columns if col not in df.columns]
+# missing_columns = [col for col in required_columns...
 #             if missing_columns:
 #                 raise ValueError(f"Missing required columns: {missing_columns}")
         
@@ -35310,7 +35309,7 @@ return model, history, evaluation
 #             raise NotImplementedError("Data preparation function needs to be implemented")
         
 #         # Load split indices and weights
-#         split_indices_path = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/che...
+#         split_indices_path = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/che...
 #         try:
 #             with open(split_indices_path, 'rb') as f:
 #                 split_data = pickle.load(f)
@@ -35377,7 +35376,7 @@ return model, history, evaluation
 #             logging.info(f"Total Processing Time: {total_time/3600:.2f} hours")
             
 #             # Save last completed chunk
-#             num_chunks = int(np.ceil(len(train_indices) / 10000))  # Use consistent chunk size
+# num_chunks = int(np.ceil(len(train_indices) / 10000)) # Use...
 #             with open(checkpoint_path, 'w') as f:
 #                 f.write(str(num_chunks))
             
@@ -35423,8 +35422,8 @@ return model, history, evaluation
 # if __name__ == "__main__":
 #     try:
 #         # Example parameters
-#         feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
-#         output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+#         feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
+#         output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
         
 #         # Detailed exception handling
 #         try:
@@ -35622,7 +35621,7 @@ def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
     
-    # Regularization parameters - increased for better generalization and reduced memory
+    # Regularization parameters - increased for better generalization...
     l2_lambda = 1e-4
     dropout_rate = 0.35
     
@@ -36017,7 +36016,7 @@ def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
     
-    # Regularization parameters - increased for better generalization and reduced memory
+    # Regularization parameters - increased for better generalization...
     l2_lambda = 1e-4
     dropout_rate = 0.35
     
@@ -36974,7 +36973,7 @@ def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
     
-    # Regularization parameters - increased for better generalization and reduced memory
+    # Regularization parameters - increased for better generalization...
     l2_lambda = 1e-4
     dropout_rate = 0.35
     
@@ -38008,8 +38007,8 @@ if __name__ == "__main__":
         #memory_limit = system_memory * 0.8
 
         results = main_zero_curtain_analysis(
-            feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
-            output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling',
+            feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
+            output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling',
             batch_size=256,
             start_chunk=0,  # Start from beginning or resume from a specific chunk
             #max_chunks=None,  # Set a limit if needed
@@ -38036,7 +38035,6 @@ if __name__ == "__main__":
 
 """
 Zero Curtain Detection Model with Memory-Optimized Training Pipeline
-Author: [REDACTED_NAME]
 """
 
 # Force CPU-only mode if needed
@@ -38162,7 +38160,7 @@ def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
     
-    # Regularization parameters - increased for better generalization and reduced memory
+    # Regularization parameters - increased for better generalization...
     l2_lambda = 1e-4
     dropout_rate = 0.35
     
@@ -38705,7 +38703,7 @@ def memory_optimized_training(
 #         y_file = os.path.join(data_dir, 'y_labels.npy')
         
 #         if not (os.path.exists(X_file) and os.path.exists(y_file)):
-#             logger.error("Prepared data files not found. Please run data preparation first.")
+# logger.error("Prepared data files not found. Please run...
 #             raise FileNotFoundError("Prepared data files not found")
         
 #         # Load split indices - adjust the path as needed
@@ -38726,7 +38724,7 @@ def memory_optimized_training(
         
 #         # Prepare class weights
 #         y_mmap = np.load(y_file, mmap_mode='r')
-#         train_y = np.array([y_mmap[idx] for idx in train_indices[:5000]])  # Sample for class bala...
+# train_y = np.array([y_mmap[idx] for idx in train_indices[:5000]])...
 #         del y_mmap
         
 #         pos_weight = (len(train_y) - np.sum(train_y)) / max(1, np.sum(train_y))
@@ -38800,10 +38798,10 @@ def memory_optimized_training(
 # if __name__ == "__main__":
 #     try:
 #         results = main_zero_curtain_analysis(
-#             feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
-#             output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling',
+#             feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
+#             output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling',
 #             batch_size=16,
-#             start_chunk=0,  # Start from beginning or resume from a specific chunk
+# start_chunk=0, # Start from beginning or resume...
 #             max_chunks=None  # Process all chunks
 #         )
         
@@ -38937,7 +38935,7 @@ def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.regularizers import l2
     
-    # Regularization parameters - increased for better generalization and reduced memory
+    # Regularization parameters - increased for better generalization...
     l2_lambda = 1e-4
     dropout_rate = 0.35
     
@@ -39641,8 +39639,8 @@ if __name__ == "__main__":
     
     try:
         results = main_zero_curtain_analysis(
-            feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
-            output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling',
+            feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
+            output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling',
             batch_size=16,
             start_chunk=0,  # Start from beginning or resume from a specific chunk
             max_chunks=None  # Process only 5 chunks for testing
@@ -39656,7 +39654,7 @@ if __name__ == "__main__":
 
 # def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #     """
-#     Fixed model architecture that works with the ConvLSTM2D and BatchNormalization
+# Fixed model architecture that works with the...
 #     """
 #     from tensorflow.keras.models import Model
 #     from tensorflow.keras.layers import Input, Dense, Conv1D, BatchNormalization, Dropout
@@ -39709,7 +39707,7 @@ if __name__ == "__main__":
 #             width = input_shape[3]
 #             channels = input_shape[4]
             
-#             # Reshape to 4D for BatchNorm by combining batch and time dimensions
+# # Reshape to 4D for BatchNorm by...
 #             x_reshaped = tf.reshape(inputs, [-1, height, width, channels])
             
 #             # Apply BatchNorm
@@ -39780,7 +39778,7 @@ if __name__ == "__main__":
 #     # Apply transformer encoder
 #     transformer_output = transformer_encoder(transformer_input)
     
-#     # Parallel CNN paths for multi-scale feature extraction (with regularization)
+# # Parallel CNN paths for multi-scale feature...
 #     cnn_1 = Conv1D(filters=32, kernel_size=3, padding='same', activation='relu', 
 #                   kernel_regularizer=l2(reg_strength))(inputs)
 #     cnn_1 = BatchNormalization()(cnn_1)  
@@ -40063,7 +40061,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                              output_dir, batch_size=256, chunk_size=10000, epochs_per_chunk=2, 
 #                              save_frequency=5, class_weight=None, start_chunk=0):
 #     """
-#     Improved training pipeline with memory management, error handling, and performance monitoring
+# Improved training pipeline with memory management, error...
     
 #     Parameters:
 #     -----------
@@ -40287,7 +40285,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
                 
 #                 # Store history
 #                 if chunk_history and "history" in chunk_history:
-#                     # Convert numpy values to Python native types for JSON serialization
+# # Convert numpy values to Python native...
 #                     serializable_history = {}
 #                     for k, v in chunk_history["history"].items():
 #                         serializable_history[k] = [float(val) if hasattr(val, 'dtype') else val fo...
@@ -40318,7 +40316,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                 val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
                 
-#                 val_metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()...
+# val_metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 log_message(f"Validation after chunk: {val_metrics_str}")
                 
 #                 # Save if better
@@ -40333,7 +40331,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                 log_message(f"Error during validation: {eval_e}")
             
 #             # Save model periodically
-#             if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #                 model_path = os.path.join(output_dir, "checkpoints", f"model_chunk_{chunk_idx+1}.h...
 #                 try:
 #                     model.save(model_path)
@@ -40375,11 +40373,11 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
         
 #         # Estimate time
 #         elapsed = time.time() - start_time
-#         avg_time_per_chunk = elapsed / (chunk_idx - start_chunk + 1) if chunk_idx > start_chunk el...
+# avg_time_per_chunk = elapsed / (chunk_idx - start_chunk...
 #         remaining = avg_time_per_chunk * (num_chunks - chunk_idx - 1)
 #         log_message(f"Estimated remaining time: {timedelta(seconds=int(remaining))}")
         
-#         # CRITICAL FIX: Reset TensorFlow session periodically to prevent memory leak
+# # CRITICAL FIX: Reset TensorFlow session periodically...
 #         if (chunk_idx + 1) % 10 == 0 and chunk_idx > 0:
 #             log_message("Resetting TensorFlow session to prevent memory issues")
 #             try:
@@ -40437,7 +40435,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                                output_dir, batch_size=256, chunk_size=10000, epochs_per_chunk=3, 
 #                                save_frequency=5, class_weight=None, start_chunk=0):
 #     """
-#     Enhanced training function with improved error handling and memory management.
+# Enhanced training function with improved error handling...
 #     """
 #     import os
 #     import gc
@@ -40612,7 +40610,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                 continue
             
 #             # Train on chunk using a safe batch size
-#             mini_batch_size = min(batch_size, 64)  # Use smaller mini-batches for training
+# mini_batch_size = min(batch_size, 64) # Use smaller...
 #             log_message(f"Training with mini-batch size: {mini_batch_size}")
             
 #             # Track each epoch separately for better error handling
@@ -40673,7 +40671,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                         pickle.dump(history_log, f)
             
 #             # Save model periodically
-#             if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #                 try:
 #                     model_path = os.path.join(output_dir, "checkpoints", f"model_chunk_{chunk_idx+...
 #                     model.save(model_path)
@@ -40725,7 +40723,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
         
 #         # Estimate time
 #         elapsed = time.time() - start_time
-#         avg_time_per_chunk = elapsed / (chunk_idx - start_chunk + 1) if chunk_idx > start_chunk el...
+# avg_time_per_chunk = elapsed / (chunk_idx - start_chunk...
 #         remaining = avg_time_per_chunk * (num_chunks - chunk_idx - 1)
 #         log_message(f"Estimated remaining time: {timedelta(seconds=int(remaining))}")
         
@@ -40769,9 +40767,9 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                                output_dir, batch_size=256, chunk_size=10000, epochs_per_chunk=3, 
 #                                save_frequency=5, class_weight=None, start_chunk=0):
 #     """
-#     Enhanced training function with improved error handling and memory management.
+# Enhanced training function with improved error handling...
     
-#     This version fixes the module pickling issue by using saved_model format instead of h5
+# This version fixes the module pickling issue...
 #     """
 #     import os
 #     import gc
@@ -40949,7 +40947,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                 continue
             
 #             # Train on chunk using a safe batch size
-#             mini_batch_size = min(batch_size, 64)  # Use smaller mini-batches for training
+# mini_batch_size = min(batch_size, 64) # Use smaller...
 #             log_message(f"Training with mini-batch size: {mini_batch_size}")
             
 #             # Track each epoch separately for better error handling
@@ -40984,7 +40982,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                             chunk_history[k] = []
 #                         chunk_history[k].extend([float(val) for val in v])
                     
-#                     # Save after each epoch for safety using SavedModel format instead of h5
+# # Save after each epoch for safety...
 #                     #epoch_model_path = os.path.join(output_dir, "checkpoints", f"model_chunk_{chu...
 #                     #model.save(epoch_model_path, save_format='tf')
 #                     #log_message(f"Saved model after epoch {epoch+1} to {epoch_model_path}")
@@ -41015,7 +41013,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #                         pickle.dump(history_log, f)
             
 #             # Save model periodically using SavedModel format
-#             # if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# # if (chunk_idx + 1) % save_frequency...
 #             #     try:
 #             #         model_path = os.path.join(output_dir, "checkpoints", f"model_chunk_{chunk_id...
 #             #         model.save(model_path, save_format='tf')
@@ -41031,7 +41029,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
 #             #             log_message("Could not save model in any format")
 
 #             # Save weights only at regular intervals
-#             if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #                 try:
 #                     weights_path = os.path.join(output_dir, "checkpoints", f"model_weights_{chunk_...
 #                     model.save_weights(weights_path)
@@ -41090,7 +41088,7 @@ def build_improved_zero_curtain_model_fixed(input_shape, include_moisture=True):
         
 #         # Estimate time
 #         elapsed = time.time() - start_time
-#         avg_time_per_chunk = elapsed / (chunk_idx - start_chunk + 1) if chunk_idx > start_chunk el...
+# avg_time_per_chunk = elapsed / (chunk_idx - start_chunk...
 #         remaining = avg_time_per_chunk * (num_chunks - chunk_idx - 1)
 #         log_message(f"Estimated remaining time: {timedelta(seconds=int(remaining))}")
         
@@ -41902,7 +41900,7 @@ def evaluate_model_with_visualizations_fixed(model, X_file, y_file, test_indices
 #     # BatchNorm5D class definition (for loading models)
 #     class BatchNorm5D(Layer):
 #         """
-#         Fixed implementation of BatchNorm5D that properly handles 5D inputs from ConvLSTM2D.
+# Fixed implementation of BatchNorm5D that properly handles...
 #         """
 #         def __init__(self, **kwargs):
 #             super(BatchNorm5D, self).__init__(**kwargs)
@@ -41917,7 +41915,7 @@ def evaluate_model_with_visualizations_fixed(model, X_file, y_file, test_indices
 #             width = input_shape[3]
 #             channels = input_shape[4]
             
-#             # Reshape to 4D for BatchNorm by combining batch and time dimensions
+# # Reshape to 4D for BatchNorm by...
 #             x_reshaped = tf.reshape(inputs, [-1, height, width, channels])
             
 #             # Apply BatchNorm
@@ -41976,8 +41974,8 @@ def evaluate_model_with_visualizations_fixed(model, X_file, y_file, test_indices
 #     configure_tensorflow_memory()
     
 #     # Paths and configuration
-#     output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-#     data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+#     output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+#     data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 #     X_file = os.path.join(data_dir, 'X_features.npy')
 #     y_file = os.path.join(data_dir, 'y_labels.npy')
 #     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -42285,7 +42283,7 @@ def evaluate_model_with_visualizations_fixed(model, X_file, y_file, test_indices
 
 # def ensure_training_progress(model, X_file, y_file, train_indices, output_dir, start_chunk=0, save...
 #     """
-#     A more reliable training approach that completely rebuilds the model periodically
+# A more reliable training approach that completely...
 #     to avoid memory leaks and state accumulation issues.
 #     """
 #     import os
@@ -43658,8 +43656,8 @@ def run_improved_pipeline_fixed():
     configure_tensorflow_memory()
     
     # Paths and configuration
-    output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-    data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+    output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+    data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
     X_file = os.path.join(data_dir, 'ml_data/X_features.npy')
     y_file = os.path.join(data_dir, 'ml_data/y_labels.npy')
     metadata_file = os.path.join(data_dir, 'ml_data/metadata.pkl')
@@ -44310,7 +44308,7 @@ def prepare_data_for_deep_learning_efficiently(feather_path, events_df, sequence
     print("Finding unique site-depth combinations")
     print(f"Memory before processing: {memory_usage():.1f} MB")
     
-    # Use a function that efficiently gets unique site-depths without loading all data
+    # Use a function that efficiently gets unique...
     site_depths = get_unique_site_depths(feather_path)
     total_combinations = len(site_depths)
     
@@ -46381,7 +46379,7 @@ test_indices = split_data["test_indices"]
 with open("zero_curtain_pipeline/modeling/checkpoints/spatial_density.pkl", "rb") as f:
     weights_data = pickle.load(f)
 
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 
 # Initialize generators
 X_file = os.path.join(data_dir, 'X_features.npy')
@@ -46416,7 +46414,6 @@ print(f"Using class weight {pos_weight:.2f} for positive examples")
 # Free memory
 del train_y, val_y, test_y
 gc.collect()
-
 
 
 def build_advanced_zero_curtain_model(input_shape, include_moisture=True):
@@ -46581,7 +46578,7 @@ from tensorflow.keras.utils import plot_model
 plot_model(model, to_file='zero_curtain_pipeline/modeling/spatial_model/insitu_model_plot.png', show_shapes=True, show_dtype=True, \
            show_layer_names=True, expand_nested=True, dpi=300, layer_range=None, show_layer_activations=True);#, rankdir='TB')
 
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
 
 # Set up callbacks
 callbacks = [
@@ -47147,7 +47144,7 @@ if physical_devices:
             print(f"Error configuring GPU: {e}")
 
 # Data paths
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 X_file = os.path.join(data_dir, 'X_features.npy')
 y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -47574,10 +47571,10 @@ def plot_training_history(output_dir):
     return all_metrics
 
 # Define output directory
-output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
+output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
 
 # Data paths
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 X_file = os.path.join(data_dir, 'X_features.npy')
 y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -47600,7 +47597,7 @@ learning_metrics = plot_training_history(output_dir)
 #     def __init__(self, temp_df, zc_metrics_df):
 #         self.temp_df = temp_df
 #         self.zc_metrics_df = zc_metrics_df
-#         self.depth_zones = {'shallow': 0, 'intermediate': 1, 'deep': 2, 'very_deep': 3}
+# self.depth_zones = {'shallow': 0, 'intermediate': 1, 'deep':...
 #         self.scaler = StandardScaler()
         
 #     def preprocess_temperature_data(self):
@@ -47897,7 +47894,7 @@ learning_metrics = plot_training_history(output_dir)
     
 #     return train_dataset, val_dataset
 
-# #This is the code from our use case previously; if we can retain as much as possible, great; but w...
+# #This is the code from our use...
 
 # model_params = {
 #     'temporal_window': 30,
@@ -47951,7 +47948,7 @@ learning_metrics = plot_training_history(output_dir)
 #         temp_padded = tf.pad(temperatures, [[0, 0], [1, 1], [0, 0], [0, 0]])
 #         temp_gradients = (temp_padded[:, 2:] - temp_padded[:, :-2]) / 2.0
 #         phase_fraction = tf.sigmoid((temperatures + 0.1) * 100)
-#         k_eff = (phase_fraction * self.k_water + (1 - phase_fraction) * self.k_ice) * self.porosit...
+# k_eff = (phase_fraction * self.k_water + (1...
 #         return temperatures + k_eff * temp_gradients
 
 # class ZeroCurtainModel(tf.keras.Model):
@@ -48154,7 +48151,7 @@ learning_metrics = plot_training_history(output_dir)
 
 # tf.keras.backend.clear_session()
 
-# #Instead of taking slices of dataset, let's now try the whole dataset (train_dataset) for training
+# #Instead of taking slices of dataset, let's...
 
 # print("Converting dataset to numpy...")
 # x_train = []
@@ -48272,7 +48269,7 @@ learning_metrics = plot_training_history(output_dir)
 
 # simple_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(32)
 
-# #Instead of taking slices of dataset, let's now try the whole dataset (train_dataset) for training
+# #Instead of taking slices of dataset, let's...
 
 # print("Converting dataset to numpy...")
 # x_train = []

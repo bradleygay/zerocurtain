@@ -1,0 +1,276 @@
+# Part II: GeoCryoAI Teacher Forcing Configuration - [RESEARCHER]
+# Physics-Informed Zero-Curtain Detection Framework
+# Optimized for dual NVIDIA A100 80GB GPUs
+
+experiment_name: "geocryoai_teacher_forcing_discover_v1"
+random_seed: 42
+
+# Data Configuration
+data:
+  parquet_file: "outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  pinszc_ground_truth: "outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  
+  # Train/Val/Test Split
+  test_size: 0.2
+  val_size: 0.1
+  
+  # Sequence Configuration
+  sequence_length: null  # Auto-calculated based on temporal coverage
+  temporal_coverage: "seasonal"  # Options: seasonal, annual, extended_event
+  
+  # Batch Configuration (Optimized for dual A100s)
+  batch_size: 512  # Large batch for 160GB total GPU memory
+  num_workers: 12  # Match SLURM cpus-per-task
+  pin_memory: true
+  prefetch_factor: 2
+  persistent_workers: true
+
+# Model Architecture
+model:
+  # Base Model (Larger architecture for A100s)
+  input_features: 21  # Will be determined from dataset
+  d_model: 256  # Increased from 128
+  n_heads: 8  # Increased from 4
+  n_layers: 6  # Increased from 4
+  liquid_hidden: 512  # Increased from 256
+  dropout: 0.1
+  
+  # GeoCryoAI Configuration
+  geocryoai:
+    enabled: true
+    spatial_threshold_km: 50.0
+    spatial_hidden: 128  # Increased from 64
+    temporal_hidden: 128  # Increased from 64
+    num_graph_layers: 4  # Increased from 3
+  
+  # Temporal Pattern Analysis
+  pattern_analysis:
+    enabled: true
+    rapid_max_duration: 72.0      # hours
+    extended_min_duration: 168.0  # hours
+    consecutive_gap_threshold: 48.0  # hours
+
+# Teacher Forcing Configuration
+teacher_forcing:
+  enabled: true
+  initial_ratio: 0.9
+  min_ratio: 0.1
+  decay_rate: 0.95
+  curriculum_schedule: "exponential"  # Options: exponential, linear, inverse_sigmoid
+  
+  # Discover-specific: More aggressive decay for faster training
+  decay_epochs: 15  # Start decaying after epoch 15
+
+# Training Configuration
+training:
+  epochs: 25
+  learning_rate: 0.0002  # Slightly increased for larger batch
+  weight_decay: 0.01
+  gradient_accumulation_steps: 1  # No accumulation needed with large batch
+  
+  # Loss Function Weights
+  loss_weights:
+    alpha_mse: 1.0
+    alpha_physics: 0.1
+    alpha_temporal: 0.05
+    alpha_pattern: 0.1
+  
+  # Optimizer
+  optimizer: "adamw"
+  scheduler: "cosine_annealing"
+  scheduler_params:
+    T_0: 10
+    T_mult: 2
+    eta_min: 1.0e-6
+  
+  # Early Stopping
+  early_stopping:
+    patience: 15
+    min_delta: 0.001
+  
+  # Mixed Precision Training (CRITICAL for A100s)
+  use_amp: true
+  amp_dtype: "float16"  # A100s support efficient FP16
+  
+  # Gradient Clipping
+  max_grad_norm: 1.0
+  
+  # Checkpointing
+  checkpoint_frequency: 5  # Save every 5 epochs
+  save_best_only: false
+  
+  # Discover-specific optimizations
+  cudnn_benchmark: true  # Enable cuDNN auto-tuner
+  deterministic: false  # Disable for speed (enable for reproducibility)
+
+# Bayesian Optimization - ENABLED
+bayesian_optimization:
+  enabled: true  # ENABLED for hyperparameter tuning
+  n_calls: 30  # Increased from 20 for better search
+  n_initial_points: 10  # Random initialization points
+  random_state: 42
+  
+  # Search Space (Expanded for larger models)
+  search_space:
+    learning_rate: [1.0e-5, 5.0e-3]  # Wider range
+    n_heads: [4, 16]  # 4, 8, 16 heads
+    n_layers: [3, 8]  # 3-8 layers
+    d_model: [128, 512]  # 128, 256, 384, 512
+    liquid_hidden: [128, 1024]  # Larger range
+    dropout: [0.05, 0.3]  # Narrower range around 0.1
+    alpha_physics: [0.05, 0.5]  # Physics loss weight
+    alpha_temporal: [0.01, 0.2]  # Temporal loss weight
+    batch_size: [256, 768]  # Test different batch sizes
+  
+  # Optimization settings
+  acquisition_function: "EI"  # Expected Improvement
+  n_jobs: 1  # Sequential for stability
+  verbose: true
+
+# Model Explainability
+explainability:
+  enabled: false  # Disabled during training for speed
+  run_after_training: true  # Run after training completes
+  
+  lime:
+    enabled: true
+    num_features: 10
+    num_samples: 100  # Increased for better explanations
+  
+  shap:
+    enabled: true
+    sample_size: 100  # Increased from 50
+    background_samples: 50
+
+# Output Configuration
+output:
+  save_dir: "outputs/part2_geocryoai"
+  models_dir: "outputs/part2_geocryoai/models"
+  predictions_dir: "outputs/part2_geocryoai/predictions"
+  explainability_dir: "outputs/part2_geocryoai/explainability"
+  checkpoints_dir: "outputs/part2_geocryoai/checkpoints"
+  
+  # Checkpointing
+  save_frequency: 5  # Save checkpoint every 5 epochs
+  save_best_only: false  # Save all checkpoints
+  keep_last_n_checkpoints: 5  # Keep only last 5 to save space
+  
+  # Logging
+  log_level: "INFO"
+  log_frequency: 10  # Log every 10 batches
+  
+  tensorboard: true
+  tensorboard_dir: "outputs/part2_geocryoai/tensorboard"
+  
+  wandb:
+    enabled: false  # Disabled (may not have internet on compute nodes)
+    project: "zero-curtain-part2-discover"
+    entity: null
+    tags: ["discover", "a100", "dual-gpu", "bayesian-opt"]
+
+# Reproducibility
+reproducibility:
+  deterministic: false  # Disabled for maximum speed on A100s
+  benchmark: true  # ENABLED - cuDNN auto-tuner for A100s
+  seed_workers: true
+
+# Discover-Specific Settings
+compute:
+  # Device configuration
+  device: "cuda"
+  multi_gpu: true
+  gpu_ids: [0, 1]  # Use both A100s
+  
+  # DataParallel settings
+  use_data_parallel: true
+  use_distributed: false  # DataParallel sufficient for 2 GPUs
+  
+  # Memory optimization
+  empty_cache_frequency: 100  # Clear cache every 100 batches
+  max_split_size_mb: 2048  # CUDA memory allocator
+  
+  # Performance
+  compile_model: false  # torch.compile (PyTorch 2.0+)
+  channels_last: false  # Memory format optimization
+  
+# Resource Monitoring
+monitoring:
+  track_gpu_memory: true
+  track_cpu_memory: true
+  log_system_stats: true
+  log_frequency: 50  # Log stats every 50 batches
+  
+  # Alert thresholds
+  gpu_memory_threshold: 0.9  # Alert if >90% GPU memory used
+  training_time_estimate: true
+
+# Data Augmentation (Optional - disabled by default)
+augmentation:
+  enabled: false
+  techniques:
+    - "temporal_jitter"  # Add small time shifts
+    - "feature_noise"    # Add gaussian noise to features
+  noise_std: 0.01
+  jitter_max_hours: 2.0
+
+# Validation Configuration
+validation:
+  frequency: 1  # Validate every epoch
+  compute_metrics: true
+  save_predictions: true  # Save val predictions for analysis
+  
+  # Metrics to compute
+  metrics:
+    - "mse"
+    - "mae"
+    - "r2"
+    - "physics_consistency"
+    - "temporal_smoothness"
+
+# Testing Configuration
+testing:
+  compute_full_metrics: true
+  save_predictions: true
+  generate_plots: true
+  
+  # Analysis
+  analyze_by_category:
+    - "intensity_category"
+    - "duration_category"
+    - "permafrost_zone"
+    - "season"
+
+# Debugging (disable in production)
+debug:
+  enabled: false
+  detect_anomaly: false  # PyTorch anomaly detection (slow)
+  profile: false  # PyTorch profiler
+  log_gradients: false
+  check_finite: false
+
+# SLURM Integration
+slurm:
+  job_id: null  # Auto-populated from $SLURM_JOB_ID
+  array_task_id: null  # For array jobs
+  node_list: null  # Auto-populated from $SLURM_NODELIST
+  
+  # Checkpointing for potential preemption
+  checkpoint_on_signal: true
+  signals: ["SIGTERM", "SIGUSR1"]
+
+# Advanced Features
+advanced:
+  # Gradient checkpointing (saves memory, slower)
+  gradient_checkpointing: false
+  
+  # Model compression
+  quantization:
+    enabled: false
+    dtype: "int8"
+  
+  # Knowledge distillation
+  distillation:
+    enabled: false
+    teacher_model: null
+    temperature: 2.0
+    alpha: 0.5

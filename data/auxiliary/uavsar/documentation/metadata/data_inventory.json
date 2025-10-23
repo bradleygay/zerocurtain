@@ -1,0 +1,14 @@
+{
+  "scan_date": "2025-10-20T07:15:16.929899",
+  "base_directory": "/Users/[USER]/arctic_zero_curtain_pipeline",
+  "h5_files": [],
+  "grd_files": [],
+  "ann_files": [
+    "/Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/test_data/raw/test_download.ann",
+    "/Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/nisar_downloads/Grnlnd_00004_09030_009_090527/Grnlnd_00004_09030_009_090527_L090_CD_129A_02.ann",
+    "/Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/nisar_downloads/Grnlnd_00004_09030_009_090527/Grnlnd_00004_09030_009_090527_L090_CD_129B_02.ann"
+  ],
+  "total_h5": 0,
+  "total_grd": 0,
+  "total_ann": 3
+}

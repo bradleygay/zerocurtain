@@ -1,0 +1,198 @@
+# ArcticDEM Pipeline Configuration
+# [RESEARCH_INSTITUTION] Arctic Research - Zero-Curtain Detection Project
+# Author: [RESEARCHER]
+
+# Data Source Configuration
+source:
+  stac_url: "https://stac.pgc.umn.edu/api/v1/collections/arcticdem-mosaics-v4.1-2m/items"
+  native_resolution: 2.0  # meters
+  coverage_crs: "EPSG:3413"  # NSIDC Polar Stereographic North
+  output_crs: "EPSG:4326"  # WGS84 Geographic
+
+# Processing Configuration
+processing:
+  target_resolution: 30.0  # meters
+  gaussian_sigma: 1.0  # Fixed for computational efficiency
+  nodata_value: -9999
+  compression: "lzw"
+  tile_size: 512  # Block size for tiled output
+  
+  # Terrain-aware resampling parameters
+  resampling:
+    method: "terrain_adaptive"
+    slope_weight: true
+    edge_computation: true
+
+# Performance Configuration
+performance:
+  # Acquisition settings
+  acquisition:
+    max_workers: 32
+    batch_size: 32
+    max_batches: 6
+    max_runtime: 10800  # 3 hours in seconds
+    retry_attempts: 5
+    retry_backoff: 0.5
+    
+  # Processing settings
+  processing:
+    max_workers: 8
+    parallel_enabled: true
+    memory_limit_gb: 16
+    
+  # Consolidation settings
+  consolidation:
+    max_workers: 8
+    batch_size: 50
+    checkpoint_interval: 10
+    row_group_size: 100000
+
+# Directory Structure
+directories:
+  # Adjust these to be relative to the arcticdem root, not the config directory
+  output_dir: "processed"
+  temp_dir: "temp"
+  batch_dir: "batches"
+  final_output: "arcticdem_consolidated.parquet"
+  
+  # Checkpoints and Logs
+  checkpoint_dir: "../../../checkpoints/arcticdem"
+  log_dir: "../../../logs/arcticdem"
+  
+  # Metadata
+  metadata_file: "metadata.json"
+
+# Checkpoint Configuration
+checkpoints:
+  enabled: true
+  auto_resume: true
+  save_interval: 10  # Save every N batches
+  retention_days: 30  # Keep checkpoints for 30 days
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  rotation: true
+  max_file_size_mb: 100
+  backup_count: 5
+
+# Quality Assurance
+quality:
+  # Validation thresholds
+  validation:
+    min_latitude: 60.0  # Arctic region
+    max_latitude: 90.0
+    min_longitude: -180.0
+    max_longitude: 180.0
+    min_elevation: -500.0  # Ocean depth
+    max_elevation: 5000.0  # Highest peaks
+    max_duplicate_ratio: 0.5
+    
+  # Data integrity checks
+  integrity:
+    check_nodata: true
+    check_spatial_coverage: true
+    check_coordinate_validity: true
+    check_elevation_range: true
+
+# Integration Settings
+integration:
+  # SMAP downscaling parameters
+  smap:
+    pixel_size_km: 9.0
+    query_radius_km: 4.5  # Half of pixel size
+    interpolation_method: "kriging"
+    
+  # Kriging configuration
+  kriging:
+    distance_scale_deg: 0.1  # Characteristic distance scale
+    elevation_scale_m: 100.0  # Characteristic elevation scale
+    combine_weights: true
+
+# Metadata
+metadata:
+  pipeline_version: "1.0.0"
+  data_source: "ArcticDEM v4.1"
+  processing_date: null  # Auto-populated
+  contact: "[RESEARCHER], [RESEARCH_INSTITUTION] Arctic Research"
+  
+  # Data provenance
+  provenance:
+    source_url: "https://www.pgc.umn.edu/data/arcticdem/"
+    citation: "Porter, C., et al. (2018). ArcticDEM. Harvard Dataverse."
+    doi: "10.7910/DVN/OHHUKH"
+    license: "CC BY 4.0"
+
+# Testing Configuration
+testing:
+  dry_run_enabled: true
+  synthetic_data:
+    num_tiles: 3
+    tile_size_px: 100
+    test_resolution_m: 2.0
+    random_seed: 42
+  
+  # Test thresholds
+  thresholds:
+    min_pass_rate: 1.0  # All tests must pass
+    max_error_rate: 0.0
+
+# Error Handling
+error_handling:
+  retry_on_failure: true
+  max_retries: 3
+  continue_on_error: false  # Fail-fast approach
+  cleanup_on_error: true
+  
+  # Notification settings (future implementation)
+  notifications:
+    enabled: false
+    email: null
+    slack_webhook: null
+
+# Resource Monitoring
+monitoring:
+  enabled: true
+  metrics:
+    - "cpu_usage"
+    - "memory_usage"
+    - "disk_usage"
+    - "network_throughput"
+    - "processing_rate"
+  
+  # Alert thresholds
+  alerts:
+    max_cpu_percent: 95
+    max_memory_percent: 90
+    min_disk_gb: 50
+    max_error_rate_percent: 5
+
+# Advanced Configuration
+advanced:
+  # Memory optimization
+  memory:
+    garbage_collection_enabled: true
+    gc_interval_batches: 5
+    chunk_size_mb: 100
+    
+  # Parallel processing
+  parallel:
+    use_threading: true
+    use_multiprocessing: true
+    max_queue_size: 100
+    timeout_seconds: 3600
+    
+  # Data compression
+  compression:
+    intermediate_compression: "lzw"
+    final_compression: "snappy"
+    compression_level: 6
+
+# Development Settings
+development:
+  debug_mode: false
+  verbose_logging: false
+  save_intermediate: false
+  profile_performance: false
+  test_mode: false

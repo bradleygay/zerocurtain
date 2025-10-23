@@ -2223,66 +2223,78 @@ class TeacherForcingTrainer(ZeroCurtainTrainer):
         plt.show()
 
 def load_and_preprocess_data(parquet_file):
-    """Load and preprocess the zero-curtain dataset with comprehensive outlier handling."""
+    """
+    Load and preprocess zero-curtain dataset.
     
+    Args:
+        parquet_file: Path to parquet file
+        
+    Returns:
+        pd.DataFrame: Preprocessed dataset
+    """
+    
+    from pathlib import Path  # Add this line
+
     print("Loading zero-curtain dataset...")
     
+    # Convert to absolute path if relative
+    if not Path(parquet_file).is_absolute():
+        project_root = Path(__file__).parent.parent.parent
+        parquet_file = project_root / parquet_file
+    
     # Check if file exists
-    if not os.path.exists(parquet_file):
+    if not Path(parquet_file).exists():
         print(f" File not found: {parquet_file}")
-        print("Looking for alternative file paths...")
         
-        # Try different possible paths
-        possible_paths = [
-            parquet_file,
-            os.path.join(os.getcwd(), "zero_curtain_enhanced_cryogrid_physics_dataset.parquet"),
-            os.path.join(os.path.dirname(__file__), "zero_curtain_enhanced_cryogrid_physics_dataset.parquet"),
-            "/Users/bradleygay/part1_output/zero_curtain_enhanced_cryogrid_physics_dataset.parquet",
+        # Try alternative locations
+        print("Looking for alternative file paths...")
+        alternatives = [
+            Path(parquet_file).name,  # Just the filename in current dir
+            Path(__file__).parent.parent.parent / 'outputs/part1_pinszc/consolidated_datasets' / Path(parquet_file).name,
+            Path.home() / 'Downloads' / Path(parquet_file).name,
         ]
         
-        # Look for any parquet files in current directory
-        current_dir_parquets = [f for f in os.listdir('.') if f.endswith('.parquet')]
-        if current_dir_parquets:
-            print(f"Found parquet files in current directory: {current_dir_parquets}")
-            possible_paths.extend([os.path.join('.', f) for f in current_dir_parquets])
-        
-        # Try each path
-        found_file = None
-        for path in possible_paths:
-            if os.path.exists(path):
-                found_file = path
+        found = False
+        for alt_path in alternatives:
+            if Path(alt_path).exists():
+                parquet_file = alt_path
+                print(f" Found file at: {parquet_file}")
+                found = True
                 break
         
-        if found_file:
-            print(f" Using file: {found_file}")
-            parquet_file = found_file
-        else:
+        if not found:
             print(" No valid parquet file found!")
-            print("Please ensure you have the zero-curtain dataset file in one of these locations:")
-            for path in possible_paths:
-                print(f"  - {path}")
-            
-            # Create sample data for demonstration
-            # print(" Creating sample dataset for demonstration...")
-            # return create_sample_dataset()
+            print("Please ensure you have the zero-curtain dataset file in:")
+            print(f"  - outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet")
+            raise FileNotFoundError(f"Cannot find dataset file: {parquet_file}")
+    
+    # Try loading with different methods
+    df_pd = None
     
     try:
-        # Load with Dask
-        df = dd.read_parquet(parquet_file)
-        
-        # Convert to pandas for processing (sample if too large)
+        # Try dask first for large files
+        import dask.dataframe as dd
+        print("Attempting to load with Dask...")
+        df = dd.read_parquet(str(parquet_file))
         print("Converting to pandas DataFrame...")
         df_pd = df.compute()
-        
+        print(f" Loaded {len(df_pd):,} rows with Dask")
+    
     except Exception as e:
-        print(f"Error loading with Dask: {e}")
+        print(f"Dask loading failed: {e}")
         print("Trying with pandas...")
+        
         try:
-            df_pd = pd.read_parquet(parquet_file)
+            df_pd = pd.read_parquet(str(parquet_file))
+            print(f" Loaded {len(df_pd):,} rows with pandas")
+        
         except Exception as e2:
-            print(f"Error loading with pandas: {e2}")
-            # print("Creating sample dataset for demonstration...")
-            # return create_sample_dataset()
+            print(f"Pandas loading failed: {e2}")
+            raise RuntimeError(f"Cannot load parquet file with either Dask or pandas: {parquet_file}")
+    
+    # Verify df_pd was loaded
+    if df_pd is None or len(df_pd) == 0:
+        raise RuntimeError("Dataset is empty or failed to load")
     
     print(f"Dataset shape before cleaning: {df_pd.shape}")
     print(f"Memory usage: {df_pd.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
@@ -2502,7 +2514,7 @@ def custom_collate_fn(batch):
     targets = torch.stack([item['targets'] for item in batch])
     sequence_lengths = torch.stack([item['sequence_length'] for item in batch])
     
-    # CRITICAL: Keep metadata as list of dicts (don't let default collate mess it up)
+    # CRITICAL: Keep metadata as list of dicts...
     metadata = [item['metadata'] for item in batch]
     
     # Handle temporal patterns if present
@@ -2673,7 +2685,7 @@ def calculate_optimal_sequence_length(df, target_temporal_coverage='seasonal'):
             "Need: 'start_time' or equivalent temporal column".format(list(df.columns))
         )
 
-def main(config_path='../config/part2_config.yaml'):
+def main(config_path='config/part2_config.yaml'):
     """
     Main training pipeline for Part II: GeoCryoAI Teacher Forcing.
     
@@ -2687,56 +2699,21 @@ def main(config_path='../config/part2_config.yaml'):
     print("=" * 60)
     
     # Load configuration
-    from src.part2_geocryoai.config_loader import load_config
+    from src.part2_geocryoai.config_loader import load_config, get_default_config
     
-    try:
-        config = load_config(config_path)
-        print(f" Configuration loaded from: {config_path}")
-    except FileNotFoundError:
-        print(f"  Configuration file not found: {config_path}")
+    config = load_config(config_path)
+    
+    if config is None:
         print("Using default configuration...")
-        
-        # Fallback to hardcoded config
-        config = {
-            'data': {
-                'parquet_file': "./outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet",
-                'batch_size': 128,
-                'temporal_coverage': 'seasonal'
-            },
-            'training': {
-                'epochs': 25,
-                'learning_rate': 1e-4
-            },
-            'model': {
-                'd_model': 128,
-                'n_heads': 4,
-                'n_layers': 2,
-                'liquid_hidden': 64,
-                'dropout': 0.1,
-                'geocryoai': {
-                    'enabled': True,
-                    'spatial_threshold_km': 50.0
-                },
-                'pattern_analysis': {
-                    'enabled': True
-                }
-            },
-            'teacher_forcing': {
-                'enabled': True,
-                'initial_ratio': 0.9,
-                'curriculum_schedule': 'exponential'
-            },
-            'explainability': {
-                'enabled': True
-            },
-            'output': {
-                'save_dir': './outputs',
-                'models_dir': './outputs/part2_geocryoai/models'
-            }
-        }
+        config = get_default_config()
+    
+    # Ensure output directory exists
+    import os
+    os.makedirs(config['output']['models_dir'], exist_ok=True)
     
     # CHECK FOR EXISTING MODEL FIRST - BEFORE ANY HEAVY PROCESSING
-    best_model_path = config['output']['models_dir'] + '/best_model.pth'
+    best_model_path = os.path.join(config['output']['models_dir'], 'best_model.pth')
+    
     if os.path.exists(best_model_path):
         print(f" Found existing model at {best_model_path}")
         print(" Skipping data loading and preprocessing - using cached model")
@@ -2773,7 +2750,7 @@ def main(config_path='../config/part2_config.yaml'):
         
         # Load PINSZC ground truth from Part I
         pinszc_path = config['data'].get('pinszc_ground_truth', 
-                                         './outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
+                                         'outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet')
         
         if os.path.exists(pinszc_path):
             print(f" Loading PINSZC ground truth from: {pinszc_path}")
@@ -2807,7 +2784,7 @@ def main(config_path='../config/part2_config.yaml'):
     else:
         print(" No existing model found - starting fresh training...")
         
-        # Load and preprocess data - CORRECTED
+        # Load and preprocess data
         df = load_and_preprocess_data(config['data']['parquet_file'])
         
         # Calculate optimal sequence length
@@ -2857,7 +2834,7 @@ def main(config_path='../config/part2_config.yaml'):
         
         # Load PINSZC ground truth from Part I
         pinszc_path = config['data'].get('pinszc_ground_truth', 
-                                         './outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet')
+                                         'outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet')
         
         if os.path.exists(pinszc_path):
             print(f" Loading PINSZC ground truth from: {pinszc_path}")
@@ -2916,7 +2893,8 @@ def main(config_path='../config/part2_config.yaml'):
                 if shap_values is not None:
                     # Plot SHAP summary
                     shap.summary_plot(shap_values, features=train_dataset.feature_columns, show=False)
-                    plt.savefig('./models/shap_summary.png', dpi=300, bbox_inches='tight')
+                    plt.savefig(os.path.join(config['output']['models_dir'], 'shap_summary.png'), 
+                               dpi=300, bbox_inches='tight')
                     plt.show()
             except Exception as e:
                 print(f"SHAP explanation failed: {e}")
@@ -2934,7 +2912,8 @@ def main(config_path='../config/part2_config.yaml'):
         'targets_extent': test_results['targets'][:, 2]
     })
     
-    results_df.to_csv('./models/test_predictions.csv', index=False)
+    results_path = os.path.join(config['output']['models_dir'], 'test_predictions.csv')
+    results_df.to_csv(results_path, index=False)
     
     # Create prediction plots
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
@@ -2950,16 +2929,18 @@ def main(config_path='../config/part2_config.yaml'):
         ax.set_title(f'{name} Predictions')
         
         # Calculate R²
+        from sklearn.metrics import r2_score
         r2 = r2_score(test_results['targets'][:, i], test_results['predictions'][:, i])
         ax.text(0.05, 0.95, f'R² = {r2:.3f}', transform=ax.transAxes,
                 bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     plt.tight_layout()
-    plt.savefig('./models/prediction_scatter_plots.png', dpi=300)
+    plot_path = os.path.join(config['output']['models_dir'], 'prediction_scatter_plots.png')
+    plt.savefig(plot_path, dpi=300)
     plt.show()
     
     print(" Analysis completed successfully!")
-    print(f" Results saved in './models/' directory")
+    print(f" Results saved in '{config['output']['models_dir']}' directory")
     
     return trainer, test_results
 

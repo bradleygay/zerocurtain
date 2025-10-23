@@ -122,9 +122,9 @@ from src.utils.utilities import *
 #     return cartesian_to_haversine_distance(distances)
 
 # def calculate_optimal_batch_size(total_points, available_memory_mb=None):
-#     """Calculate optimal batch size based on available memory and dataset size."""
+# """Calculate optimal batch size based on available...
 #     if available_memory_mb is None:
-#         # Use 20% of available memory if not specified (to leave room for parallelism)
+# # Use 20% of available memory if...
 #         available_memory_mb = psutil.virtual_memory().available / (1024 * 1024) * 0.2
     
 #     # Estimate memory per point (assuming float64 coordinates and distances)
@@ -186,7 +186,7 @@ from src.utils.utilities import *
 #     if batch_size is None:
 #         batch_size = calculate_optimal_batch_size(n_points)
     
-#     # Adjust batch size to create a reasonable number of batches (target ~200 batches)
+# # Adjust batch size to create a...
 #     if n_points / batch_size > 200:
 #         batch_size = max(batch_size, n_points // 200)
     
@@ -252,7 +252,7 @@ from src.utils.utilities import *
 #                 print(f"Processing batches in parallel with {n_jobs} jobs")
                 
 #                 # Process in smaller chunks to avoid memory issues
-#                 chunk_size = min(20, len(remaining_batch_indices))  # Smaller chunks for better mo...
+# chunk_size = min(20, len(remaining_batch_indices)) # Smaller chunks...
 #                 num_chunks = int(np.ceil(len(remaining_batch_indices) / chunk_size))
                 
 #                 for chunk_idx in range(num_chunks):
@@ -330,7 +330,7 @@ from src.utils.utilities import *
             
 #             # Load checkpoints in chunks to avoid memory issues
 #             all_batches = sorted(list(range(num_batches)))
-#             chunk_size = min(1000, num_batches)  # Adjust based on available memory
+# chunk_size = min(1000, num_batches) # Adjust based...
 #             num_chunks = int(np.ceil(len(all_batches) / chunk_size))
             
 #             all_distances = []
@@ -587,7 +587,7 @@ def calculate_spatial_density(latitudes, longitudes, k=5, leaf_size=40, batch_si
     if batch_size is None:
         batch_size = calculate_optimal_batch_size(n_points)
     
-    # Adjust batch size to create a reasonable number of batches (target ~200 batches)
+    # Adjust batch size to create a reasonable...
     if n_points / batch_size > 200:
         batch_size = max(batch_size, n_points // 200)
     
@@ -1079,7 +1079,7 @@ def stratified_spatiotemporal_split(X, y, metadata, test_size=0.2, val_size=0.15
         
 #         # Verify weights array
 #         if self.weights is not None:
-#             assert len(self.weights) == len(self.indices), "Weights array must match indices lengt...
+# assert len(self.weights) == len(self.indices), "Weights array must...
         
 #         # Load as memory-mapped arrays
 #         self.X = np.load(self.X_file, mmap_mode='r')
@@ -1251,7 +1251,7 @@ gc.collect()
 #             np.random.shuffle(self.indices_array)
 
 # Data paths
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 X_file = os.path.join(data_dir, 'X_features.npy')
 y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -1312,23 +1312,23 @@ gc.collect()
 
 # print(f"Training complete. Final model saved to: {final_model_path}")
 
-# All 3,703,206 test sequences were predicted as negative (not zero-curtain events) by the AI model,...
-# The model probabilities are all very low (the highest value shown is 0.154322), well below the 0.5...
-# There's 100% agreement between the physical detection method and the AI model because all sequence...
+# All 3,703,206 test sequences were predicted as...
+# The model probabilities are all very low...
+# There's 100% agreement between the physical detection...
 
 # This situation raises important considerations:
 
-# Class Imbalance: The test set appears to contain only negative examples (non-zero-curtain events) ...
-# Model Calibration: The AI model is correctly predicting all negatives, but with very low confidenc...
-# Evaluation Limitation: Without any positive examples in our test set, metrics like precision, reca...
+# Class Imbalance: The test set appears to...
+# Model Calibration: The [AUTOMATED_TOOL] is correctly predicting...
+# Evaluation Limitation: Without any positive examples in...
 
 # To get a more comprehensive evaluation:
 
-# We should verify if the original test set contains any positive examples according to the physical...
-# If there are truly no positives in the test set, we should consider restructuring the test set to ...
-# We should extend our analysis to include training and validation sets, which may contain positive ...
+# We should verify if the original test...
+# If there are truly no positives in...
+# We should extend our analysis to include...
 
-# This result suggests a potential issue with either the test set sampling or with the original phys...
+# This result suggests a potential issue with...
 
 # Custom data generator
 from tensorflow.keras.utils import Sequence
@@ -1742,7 +1742,7 @@ class PhysicsLayer(tf.keras.layers.Layer):
 # Implement learning rate scheduling
 # Use different loss functions (e.g., focal loss for imbalanced data)
 # Increase training epochs with better early stopping
-# Add class weights to handle imbalance (high recall but low precision suggests imbalance)
+# Add class weights to handle imbalance (high...
 
 # Data Handling:
 # Add more data augmentation specific to time series

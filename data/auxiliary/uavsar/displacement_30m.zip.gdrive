@@ -1,0 +1,9 @@
+{
+  "original_filename": "displacement_30m.zip",
+  "original_path": "data/auxiliary/uavsar/displacement_30m.zip",
+  "gdrive_file_id": "1nYIFnUHFH7Y61MWHy_JxtsswFyC956NH",
+  "gdrive_folder": "1hI2D7wMeLw_DxcD_huOoBWCxmsCnQF0g",
+  "file_size_bytes": 2571000,
+  "type": "zip_archive",
+  "extract_to": "data/auxiliary/uavsar/displacement_30m"
+}

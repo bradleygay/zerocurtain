@@ -1,0 +1,95 @@
+# arctic_config.yaml
+# Configuration for Unified Arctic Remote Sensing Pipeline
+
+# ============================================================================
+# GEOGRAPHIC CONSTRAINTS
+# ============================================================================
+circumarctic_bounds:
+  min_lon: -180.0
+  max_lon: 180.0
+  min_lat: 49.0    # Southern boundary of Arctic domain
+  max_lat: 90.0    # North Pole
+
+# ============================================================================
+# DIRECTORY STRUCTURE
+# ============================================================================
+acquisition_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/raw
+interferogram_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/interferograms
+displacement_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/displacement_30m
+output_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/consolidated
+
+# ============================================================================
+# INPUT DATA PATHS
+# ============================================================================
+# UAVSAR/NISAR acquisition
+#geojson_filter: /path/to/filtered_uavsar_swaths.geojson  # Optional
+#flight_info_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/uavsar_wget_parallel.txt
+#flight_lines_filter: /path/to/flight_lines_cleaned.txt  # Optional
+
+# SMAP data
+smap_master_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/smap/smap.parquet
+
+# ============================================================================
+# OUTPUT
+# ============================================================================
+final_output_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/remote_sensing/final_arctic_consolidated.parquet
+
+# ============================================================================
+# PROCESSING PARAMETERS
+# ============================================================================
+max_workers: 8
+target_resolution_m: 30
+snaphu_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/snaphu-v1.4.2/bin/snaphu
+
+# ============================================================================
+# QUALITY CONTROL THRESHOLDS
+# ============================================================================
+# Displacement (meters)
+displacement_min_m: -10.0   # Maximum subsidence
+displacement_max_m: 10.0    # Maximum uplift
+coherence_threshold: 0.4
+valid_pixel_fraction: 0.2
+
+# Soil temperature (Celsius)
+temperature_min_c: -60.0
+temperature_max_c: 60.0
+
+# Soil moisture (fraction 0-1)
+moisture_min_frac: 0.0
+moisture_max_frac: 1.0
+
+# ============================================================================
+# SPATIAL-TEMPORAL JOIN PARAMETERS
+# ============================================================================
+temporal_window_days: 3       # Maximum time difference for matching
+spatial_tolerance_m: 100      # Maximum spatial distance for matching
+
+# ============================================================================
+# PIPELINE CONTROL
+# ============================================================================
+skip_existing: true                  # Skip already processed data
+require_complete_records: true       # CRITICAL: Reject records with null values
+log_level: INFO                      # DEBUG, INFO, WARNING, ERROR
+
+# ============================================================================
+# SNAPHU CONFIGURATION
+# ============================================================================
+snaphu_timeout_seconds: 3600
+snaphu_tile_size: 512
+snaphu_cost_mode: SMOOTH
+snaphu_init_method: MCF
+
+# ============================================================================
+# PERFORMANCE TUNING
+# ============================================================================
+batch_size_acquisition: 20
+batch_size_processing: 5
+memory_limit_gb: 64
+use_gpu: false
+
+# ============================================================================
+# DATA RETENTION
+# ============================================================================
+keep_intermediate_products: true
+compress_outputs: true
+compression_level: 9

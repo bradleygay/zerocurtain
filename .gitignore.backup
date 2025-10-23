@@ -1,0 +1,30 @@
+# Large data files
+*.parquet
+*.pth
+*.nc
+*.tif
+*.h5
+*.zip
+*.grd
+
+# Keep placeholders
+!*.gdrive
+
+# Geospatial files
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+venv/

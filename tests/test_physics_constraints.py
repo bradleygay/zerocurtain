@@ -147,7 +147,7 @@ class TestPhysicsInformedLoss:
         
         assert torch.isfinite(torch.tensor(components['total_loss'])), "Total loss should be finite"
         
-        # Total should be at least as large as MSE component (since all weights are positive)
+        # Total should be at least as large...
         assert components['total_loss'] >= components['mse_loss'] * self.criterion.alpha_mse, \
             "Total loss should include MSE component"
     

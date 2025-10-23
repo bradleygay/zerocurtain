@@ -1009,7 +1009,7 @@ def estimate_completion_time(site_count, sites_per_second, max_workers):
 # Example 1: Quick test run with a small batch
 """
 run_high_performance_pipeline(
-    feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+    feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
     output_dir='zero_curtain_moisture_run/events',
     super_batch_size=100,  # Process 100 sites at a time
     max_workers=4  # Use 4 parallel workers
@@ -1025,7 +1025,7 @@ optimal_batch_size = max_workers * 50  # 50 sites per worker
 
 # Run the pipeline
 run_high_performance_pipeline(
-    feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+    feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
     output_dir='zero_curtain_moisture_run/events',
     super_batch_size=optimal_batch_size,
     max_workers=max_workers
@@ -1043,7 +1043,7 @@ with open('pipeline_progress.txt', 'w') as f:
 
 # Run the pipeline
 run_high_performance_pipeline(
-    feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+    feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
     output_dir='zero_curtain_moisture_run/events',
     super_batch_size=500,
     max_workers=None  # Automatically use optimal number of workers
@@ -1090,7 +1090,7 @@ def optimize_settings():
 # """
 # Simple fixed runner for the high-performance zero curtain pipeline
 
-# This version requires no command-line arguments and handles different site_depths formats correctl...
+# This version requires no command-line arguments and...
 # """
 # import os
 # import pandas as pd
@@ -1112,10 +1112,10 @@ def optimize_settings():
 # # === DIRECT RUNNER CODE ===
 # if __name__ == "__main__":
 #     # Configuration settings - EDIT THESE
-#     FEATHER_PATH = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+#     FEATHER_PATH = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
 #     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
 #     MAX_WORKERS = None  # None means auto-determine based on CPU count
-#     SUPER_BATCH_SIZE = None  # None means auto-determine based on system resources
+# SUPER_BATCH_SIZE = None # None means auto-determine...
 #     MAX_GAP_HOURS = 8
 #     INCLUDE_MOISTURE = True
 #     ESTIMATE_ONLY = False  # Set to True to only estimate without running
@@ -1192,7 +1192,7 @@ def optimize_settings():
 
 #     # Run with simple confirmation
 #     if remaining_count > 1000:
-#         confirm = input(f"This will process {remaining_count} sites. Continue? (y/n): ")
+# confirm = input(f"This will process {remaining_count} sites....
 #         if confirm.lower() != 'y':
 #             print("Aborting pipeline run.")
 #             import sys
@@ -1278,7 +1278,7 @@ def optimize_settings():
         
 #         # Confirm before running
 #         if remaining_count > 1000:
-#             confirm = input("This will process a large number of sites. Continue? (y/n): ")
+# confirm = input("This will process a large...
 #             if confirm.lower() != 'y':
 #                 print("Aborting pipeline run.")
 #                 sys.exit(0)
@@ -1298,15 +1298,15 @@ def optimize_settings():
 
 # # Directly run the high-performance pipeline without command-line arguments
 
-# # Copy and paste the entire optimized-pipeline code here, then add this execution code at the end:
+# # Copy and paste the entire optimized-pipeline...
 
 # # ---- Direct execution without command-line arguments ----
 # if __name__ == "__main__":
 #     # Configuration settings - EDIT THESE
-#     FEATHER_PATH = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+#     FEATHER_PATH = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
 #     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
 #     MAX_WORKERS = None  # None means auto-determine based on CPU count
-#     SUPER_BATCH_SIZE = None  # None means auto-determine based on system resources
+# SUPER_BATCH_SIZE = None # None means auto-determine...
 #     MAX_GAP_HOURS = 8
 #     INCLUDE_MOISTURE = True
 #     ESTIMATE_ONLY = False  # Set to True to only estimate without running
@@ -1377,7 +1377,7 @@ def optimize_settings():
 
 #     # Run with simple confirmation
 #     if remaining_count > 1000:
-#         confirm = input(f"This will process {remaining_count} sites. Continue? (y/n): ")
+# confirm = input(f"This will process {remaining_count} sites....
 #         if confirm.lower() != 'y':
 #             print("Aborting pipeline run.")
 #             import sys
@@ -1396,15 +1396,15 @@ def optimize_settings():
 
 # # Directly run the high-performance pipeline without command-line arguments
 
-# # Copy and paste the entire optimized-pipeline code here, then add this execution code at the end:
+# # Copy and paste the entire optimized-pipeline...
 
 # # ---- Direct execution without command-line arguments ----
 # if __name__ == "__main__":
 #     # Configuration settings - EDIT THESE
-#     FEATHER_PATH = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+#     FEATHER_PATH = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
 #     OUTPUT_DIR = 'zero_curtain_moisture_run/events'
 #     MAX_WORKERS = None  # None means auto-determine based on CPU count
-#     SUPER_BATCH_SIZE = None  # None means auto-determine based on system resources
+# SUPER_BATCH_SIZE = None # None means auto-determine...
 #     MAX_GAP_HOURS = 8
 #     INCLUDE_MOISTURE = True
 #     ESTIMATE_ONLY = False  # Set to True to only estimate without running
@@ -1475,7 +1475,7 @@ def optimize_settings():
 
 #     # Run with simple confirmation
 #     if remaining_count > 1000:
-#         confirm = input(f"This will process {remaining_count} sites. Continue? (y/n): ")
+# confirm = input(f"This will process {remaining_count} sites....
 #         if confirm.lower() != 'y':
 #             print("Aborting pipeline run.")
 #             import sys

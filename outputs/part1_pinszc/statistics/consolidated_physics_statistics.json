@@ -1,0 +1,112 @@
+{
+  "dataset_info": {
+    "total_events": 54418117,
+    "total_sites": 713,
+    "total_sources": 727,
+    "generation_timestamp": "2025-10-19T10:55:59.000252"
+  },
+  "spatial_coverage": {
+    "latitude_range": [
+      49.416667,
+      81.579583
+    ],
+    "longitude_range": [
+      -178.93,
+      179.283333
+    ],
+    "unique_locations": 713
+  },
+  "temporal_coverage": {
+    "earliest_event": "1891-01-15T12:00:00",
+    "latest_event": "2023-05-31T00:00:00",
+    "time_span_years": 132.3668720054757
+  },
+  "main_features": {
+    "intensity_percentile": {
+      "mean": 0.4177293678020132,
+      "std": 0.0931025622233733,
+      "min": 0.11214619080386687,
+      "max": 0.7694764416965296,
+      "median": 0.3694274280408975,
+      "q25": 0.36249767540135297,
+      "q75": 0.4858466205566588
+    },
+    "duration_hours": {
+      "mean": 934.7611880065604,
+      "std": 6606.433297650758,
+      "min": 24.0,
+      "max": 2059008.0,
+      "median": 96.0,
+      "q25": 72.0,
+      "q75": 240.0
+    },
+    "spatial_extent_meters": {
+      "mean": 1.6393215745899739,
+      "std": 0.669767541544619,
+      "min": 0.1524656295879658,
+      "max": 5.0,
+      "median": 1.3175200713165331,
+      "q25": 1.1502425420653541,
+      "q75": 1.9513031922206185
+    }
+  },
+  "physics_features": {
+    "phase_change_energy": {
+      "mean": 607384624.9754113,
+      "std": 238144387.14224738,
+      "non_null_count": 54408431
+    },
+    "freeze_penetration_depth": {
+      "mean": 1.9361485618363155,
+      "std": 0.11113346024813958,
+      "non_null_count": 54408431
+    },
+    "thermal_diffusivity": {
+      "mean": 5.711830013892401e-07,
+      "std": 9.888611464473369e-08,
+      "non_null_count": 54408431
+    },
+    "snow_insulation_factor": {
+      "mean": 0.12772874669263568,
+      "std": 0.10492461400750605,
+      "non_null_count": 54408431
+    }
+  },
+  "categorical_distributions": {
+    "depth_zone": {
+      "very_deep": 41005856,
+      "shallow": 6768334,
+      "deep": 3400010,
+      "intermediate": 3243917
+    },
+    "permafrost_zone": {
+      "continuous": 11807248,
+      "isolated": 8988628,
+      "sporadic": 7220980,
+      "discontinuous": 1944197
+    },
+    "intensity_category": {
+      "moderate": 42514868,
+      "strong": 11167530,
+      "weak": 717968,
+      "extreme": 17751
+    },
+    "duration_category": {
+      "medium": 21300700,
+      "short": 17386756,
+      "extended": 11437852,
+      "long": 4292809
+    },
+    "extent_category": {
+      "deep": 31218614,
+      "very_deep": 23144731,
+      "moderate": 44744,
+      "shallow": 10028
+    },
+    "season": {
+      "winter": 22525922,
+      "fall": 15946312,
+      "spring": 15945883
+    }
+  }
+}

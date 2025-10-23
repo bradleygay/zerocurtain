@@ -11,7 +11,6 @@ Usage:
         --output outputs/pinszc_dataset.parquet \
         --config configs/detection_config.yaml
 
-Author: Dr. Bradley Gay
 Institution: [REDACTED_AFFILIATION] Arctic Research
 Date: October 2025
 """

@@ -6,8 +6,8 @@ random_seed: 42
 
 # Data Configuration
 data:
-  parquet_file: "../outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
-  pinszc_ground_truth: "../outputs/part1_pinszc/zero_curtain_enhanced_cryogrid_physics_dataset.parquet"
+  parquet_file: "outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet"
+  pinszc_ground_truth: "outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet"
   
   # Train/Val/Test Split
   test_size: 0.2
@@ -28,8 +28,8 @@ model:
   input_features: 21  # Will be determined from dataset
   d_model: 128
   n_heads: 4
-  n_layers: 2
-  liquid_hidden: 64
+  n_layers: 4
+  liquid_hidden: 256
   dropout: 0.1
   
   # GeoCryoAI Configuration
@@ -59,7 +59,7 @@ teacher_forcing:
 training:
   epochs: 25
   learning_rate: 1.0e-4
-  weight_decay: 1.0e-5
+  weight_decay: 0.01
   
   # Loss Function Weights
   loss_weights:
@@ -113,10 +113,10 @@ explainability:
 
 # Output Configuration
 output:
-  save_dir: "./outputs"
-  models_dir: "./outputs/models"
-  predictions_dir: "./outputs/predictions"
-  explainability_dir: "./outputs/explainability"
+  save_dir: "./outputs/part2_geocryoai"
+  models_dir: "./outputs/part2_geocryoai/models"
+  predictions_dir: "./outputs/part2_geocryoai/predictions"
+  explainability_dir: "./outputs/part2_geocryoai/explainability"
   
   # Checkpointing
   save_frequency: 5  # Save checkpoint every N epochs

@@ -1,0 +1,107 @@
+experiment_name: geocryoai_macbook_full_dataset
+random_seed: 42
+
+data:
+  parquet_file: outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet
+  pinszc_ground_truth: outputs/part1_pinszc/consolidated_datasets/physics_informed_zero_curtain_events_COMPLETE.parquet
+  test_size: 0.2
+  val_size: 0.1
+  sequence_length: 30  # Reduced from 90 to fit in memory
+  temporal_coverage: extended_event  # Shorter sequences
+  batch_size: 16  # Small batches for MacBook
+  num_workers: 0  # Single-threaded to avoid memory duplication
+  pin_memory: false
+  prefetch_factor: null
+  persistent_workers: false
+
+model:
+  input_features: 21
+  d_model: 128  # Smaller model
+  n_heads: 4
+  n_layers: 3
+  liquid_hidden: 256
+  dropout: 0.1
+  geocryoai:
+    enabled: false  # Disable for memory savings
+    spatial_threshold_km: 50.0
+    spatial_hidden: 128
+    temporal_hidden: 128
+    num_graph_layers: 4
+  pattern_analysis:
+    enabled: false  # Disable for memory savings
+
+teacher_forcing:
+  enabled: true
+  initial_ratio: 0.9
+  min_ratio: 0.1
+  decay_rate: 0.95
+  curriculum_schedule: exponential
+  decay_epochs: 15
+
+training:
+  epochs: 5  # Short test run
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  gradient_accumulation_steps: 4  # Simulate larger batches
+  loss_weights:
+    alpha_mse: 1.0
+    alpha_physics: 0.1
+    alpha_temporal: 0.05
+    alpha_pattern: 0.0
+  optimizer: adamw
+  scheduler: cosine_annealing
+  scheduler_params:
+    T_0: 10
+    T_mult: 2
+    eta_min: 1.0e-06
+  early_stopping:
+    patience: 15
+    min_delta: 0.001
+  use_amp: false  # MPS doesn't support AMP well
+  amp_dtype: float16
+  max_grad_norm: 1.0
+  checkpoint_frequency: 5
+  save_best_only: true
+  cudnn_benchmark: false
+  deterministic: false
+
+output:
+  save_dir: outputs/part2_geocryoai
+  models_dir: outputs/part2_geocryoai/models
+  predictions_dir: outputs/part2_geocryoai/predictions
+  checkpoints_dir: outputs/part2_geocryoai/checkpoints
+  save_frequency: 5
+  save_best_only: true
+  keep_last_n_checkpoints: 2
+  log_level: INFO
+  log_frequency: 10
+  tensorboard: false
+  wandb:
+    enabled: false
+
+reproducibility:
+  deterministic: false
+  benchmark: false
+  seed_workers: true
+
+compute:
+  device: mps
+  multi_gpu: false
+  gpu_ids: [0]
+  use_data_parallel: false
+  use_distributed: false
+  empty_cache_frequency: 10  # Clear cache frequently
+  max_split_size_mb: 512
+  compile_model: false
+  channels_last: false
+
+monitoring:
+  track_gpu_memory: true
+  track_cpu_memory: true
+  log_system_stats: true
+  log_frequency: 50
+  gpu_memory_threshold: 0.9
+  training_time_estimate: true
+
+explainability:
+  enabled: false

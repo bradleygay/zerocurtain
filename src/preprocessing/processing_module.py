@@ -288,31 +288,21 @@ alt = merged_df[merged_df.thickness_m_standardized.isna()!=True][['datetime', 'y
 smc = merged_df[merged_df.soil_moist.isna()!=True][['datetime', 'year', 'season', 'latitude', 'longitude', 'soil_moist', 'soil_moist_standardized', 'soil_moist_depth', 'source', 'data_type']]
 
 
-
 # merged_df = pd.read_feather('merged_compressed.feather')
 # merged_df
 # datetime	year	season	latitude	longitude	thickness_m	thickness_m_standardized	soil_temp	soil_temp_s...
-# 0	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-10.5	-10.5	0.8	deep	NaN	NaN	NaN	...
-# 1	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	2.4	2.4	3.2	very_deep	NaN	NaN	NaN...
-# 2	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-0.5	-0.5	1.6	very_deep	NaN	NaN	N...
-# 3	1891-01-15 12:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-13.4	-13.4	0.4	intermediate	NaN	...
-# 4	1891-02-14 00:00:00	1891.0	Winter	52.283299	104.300003	NaN	NaN	-11.7	-11.7	0.8	deep	NaN	NaN	NaN	...
+# 0 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 1 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 2 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 3 1891-01-15 12:00:00 1891.0 Winter 52.283299 104.300003...
+# 4 1891-02-14 00:00:00 1891.0 Winter 52.283299 104.300003...
 # ...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
-# 62708663	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	7.59	0.0...
-# 62708664	2024-12-31 00:00:00	2024.0	Winter	63.875800	-149.213350	NaN	NaN	NaN	NaN	NaN	None	0.00	0.0...
-# 62708665	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	4.69	0.0...
-# 62708666	2024-12-31 00:00:00	2024.0	Winter	71.282410	-156.619360	NaN	NaN	NaN	NaN	NaN	None	1.66	0.0...
-# 62708667	2024-12-31 00:00:00	2024.0	Winter	65.154010	-147.502580	NaN	NaN	NaN	NaN	NaN	None	28.13	0....
+# 62708663 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
+# 62708664 2024-12-31 00:00:00 2024.0 Winter 63.875800 -149.213350...
+# 62708665 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
+# 62708666 2024-12-31 00:00:00 2024.0 Winter 71.282410 -156.619360...
+# 62708667 2024-12-31 00:00:00 2024.0 Winter 65.154010 -147.502580...
 # 62708668 rows × 16 columns
-
-
-
-
-
-
-
-
-
 
 
 # # zero_curtain_pipeline.py
@@ -561,11 +551,10 @@ smc = merged_df[merged_df.soil_moist.isna()!=True][['datetime', 'year', 'season'
 #     return events_df
 
 
-
 # FIX ALL DPIS to 300!!!!!!!!!!!
 
 import sys
-sys.path.append("/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts")
+sys.path.append("/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts")
 
 from zero_curtain_standalone import build_zero_curtain_model, BatchNorm5D
 
@@ -578,7 +567,7 @@ input_shape = X.shape[1:]      # (168, 3)
 model = build_zero_curtain_model(input_shape=input_shape)
 
 # Load pretrained weights
-model.load_weights("/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/hybrid_results/ml_model/checkpoints/final_model_weights")
+model.load_weights("/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/hybrid_results/ml_model/checkpoints/final_model_weights")
 
 model.summary()
 
@@ -605,25 +594,12 @@ X.shape
 y.shape
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-with open('/Users/bgay/Desktop/Research/Code/merged_compressed.feather','rb') as f:
+with open('/Users/[USER]/Desktop/Research/Code/merged_compressed.feather','rb') as f:
     data = pd.read_feather(f)
 
 data
 
-#Filter out the exceptional/extreme values for zero-curtain periods derived from preliminary evaluat...
+#Filter out the exceptional/extreme values for zero-curtain periods...
 data = data.drop(index=long_events_summary.index.values.tolist()).sort_values('datetime').reset_index(drop=True)
 
 data
@@ -749,48 +725,7 @@ moisture_data.to_csv('moisture_data_exceptionalzerocurtainperiodfilteredout.csv'
 alt_data.to_csv('alt_data_exceptionalzerocurtainperiodfilteredout.csv', index=False)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-data = pd.read_feather('/Users/bgay/Desktop/Research/Code/merged_compressed.feather')
+data = pd.read_feather('/Users/[USER]/Desktop/Research/Code/merged_compressed.feather')
 
 data['soil_moist']
 
@@ -824,7 +759,7 @@ data['soil_moist'].dropna()
 62708667    28.1300
 Name: soil_moist, Length: 27304593, dtype: float64
 
-#indices to determine other column values for where soil_moist values are present in feather datafra...
+#indices to determine other column values for where...
 
 data['soil_moist'].dropna().index
 
@@ -838,16 +773,15 @@ Index([   40825,    41082,    41083,    41086,    41366,    41367,    41368,
 data.columns
 
 
-
 import os
 import pandas as pd
 import pickle
 import gc
 
 # 1. Define paths
-feather_path = '/Users/bgay/Desktop/Research/Code/merged_compressed.feather'
+feather_path = '/Users/[USER]/Desktop/Research/Code/merged_compressed.feather'
 output_dir = 'zero_curtain_moisture_run'
-new_site_depths_path = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_new/checkpoints/site_depths.pkl'
+new_site_depths_path = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_new/checkpoints/site_depths.pkl'
 
 # 2. Create directory structure
 os.makedirs(output_dir, exist_ok=True)
@@ -900,7 +834,7 @@ print("\nSetup complete. Now run the pipeline below.")
 # print(f"  Starting memory: {memory_usage():.1f} MB")
 
 # events = run_memory_efficient_pipeline_fixed(
-#     feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+#     feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
 #     output_dir='zero_curtain_moisture_run/events',
 #     site_batch_size=10,
 #     checkpoint_interval=5,
@@ -924,7 +858,7 @@ print("\nSetup complete. Now run the pipeline below.")
 # print(f"  Starting memory: {memory_usage():.1f} MB")
 
 # events = run_memory_efficient_pipeline_fixed(
-#     feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+#     feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
 #     output_dir='zero_curtain_moisture_run/events',
 #     site_batch_size=10,
 #     checkpoint_interval=5,
@@ -946,7 +880,7 @@ print("\nSetup complete. Now run the pipeline below.")
 # print(f"  Starting memory: {memory_usage():.1f} MB")
 
 # events = run_ultra_robust_pipeline(
-#     feather_path='/Users/bgay/Desktop/Research/Code/merged_compressed.feather',
+#     feather_path='/Users/[USER]/Desktop/Research/Code/merged_compressed.feather',
 #     output_dir='zero_curtain_moisture_run/events',
 #     site_batch_size=10,
 #     checkpoint_interval=5
@@ -959,15 +893,6 @@ print("\nSetup complete. Now run the pipeline below.")
 # del events
 # for _ in range(3):
 #     gc.collect()
-
-
-
-
-
-
-
-
-
 
 
 # Check intermediate results for moisture data
@@ -986,15 +911,9 @@ for col in moisture_cols:
     print(f"  {col}: {non_null}/{len(events_checkpoint)} non-null values ({pct:.2f}%)")
 
 
-
-events_df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_results_3/events/zero_curtain_events.csv')
+events_df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_results_3/events/zero_curtain_events.csv')
 
 output_dir='zero_curtain_results_3'
-
-
-
-
-
 
 
 if len(events_df) > 0:
@@ -1025,8 +944,7 @@ print(f"Final memory usage: {memory_usage():.1f} MB")
 print("Done!")
 
 
-
-enhanced_events = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events.csv')
+enhanced_events = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events.csv')
 
 print(enhanced_events.columns)
 print(enhanced_events.head())
@@ -1045,9 +963,9 @@ enhanced_events = enhanced_events[['datetime_min', 'datetime_max', 'duration_hou
 
 enhanced_events = enhanced_events.sort_values('datetime_min').reset_index(drop=True)
 
-enhanced_events.to_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv', index=False)
+enhanced_events.to_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv', index=False)
 
-enhanced_events = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv')
+enhanced_events = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv')
 
 enhanced_events.datetime_min = pd.to_datetime(enhanced_events.datetime_min,format='mixed')
 enhanced_events.datetime_max = pd.to_datetime(enhanced_events.datetime_max,format='mixed')
@@ -1444,7 +1362,6 @@ fig, stats = create_final_visualization(
 )
 
 
-
 plot_temporal_patterns(enhanced_events)
 
 season_order = pd.CategoricalDtype(categories=['Winter', 'Spring', 'Summer', 'Fall'], ordered=True)
@@ -1468,7 +1385,7 @@ aggfunc='mean'
 depth_order = ['shallow', 'intermediate', 'deep', 'very_deep']
 depth_season_temp = depth_season_temp.reindex(depth_order)
 
-#Modified code above because 'Other' was designated for latitudes >= 50 but in reality, we already f...
+#Modified code above because 'Other' was designated for...
 #enhanced_events[enhanced_events.region=='Other'].region
 
 enhanced_events.loc[enhanced_events.region == 'Other', 'region'] = 'Northern Boreal'
@@ -1478,10 +1395,7 @@ enhanced_events.region.unique()
 # visualizations = create_zero_curtain_analysis(enhanced_events)
 
 
-
-
-
-enhanced_events = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv')
+enhanced_events = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/zero_curtain_events_sorted.csv')
 enhanced_events.datetime_min = pd.to_datetime(enhanced_events.datetime_min,format='mixed')
 enhanced_events.datetime_max = pd.to_datetime(enhanced_events.datetime_max,format='mixed')
 
@@ -1490,15 +1404,6 @@ merged_df = pd.read_feather('merged_compressed.feather')
 enhanced_events
 
 create_visualization_suite(enhanced_events, output_dir='zero_curtain_pipeline/figures/zero_curtain')
-
-
-
-
-
-
-
-
-
 
 
 print("Testing Metal GPU with a simple operation...")
@@ -1522,7 +1427,6 @@ from tensorflow.keras.mixed_precision import set_global_policy
 set_global_policy('mixed_float16')
 
 
-
 #low = pd.to_datetime(events_df.datetime_min, format='mixed').min(); high = pd.to_datetime(events_df...
 #high-low
 
@@ -1542,10 +1446,8 @@ set_global_policy('mixed_float16')
 # )
 
 
-
 # events_df = pd.read_csv('zero_curtain_pipeline/zero_curtain_events.csv', parse_dates=['datetime_mi...
 # print(f"Loaded {len(events_df)} events from existing file")
-
 
 
 merged_df
@@ -1558,7 +1460,7 @@ result = prepare_data_for_deep_learning_efficiently(
     batch_size=50
 )
 
-# #If the code is interrupted above, use the following code to pick up where it left off:
+# #If the code is interrupted above, use...
 # import os
 # import numpy as np
 # import pandas as pd
@@ -1598,7 +1500,6 @@ result = prepare_data_for_deep_learning_efficiently(
 merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 
 
-
 # from tqdm import tqdm
 # import numpy as np
 # from sklearn.neighbors import KernelDensity
@@ -1612,9 +1513,9 @@ merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 #     # Extract spatiotemporal features
 #     timestamps = np.array([meta['start_time'] for meta in metadata])
     
-#     latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is not None else 0 for m...
-#     longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is not None else 0 fo...
-#     depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is not None e...
+# latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is...
+# longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is...
+# depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is...
     
 #     has_geo_info = (np.count_nonzero(latitudes) > 0 and np.count_nonzero(longitudes) > 0)
     
@@ -1666,7 +1567,7 @@ merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 #     weights = 1.0 / (density + 0.01)
 #     weights = weights / np.sum(weights) * len(weights)
     
-#     months = np.array([ts.month if hasattr(ts, 'month') else ts.to_pydatetime().month for ts in ti...
+# months = np.array([ts.month if hasattr(ts, 'month') else...
 #     seasons = np.digitize(months, bins=[3, 6, 9, 12])
     
 #     if has_geo_info:
@@ -1679,7 +1580,7 @@ merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
     
 #     depth_zones = np.digitize(depths_remaining, bins=[0.2, 0.5, 1.0, 2.0])
 #     density_quantiles = np.digitize(density, bins=np.percentile(density, [20, 40, 60, 80]))
-#     strata = seasons * 1000 + regions * 100 + depth_zones * 10 + density_quantiles
+# strata = seasons * 1000 + regions...
 #     unique_strata = np.unique(strata)
     
 #     val_size = int(n_samples * val_fraction)
@@ -1728,7 +1629,7 @@ merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 # # Determine optimal number of jobs based on available CPU cores and memory
 # n_cpus = os.cpu_count()
 # available_memory_gb = psutil.virtual_memory().available / (1024*1024*1024)
-# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb / 8)))  # More conservative
+# recommended_jobs = max(1, min(n_cpus - 1, int(available_memory_gb...
 # print(f"Available CPUs: {n_cpus}, Available memory: {available_memory_gb:.2f} GB")
 # print(f"Recommended parallel jobs: {recommended_jobs}")
 
@@ -1746,18 +1647,15 @@ merge_result = merge_batch_files('zero_curtain_pipeline/modeling/ml_data')
 # print(f"Average nearest neighbor distance: {np.mean(distances[:, 1]):.6f} radians")
 
 
-
-
-
 # WELL LETS TRY THIS AGAIN
 
-output_base_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling'
+output_base_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling'
 data_dir = os.path.join(output_base_dir, 'ml_data')
 X = np.load(os.path.join(data_dir, 'X_features.npy'))
 y = np.load(os.path.join(data_dir, 'y_labels.npy'))
 with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
     metadata = pickle.load(f)
-# y labels are binary, i.e., 0 is False for has_moisture_data and 1 is True for has_moisture_data
+# y labels are binary, i.e., 0 is...
 
 #OLD WAY OF SPLITTING; WE ARE LOOKING INTO SPATIOTEMPORAL SPLITTING NOW
 # from tqdm import tqdm
@@ -1768,9 +1666,9 @@ with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
 # val_fraction=0.15
 # timestamps = np.array([meta['start_time'] for meta in metadata])
 
-# latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is not None else 0 for meta ...
-# longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is not None else 0 for me...
-# depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is not None else ...
+# latitudes = np.array([meta.get('latitude', 0) if meta.get('latitude') is...
+# longitudes = np.array([meta.get('longitude', 0) if meta.get('longitude') is...
+# depths = np.array([meta.get('soil_temp_depth', 0) if meta.get('soil_temp_depth') is...
 # has_geo_info = (np.count_nonzero(latitudes) > 0 and np.count_nonzero(longitudes) > 0)
 # sorted_time_indices = np.argsort(timestamps, kind='mergesort')
 # timestamps = timestamps[sorted_time_indices]
@@ -1834,7 +1732,6 @@ with open("zero_curtain_pipeline/modeling/checkpoints/spatial_density.pkl","rb")
 #spatialdensity.get('weights')
 
 
-
 # ENABLE GPU
 # # Try explicit memory limiting:
 # import tensorflow as tf
@@ -1886,7 +1783,7 @@ test_indices = split_data["test_indices"]
 with open("zero_curtain_pipeline/modeling/checkpoints/spatial_density.pkl", "rb") as f:
     weights_data = pickle.load(f)
 
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 
 # Initialize generators
 X_file = os.path.join(data_dir, 'X_features.npy')
@@ -1916,7 +1813,7 @@ print(f"Positive examples: Train={np.sum(train_y)} ({np.sum(train_y)/len(train_y
 
 # model.summary()
 
-'/Users/bradleygay/new2/'
+'/Users/[USER]/new2/'
 
 # # Create generators
 # train_gen = DataGenerator(X, y, train_indices, batch_size=1024, shuffle=True, weights=sample_weigh...
@@ -1943,7 +1840,6 @@ print(f"Positive examples: Train={np.sum(train_y)} ({np.sum(train_y)/len(train_y
 #     test_gen,
 #     output_signature=(features_signature, label_signature)
 # )
-
 
 
 #LETS CREATE A SAMPLE FIRST
@@ -2206,7 +2102,6 @@ model = build_advanced_zero_curtain_model(input_shape)
 model.summary()
 
 
-
 ################################################################################
 ################################################################################
 ################################################################################
@@ -2303,10 +2198,10 @@ def combine_chunk_predictions(output_dir, train_indices):
     return all_predictions
 
 # Define output directory
-output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
+output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/efficient_model'
 
 # Data paths
-data_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
+data_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'ml_data')
 X_file = os.path.join(data_dir, 'X_features.npy')
 y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -2339,23 +2234,6 @@ evaluation_results = create_model_evaluation_report(output_dir, train_indices, t
 print("Analysis complete! All visualizations and reports saved to:", output_dir)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ################################################################################
 ################################################################################
 ################################################################################
@@ -2368,14 +2246,10 @@ test_dataset = create_optimized_tf_dataset(
 )
 
 
-
-
-
 evaluation = model.evaluate(test_dataset)
 print("Test performance:")
 for metric, value in zip(model.metrics_names, evaluation):
     print(f"  {metric}: {value:.4f}")
-
 
 
 # # Train with extreme memory efficiency 
@@ -2393,19 +2267,10 @@ for metric, value in zip(model.metrics_names, evaluation):
 # print(f"Training complete. Final model saved to: {final_model_path}")
 
 
-
-
-
-
-
-
-
-
-
-#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST - THEN WE CAN RUN THE WHOLE DATASET ABOVE
-#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST - THEN WE CAN RUN THE WHOLE DATASET ABOVE
-#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST - THEN WE CAN RUN THE WHOLE DATASET ABOVE
-#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST - THEN WE CAN RUN THE WHOLE DATASET ABOVE
+#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST -...
+#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST -...
+#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST -...
+#SAMPLE DATA WITH THE ADVANCED ARCHITECTURE FIRST -...
 
 subset_fraction = 0.001
 subset_size = int(len(train_indices) * subset_fraction)
@@ -2497,9 +2362,6 @@ print(report)
 
 print("Confusion Matrix:")
 print(conf_matrix)
-
-
-
 
 
 # Start timing
@@ -2712,43 +2574,7 @@ comparison_df2.to_csv('sequence_comparison_final_nofalsepos_nofalseneg_agreement
 comparison_df = comparison_df2; del comparison_df2
 
 
-
 comparison_df
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Start timing
@@ -2824,7 +2650,7 @@ comparison_data = []
 test_labels = np.zeros(len(test_indices), dtype=int)
 
 processing_start = time.time()
-chunks_file = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/comparison_chunks.csv'
+chunks_file = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/comparison_chunks.csv'
 
 # Clear the chunks file if it exists
 if os.path.exists(chunks_file):
@@ -2937,7 +2763,7 @@ if os.path.exists(chunks_file):
     print(f"False negatives: {comparison_df['false_negative'].sum()}")
     
     # Save the finalized comparison dataframe
-    comparison_df.to_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/sequence_comparison_final.csv', index=False)
+    comparison_df.to_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/sequence_comparison_final.csv', index=False)
 else:
     print("No comparison data was saved, something went wrong during processing.")
 
@@ -2956,16 +2782,9 @@ comparison_df2 = comparison_df[comparison_df.agreement==True][comparison_df[comp
 
 comparison_df2 = comparison_df2.sort_values('start_time').reset_index(drop=True)
 
-comparison_df2.to_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/sequence_comparison_final_nofalsepos_nofalseneg_agreement_sorted.csv',index=False)
+comparison_df2.to_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/sequence_comparison_final_nofalsepos_nofalseneg_agreement_sorted.csv',index=False)
 
 comparison_df = comparison_df2; del comparison_df2
-
-
-
-
-
-
-
 
 
 # Example: Analyze disagreement patterns by depth
@@ -2992,29 +2811,6 @@ from scipy.stats import moran
 
 # Group disagreements by location and test for spatial autocorrelation
 # (implementation would depend on spatial distribution of your data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 model.summary()
@@ -3047,31 +2843,8 @@ del train_gen, val_gen
 gc.collect()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Train model with spatial balancing
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
 os.makedirs(output_dir, exist_ok=True)
 
 model, history, evaluation = train_with_spatial_balancing(
@@ -3090,11 +2863,10 @@ model = build_advanced_zero_curtain_model(input_shape)
 model.summary()
 
 
-
 os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
 
 # Train with spatial balancing using the pre-calculated weights
-output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/spatial_model'
+output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/spatial_model'
 checkpoint_dir = 'zero_curtain_pipeline/modeling/checkpoints'  # Where your spatial density weights are
 
 batch_size = 8
@@ -3108,21 +2880,15 @@ model, history, evaluation = train_with_spatial_balancing(
 )
 
 
-
-
-
-
-
-
-data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 X = np.load(os.path.join(data_dir, 'X_features.npy'))
 y = np.load(os.path.join(data_dir, 'y_labels.npy'))
 with open(os.path.join(data_dir, 'metadata.pkl'), 'rb') as f:
     metadata = pickle.load(f)
 
 # Train with spatial balancing using the pre-calculated weights
-#output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/spatial_model'
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
+#output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/spatial_model'
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
 os.makedirs(output_dir, exist_ok=True)
 checkpoint_dir = 'zero_curtain_pipeline/modeling/checkpoints' #spatial density weights are here
 
@@ -3133,33 +2899,6 @@ model, history, evaluation = train_with_spatial_balancing(
     output_dir=output_dir,
     checkpoint_dir=checkpoint_dir
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # # Compute spatial density
@@ -3208,7 +2947,7 @@ model, history, evaluation = train_with_spatial_balancing(
 # all_distances = []
 
 # for i in range(num_batches):
-#     start, end = i * batch_size, min((i + 1) * batch_size, len(lat_lon_points))
+# start, end = i * batch_size, min((i...
 #     distances, _ = tree.query(lat_lon_points[start:end], k=5)
 #     all_distances.append(distances)
 
@@ -3243,7 +2982,7 @@ batch_size = 5000
 for i in tqdm(range(0, num_elements, batch_size), desc="Adding points to HNSW index"):
     hnsw_index.add_items(cartesian_points[i:i + batch_size])
 
-# Set query parameters (higher `ef` improves accuracy, but increases computation)
+# Set query parameters (higher `ef` improves accuracy,...
 hnsw_index.set_ef(100)
 
 # Query in batches to prevent excessive memory usage
@@ -3261,9 +3000,6 @@ distances = np.vstack(all_distances)
 distances.shape
 
 
-
-
-
 # Advanced spatiotemporal density estimation with computational optimization
 from sklearn.neighbors import KernelDensity
 from scipy.spatial import cKDTree
@@ -3279,19 +3015,19 @@ print(f"Using adaptive depth bandwidth: {depth_bandwidth:.4f}")
 depth_kde = KernelDensity(bandwidth=max(0.1, depth_bandwidth), metric='euclidean')
 depth_kde.fit(depths_remaining.reshape(-1, 1))
 
-# # # Incorporates adaptive bandwidth selection for the KDE based on distribution characteristics
-# # # Adds Arctic-specific geographic weighting to compensate for sparse high-latitude data
-# # # Implements temporal density considerations to balance seasonal representation
-# # # Uses more detailed stratification relevant to permafrost and active layer dynamics
-# # # Applies physically informed weighting for depths typical of zero-curtain formation
+# # # Incorporates adaptive bandwidth selection for...
+# # # Adds Arctic-specific geographic weighting to...
+# # # Implements temporal density considerations to...
+# # # Uses more detailed stratification relevant...
+# # # Applies physically informed weighting for...
 # # # Maintains computational efficiency through batched processing
 # # # Preserves spatiotemporal integrity for your 130-year record
 
-# # # Incorporates adaptive bandwidth selection for the KDE based on distribution characteristics
-# # # Adds Arctic-specific geographic weighting to compensate for sparse high-latitude data
-# # # Implements temporal density considerations to balance seasonal representation
-# # # Uses more detailed stratification relevant to permafrost and active layer dynamics
-# # # Applies physically informed weighting for depths typical of zero-curtain formation
+# # # Incorporates adaptive bandwidth selection for...
+# # # Adds Arctic-specific geographic weighting to...
+# # # Implements temporal density considerations to...
+# # # Uses more detailed stratification relevant...
+# # # Applies physically informed weighting for...
 # # # Maintains computational efficiency through batched processing
 # # # Preserves spatiotemporal integrity for your 130-year record
 
@@ -3306,17 +3042,16 @@ depth_kde.fit(depths_remaining.reshape(-1, 1))
 #     depth_log_density[i:end_idx] = depth_kde.score_samples(batch)
 
 
-
 # # 2. Geographic density with spherical harmonics for Arctic-focused weighting
 # # Emphasize high-latitude regions
 # if np.any(geo_density == 0):
 #     print("Enhancing geographic density estimation...")
 #     # Add latitude-based weighting (Arctic amplification factor)
 #     arctic_weight = np.ones_like(latitudes_remaining)
-#     arctic_weight[latitudes_remaining >= 66.5] *= 0.8  # Reduce density weight for Arctic
-#     arctic_weight[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)] *= 0.9  # Reduce sli...
+# arctic_weight[latitudes_remaining >= 66.5] *= 0.8 # Reduce...
+# arctic_weight[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)]...
     
-#     # Combine with existing geo_density or use as replacement if geo_density is all zeros
+# # Combine with existing geo_density or use...
 #     if np.all(geo_density == 0):
 #         geo_density = arctic_weight
 #     else:
@@ -3334,20 +3069,20 @@ depth_kde.fit(depths_remaining.reshape(-1, 1))
 # temporal_weights = np.array([1.0/max(0.1, month_density[m-1]) for m in timestamps_months])
 # temporal_weights = temporal_weights / np.mean(temporal_weights)  # Normalize
 
-# # 4. Combine multi-dimensional densities with physical understanding of zero-curtain processes
+# # 4. Combine multi-dimensional densities with physical...
 # depth_density = np.exp(depth_log_density)
 # combined_density = geo_density * depth_density
 
 # # Apply multi-scale density normalization for balance across dimensions
 # density = np.sqrt(combined_density)  # Use sqrt to moderate extreme values
-# density = density / np.mean(density) * temporal_weights  # Apply temporal weighting
+# density = density / np.mean(density) * temporal_weights...
 
 # # 5. Generate physically informed weights
 # weights = 1.0 / (density + 0.01)  # Inverse density with stabilizer
 # weights = weights / np.sum(weights) * len(weights)  # Normalize
 
 # # 6. Enhanced stratification with climate zone consideration
-# # More detailed seasonal definition (early/late winter, spring thaw, summer, fall freeze)
+# # More detailed seasonal definition (early/late winter,...
 # months = np.array([ts.month if hasattr(ts, 'month') else 
 #                    ts.to_pydatetime().month if hasattr(ts, 'to_pydatetime') else 1 
 #                    for ts in timestamps[:test_start]])
@@ -3360,16 +3095,16 @@ depth_kde.fit(depths_remaining.reshape(-1, 1))
 # # Arctic-specific regions with permafrost classification
 # regions = np.zeros_like(latitudes_remaining, dtype=int)
 # regions[(latitudes_remaining >= 75)] = 4                      # High Arctic
-# regions[(latitudes_remaining >= 66.5) & (latitudes_remaining < 75)] = 3  # Arctic
-# regions[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)] = 2  # Subarctic
-# regions[(latitudes_remaining >= 50) & (latitudes_remaining < 60)] = 1    # Northern Boreal
+# regions[(latitudes_remaining >= 66.5) & (latitudes_remaining < 75)]...
+# regions[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)]...
+# regions[(latitudes_remaining >= 50) & (latitudes_remaining < 60)]...
 
 # # More detailed depth zones relevant to active layer dynamics
 # depth_zones = np.zeros_like(depths_remaining, dtype=int)
 # depth_zones[depths_remaining <= 0.2] = 1  # Surface zone
-# depth_zones[(depths_remaining > 0.2) & (depths_remaining <= 0.5)] = 2  # Upper active layer
-# depth_zones[(depths_remaining > 0.5) & (depths_remaining <= 1.0)] = 3  # Lower active layer
-# depth_zones[(depths_remaining > 1.0) & (depths_remaining <= 2.0)] = 4  # Top permafrost
+# depth_zones[(depths_remaining > 0.2) & (depths_remaining <= 0.5)]...
+# depth_zones[(depths_remaining > 0.5) & (depths_remaining <= 1.0)]...
+# depth_zones[(depths_remaining > 1.0) & (depths_remaining <= 2.0)]...
 # depth_zones[depths_remaining > 2.0] = 5  # Deep permafrost
 
 # # Density stratification with emphasis on sparse regions
@@ -3387,7 +3122,7 @@ depth_kde.fit(depths_remaining.reshape(-1, 1))
 #         density_quantiles = np.digitize(density, bins=bins)
 
 # # Combined strata with permafrost-focused weighting
-# strata = seasons * 10000 + regions * 1000 + depth_zones * 100 + density_quantiles
+# strata = seasons * 10000 + regions...
 # unique_strata = np.unique(strata)
 # print(f"Created {len(unique_strata)} unique strata for sampling")
 
@@ -3407,7 +3142,7 @@ depth_kde.fit(depths_remaining.reshape(-1, 1))
 #     stratum_weights = weights[stratum_indices]
 #     stratum_weight_sum = np.sum(stratum_weights)
     
-#     # Adaptive validation size based on stratum importance for zero-curtain detection
+# # Adaptive validation size based on stratum...
 #     # Larger validation samples for depths typical of zero-curtain formation
 #     importance_factor = 1.0
 #     stratum_depth_zone = (stratum // 100) % 10
@@ -3454,31 +3189,6 @@ depth_log_density = np.log(depth_kde_values + 1e-10)  # Add small value to avoid
 depth_density = np.exp(depth_log_density)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Depth KDE
 depth_kde = KernelDensity(bandwidth=0.5, metric='euclidean', n_jobs=-1)
 depth_kde.fit(depths_remaining.reshape(-1, 1))
@@ -3488,21 +3198,12 @@ depth_density = np.exp(depth_log_density)
 density = geo_density * depth_density
 
 
-
-
-
-
-
-
-
 arctic_weight = np.ones_like(latitudes_remaining)
 arctic_weight[latitudes_remaining >= 66.5] *= 0.8  # High Arctic reduction
 arctic_weight[(latitudes_remaining >= 60) & (latitudes_remaining < 66.5)] *= 0.9  # Subarctic
 
 # Efficiently apply weighting
 geo_density = geo_density * arctic_weight if np.any(geo_density) else arctic_weight
-
-
 
 
 # Apply Arctic-specific geographic weighting
@@ -3517,11 +3218,6 @@ weights = 1.0 / (density + 0.01)
 weights = weights / np.sum(weights) * len(weights)  # Normalize
 
 
-
-
-
-
-
 from scipy.stats import gaussian_kde
 
 # Convert to float32 for memory efficiency
@@ -3533,18 +3229,6 @@ depth_kde = gaussian_kde(depths_remaining, bw_method=0.5)  # Bandwidth = 0.5
 # Compute KDE in one go (no need for batch processing)
 depth_log_density = depth_kde(depths_remaining)
 depth_density = np.exp(depth_log_density)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Highly optimized cKDTree implementation
@@ -3618,21 +3302,6 @@ else:
 geo_density*depth_density
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 np.unique(np.exp(-distances[:, 1:].mean(axis=1)))
 
 # Query in batches to prevent excessive memory usage
@@ -3668,9 +3337,9 @@ np.unique(geo_density)
 
 #OR
 # # Use inverse distance for density estimation
-# geo_density = 1.0 / (distances[:, 1:].mean(axis=1) + 1)  # Add 1 to avoid division by zero
+# geo_density = 1.0 / (distances[:, 1:].mean(axis=1) +...
 # # Normalize to 0-1 range
-# geo_density = (geo_density - np.min(geo_density)) / (np.max(geo_density) - np.min(geo_density) + 1...
+# geo_density = (geo_density - np.min(geo_density)) / (np.max(geo_density)...
 # geo_density
 #pd.DataFrame(geo_density).plot();
 #geo_density.mean(), geo_density.max(), geo_density.min()
@@ -3695,7 +3364,6 @@ from scipy.spatial import cKDTree
 
 # Create a KD-tree for quick nearest neighbor lookups
 depth_tree = cKDTree(depths_remaining.reshape(-1, 1))
-
 
 
 # Calculate density based on mean distance to neighbors
@@ -3780,23 +3448,6 @@ val_metadata = [metadata[i] for i in train_val_indices[val_indices]]
 print(f"Split sizes: Train={len(X_train)}, Validation={len(X_val)}, Test={len(X_test)}")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #Spatiotemporally-aware data splitting
 
 
@@ -3820,7 +3471,7 @@ print(f"Split sizes: Train={len(X_train)}, Validation={len(X_val)}, Test={len(X_
 # 4. Block Cross-Validation Design
 # Implement block CV with spatiotemporal constraints:
 # Blocks defined by both time windows and spatial regions
-# Ensure validation blocks are separated from training blocks by both space and time buffers
+# Ensure validation blocks are separated from training...
 
 # 5. Variable Importance Weighting
 # Weight samples inversely to their spatial density
@@ -3829,10 +3480,10 @@ print(f"Split sizes: Train={len(X_train)}, Validation={len(X_val)}, Test={len(X_
 #----#
 
 # Density-Aware Sampling: Prevents dense regions from overwhelming the model
-# Multi-dimensional Stratification: Ensures representation across seasons, regions, depths, and dens...
-# Sample Weighting: Provides inverse density weighting to balance spatial representation
+# Multi-dimensional Stratification: Ensures representation across seasons, regions,...
+# Sample Weighting: Provides inverse density weighting to...
 # Temporal Coherence: Maintains temporal progression within strata
-# Comprehensive Reporting: Provides detailed statistics on spatial and temporal coverage
+# Comprehensive Reporting: Provides detailed statistics on spatial...
 
 # This approach addresses the specific challenges you mentioned:
 
@@ -3862,15 +3513,6 @@ model.fit(
 )
 
 X_test
-
-
-
-
-
-
-
-
-
 
 
 import time
@@ -3928,16 +3570,8 @@ with open(os.path.join(output_base_dir, 'sample', 'evaluation.pkl'), 'wb') as f:
 print("Done!")
 
 
-
 # import tensorflow as tf
 # tf.keras.mixed_precision.set_global_policy('mixed_float16')
-
-
-
-
-
-
-
 
 
 # Safe F1 score implementation with error handling
@@ -3967,32 +3601,7 @@ def load_model_from_weights(weights_path, input_shape, build_model_func=None):
     return model
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-model_dir="/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model"
+model_dir="/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model"
 history_file=os.path.join(model_dir, "training_history.json")
 
 with open(history_file, 'rb') as f:
@@ -4023,30 +3632,8 @@ for chunk in history:
 #(5.939471244812012, 7.869218279665802e-06)
 
 
-
 loss=[]
 loss.extend([history[i]['history']['loss'] for i in range(2784)])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 import pandas as pd
@@ -4055,7 +3642,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 # Load merged_df
-merged_df = pd.read_feather('/Users/bgay/Desktop/Research/Code/merged_compressed.feather')
+merged_df = pd.read_feather('/Users/[USER]/Desktop/Research/Code/merged_compressed.feather')
 
 # Load ERA5-Land data (Assuming you downloaded a NetCDF file)
 era5_file = "era5_land_soil.nc"  # Change if using separate files for different years/months
@@ -4125,12 +3712,10 @@ for var in era5_vars:
     merged_df[var] = merged_df.apply(lambda row: extract_era5_value(row, var), axis=1)
 
 # Save the updated dataframe
-merged_df.to_feather('/Users/bgay/Desktop/Research/Code/merged_with_era5.feather')
+merged_df.to_feather('/Users/[USER]/Desktop/Research/Code/merged_with_era5.feather')
 
 # Print a sample
 print(merged_df.head())
-
-
 
 
 # merged_df = pd.read_csv('merged_insitu_dataset.csv')
@@ -4247,7 +3832,6 @@ lat_grid = loaded_data['lat_grid']
 lon_grid = loaded_data['lon_grid']
 
 
-
 quantum_interpreter = QuantumParameterInterpreter({
     'thermal_wavelength': thermal_wavelength,
     'tunneling_probability': tunneling_prob
@@ -4263,7 +3847,7 @@ quantum_interpreter.visualize_enhanced_parameters(
     # Smaller wavelength → Higher temperature, more energetic molecular motion
     # Larger wavelength → Lower temperature, less molecular kinetic energy
 
-# Tunneling: quantifies the likelihood of quantum particles (water molecules) passing through an ene...
+# Tunneling: quantifies the likelihood of quantum particles...
     # Probabilistic Phase Transitions
         # Tunneling = 0 | Lower probability of quantum phase transition
     # Temperature Dependence
@@ -4275,56 +3859,56 @@ quantum_interpreter.visualize_enhanced_parameters(
 # For Soil Temperature (temp):
 
 # Distribution Pattern:
-# The thermal wavelength shows a highly skewed distribution with most values concentrated near zero ...
-# The tunneling probability is strongly biased towards 1.0 (mean ≈ 0.90, median = 1.0)
+# The thermal wavelength shows a highly skewed...
+# The tunneling probability is strongly biased towards...
 
 # Spatial Correlations:
-# There's a strong negative correlation (pearson ≈ -0.96) between thermal wavelength and tunneling p...
-# The spatial heterogeneity is high for thermal wavelength (entropy ≈ 7.68e7) but very low for tunne...
+# There's a strong negative correlation (pearson ≈...
+# The spatial heterogeneity is high for thermal...
 
 
 # For Active Layer Thickness (alt):
 
 # Distribution Pattern:
-# The thermal wavelength is tightly clustered around 1.60e-05 (very small standard deviation ≈ 2.14e...
+# The thermal wavelength is tightly clustered around...
 # The tunneling probability is consistently zero across all measurements
 
 # Spatial Characteristics:
-# No correlation coefficient could be calculated (NaN) due to zero variance in tunneling probability
-# High spatial entropy for thermal wavelength (≈ 4.25e8) suggests complex spatial patterns
+# No correlation coefficient could be calculated (NaN)...
+# High spatial entropy for thermal wavelength (≈...
 
 
 # Key Interpretations:
 
 # Temperature varies more significantly across space than ALT does
 # The ALT measurements show remarkably consistent behavior (tight clustering)
-# The strong negative correlation in temperature data suggests that areas with higher thermal wavele...
-# The spatial patterns suggest that soil temperature has more localized variability while ALT shows ...
+# The strong negative correlation in temperature data...
+# The spatial patterns suggest that soil temperature...
 
 # Temperature Dynamics (temp):
-    # Spatial Distribution: The heatmap (Image 1) shows a distinct spatial pattern with a notable bl...
-    # The bimodal distribution in the tunneling probability (Image 2) suggests two dominant thermal ...
+    # Spatial Distribution: The heatmap (Image 1) shows...
+    # The bimodal distribution in the tunneling probability...
     # Most locations show very high tunneling probability (~1.0)
-    # A smaller but significant set of locations show near-zero tunneling probability
-    # Thermal wavelength distribution (Image 3) is heavily right-skewed, with most values concentrat...
+    # A smaller but significant set of locations...
+    # Thermal wavelength distribution (Image 3) is heavily...
 
 # Active Layer Thickness (alt):
-    # Much more uniform spatial pattern (Image 4) with consistent thermal wavelength values
-    # The tunneling probability distribution (Image 5) shows an extremely concentrated peak at zero
-    # Thermal wavelength (Image 6) shows a sharp peak around 1.6e-5, indicating very consistent ALT ...
+    # Much more uniform spatial pattern (Image 4)...
+    # The tunneling probability distribution (Image 5) shows...
+    # Thermal wavelength (Image 6) shows a sharp...
 
 # Key Correlations and Relationships:
-    # For temperature: The strong negative correlation (-0.96) between thermal wavelength and tunnel...
-        # Areas with higher thermal wavelengths consistently show lower tunneling probabilities
+    # For temperature: The strong negative correlation (-0.96)...
+        # Areas with higher thermal wavelengths consistently show...
         # This suggests potential thermal barriers or phase transitions in these regions
-    # For ALT: The lack of correlation (NaN) and zero tunneling probability suggests:
+    # For ALT: The lack of correlation (NaN)...
         # ALT behavior is more mechanically constrained
         # Less thermal variability in the active layer processes
 
 # Environmental Implications:
     # Temperature shows more spatial heterogeneity than ALT
-    # ALT appears more regionally consistent, suggesting it might be controlled by broader environme...
-    # The high spatial entropy in both measurements indicates complex spatial patterns, but:
+    # ALT appears more regionally consistent, suggesting it...
+    # The high spatial entropy in both measurements...
     # Temperature shows more localized variability (76.8M entropy)
     # ALT shows broader regional patterns (425.1M entropy)
 
@@ -4338,7 +3922,7 @@ quantum_interpreter.visualize_enhanced_parameters(
         # Consistent mean wavelength of 1.6e-5
         # Indicates uniform active layer behavior
 
-# These patterns suggest that while soil temperature varies significantly across space and shows dis...
+# These patterns suggest that while soil temperature...
 # Different controlling factors (local vs regional)
 # Different response times to environmental changes
 # Different sensitivity to local conditions vs broader climate patterns
@@ -4436,13 +4020,6 @@ harmonized_data = integrator.harmonize_data(
 )
 
 
-
-
-
-
-
-
-
 temp_df = pd.read_csv('ZC_data_tempnonans_df.csv')
 temp_df['datetime'] = pd.to_datetime(temp_df['datetime'], errors='coerce', format='mixed')
 
@@ -4454,14 +4031,13 @@ zc_df = pd.read_csv('processor2_df_with_coords_updated.csv')
 # merged_df = pd.read_csv('merged_insitu_dataset.csv')
 
 
-
 # zc_df = pd.read_csv('processor2_df_with_coords_updated.csv')
 
-# site_id	site_name	depth	year	season	depth_zone	start_date	end_date	duration_hours	mean_temp	std_te...
-# 0	Borehole_1657-Eniseisk-Dataset_1900-Average-Mo...	NaN	0.8	1920	Spring	deep	1920-04-15 00:00:00	1...
+# site_id site_name depth year season depth_zone start_date...
+# 0 Borehole_1657-Eniseisk-Dataset_1900-Average-Mo... NaN 0.8 1920 Spring deep...
 # 1	Borehole_1605-Ishim-Dataset_1848-Average-Month...	NaN	0.4	1942	Spring	intermediate	1942-04-15 00...
 # 2	Borehole_1681-Kazachinskoe_expfield-Dataset_19...	NaN	1.6	1945	Spring	very_deep	1945-04-15 00:00...
-# 3	Borehole_1630-Norsk__Norskii_sklad_-Dataset_18...	NaN	0.6	1962	Spring	deep	1962-04-15 00:00:00	1...
+# 3 Borehole_1630-Norsk__Norskii_sklad_-Dataset_18... NaN 0.6 1962 Spring deep...
 # 4	Borehole_1652-Turukhansk-Dataset_1895-Average-...	NaN	0.2	1965	Spring	shallow	1965-04-15 00:00:0...
 # ...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
 # 1047663	Borehole_1867-Kitzsteinhorn_7-Dataset_2146-Ave...	NaN	5.0	2024	Fall	very_deep	2024-11-12 0...
@@ -4474,13 +4050,13 @@ zc_df = pd.read_csv('processor2_df_with_coords_updated.csv')
 # temp_df = pd.read_csv('ZC_data_tempnonans_df.csv')
 # temp_df['datetime'] = pd.to_datetime(temp_df['datetime'], errors='coerce', format='mixed')
 
-# Surface temperature average weight	Number of cloud free observations	datetime	temperature	latitude...
-# 0	NaN	NaN	1915-07-01	17.00	62.000000	129.700000	siberia_Yakutsk_jul	10.0	1915.0	Yakutsk	...	NaN	Na...
-# 1	NaN	NaN	1915-07-01	16.00	62.000000	129.700000	siberia_Yakutsk_jul	11.0	1915.0	Yakutsk	...	NaN	Na...
-# 2	NaN	NaN	1915-07-15	-48.00	62.000000	129.700000	siberia_Yakutsk_jan	11.0	1915.0	Yakutsk	...	NaN	N...
-# 3	NaN	NaN	1915-07-15	-46.00	62.000000	129.700000	siberia_Yakutsk_jan	10.0	1915.0	Yakutsk	...	NaN	N...
-# 4	NaN	NaN	1915-07-15	1.00	62.000000	129.700000	siberia_Yakutsk_jan	0.0	1915.0	Yakutsk	...	NaN	NaN	...
-# ...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+# Surface temperature average weight Number of cloud...
+# 0 NaN NaN 1915-07-01 17.00 62.000000 129.700000...
+# 1 NaN NaN 1915-07-01 16.00 62.000000 129.700000...
+# 2 NaN NaN 1915-07-15 -48.00 62.000000 129.700000...
+# 3 NaN NaN 1915-07-15 -46.00 62.000000 129.700000...
+# 4 NaN NaN 1915-07-15 1.00 62.000000 129.700000...
+# ... ... ... ... ... ... ......
 # 12700489	NaN	NaN	2024-11-15	-4.48	47.189343	12.685295	Borehole_1119-Kitzsteinhorn_1-Dataset_2145-A...
 # 12700490	NaN	NaN	2024-11-15	-0.02	47.189343	12.685295	Borehole_1119-Kitzsteinhorn_1-Dataset_2145-A...
 # 12700491	NaN	NaN	2024-11-15	-2.48	47.189343	12.685295	Borehole_1119-Kitzsteinhorn_1-Dataset_2145-A...
@@ -4628,14 +4204,11 @@ zc_df = pd.read_csv('processor2_df_with_coords_updated.csv')
 #         print(f"Processed windows so far: {len(all_processed_data)}")
         
 #         # Optional: Save intermediate results
-#         if len(all_processed_data) > 0 and len(all_processed_data) % 1000 == 0:
+# if len(all_processed_data) > 0 and len(all_processed_data) %...
 #             print("Saving intermediate results...")
 #             np.save(f'processed_data_{len(all_processed_data)}.npy', all_processed_data)
     
 #     return all_processed_data
-
-
-
 
 
 def process_site_efficiently(site_id, temp_df, zc_df, window_size=30, depth_range=(-2, 20)):
@@ -4786,8 +4359,8 @@ def load_and_combine_batches(data_dir):
 # After all steps, processed_data is a list of dictionaries, where:
 
 # window_data is a 2D NumPy array (30-day × n_depths temperature matrix).
-# has_zero_curtain is a binary label (1 if a zero curtain event is present, otherwise 0).
-# Each dictionary in processed_data corresponds to one time window from a specific site.
+# has_zero_curtain is a binary label (1 if...
+# Each dictionary in processed_data corresponds to one...
 
 # # UPDATE
 
@@ -4795,12 +4368,12 @@ def load_and_combine_batches(data_dir):
 
 # processed_data[i] = {
 #     'window_data': np.array([...]),   # 30-day x n_depths temperature matrix
-#     'has_zero_curtain': 0 or 1,       # Label: 1 = Zero Curtain detected, 0 = No Zero Curtain
-#     'window_start': Timestamp(...),   # Start datetime of the window (first day in 30-day period)
-#     'window_end': Timestamp(...)      # End datetime of the window (last day in 30-day period)
+# 'has_zero_curtain': 0 or 1, # Label: 1...
+# 'window_start': Timestamp(...), # Start datetime of the...
+# 'window_end': Timestamp(...) # End datetime of the...
 # }
 
-# Assume a 30-day temperature window from January 1, 1950, to January 30, 1950, at a specific site w...
+#, at a specific site w...
 
 # processed_data[0] = {
 #     'window_data': np.array([
@@ -4826,14 +4399,13 @@ def load_and_combine_batches(data_dir):
 # The dataset is structured in a way that reflects real-world time evolution.
 # Better Model Generalization
 
-# Since the model trains on earlier years and validates/tests on future years, it mimics real-world ...
+# Since the model trains on earlier years...
 
-# Once processed_data is regenerated with this structure, we sort it by window_start and apply the t...
+# Once processed_data is regenerated with this structure,...
 
-# This ensures that training only uses past data, validation uses intermediate years, and testing ev...
+# This ensures that training only uses past...
 
-# This structured approach results in a realistic, time-aware dataset that properly reflects the phy...
-
+# This structured approach results in a realistic,...
 
 
 with open('processed_data.pkl', 'rb') as f:
@@ -4848,9 +4420,8 @@ processed_data.sort(key=lambda x: x['window_start'])
 all_years = sorted(set(d['window_start'].year for d in processed_data))
 
 
-
 # def create_uniform_datasets(processed_data, n_depths=10, batch_size=32, val_split=0.2):
-#     """Create datasets with uniform dimensions by selecting most common depths"""
+# """Create datasets with uniform dimensions by selecting...
 #     print("Creating uniform datasets...")
     
 #     # First, analyze depth distributions
@@ -4907,9 +4478,8 @@ all_years = sorted(set(d['window_start'].year for d in processed_data))
 # train_dataset, val_dataset, n_depths = create_uniform_datasets(processed_data)
 
 
-
 # def create_time_split_datasets(processed_data, n_depths=10, batch_size=32):
-#     """Split processed data into training, validation, and test sets based on time sequence."""
+# """Split processed data into training, validation, and...
     
 #     print("Sorting data by time...")
 #     for data in processed_data:
@@ -4926,13 +4496,13 @@ all_years = sorted(set(d['window_start'].year for d in processed_data))
 #     val_years = int(0.25 * total_years)
 #     test_years = total_years - train_years - val_years
 
-#     train_cutoff = all_years[train_years - 1]  # Last year included in training
-#     val_cutoff = all_years[train_years + val_years - 1]  # Last year included in validation
+# train_cutoff = all_years[train_years - 1] # Last...
+# val_cutoff = all_years[train_years + val_years - 1]...
 
 #     # Assign data into splits
-#     train_data = [d for d in processed_data if d['window_start'].year <= train_cutoff]
-#     val_data = [d for d in processed_data if train_cutoff < d['window_start'].year <= val_cutoff]
-#     test_data = [d for d in processed_data if d['window_start'].year > val_cutoff]
+# train_data = [d for d in processed_data...
+# val_data = [d for d in processed_data...
+# test_data = [d for d in processed_data...
 
 #     print(f"Train: {len(train_data)} windows (<= {train_cutoff})")
 #     print(f"Validation: {len(val_data)} windows ({train_cutoff} - {val_cutoff})")
@@ -4942,7 +4512,7 @@ all_years = sorted(set(d['window_start'].year for d in processed_data))
 #     target_depths = n_depths  # Use provided depth count
 
 #     def filter_and_format(data):
-#         filtered = [d for d in data if d['window_data'].shape[1] == target_depths]
+# filtered = [d for d in data...
 #         X = np.array([d['window_data'] for d in filtered])
 #         y = np.array([d['has_zero_curtain'] for d in filtered])
 #         return X, y
@@ -5058,11 +4628,9 @@ def create_time_split_datasets(processed_data, n_depths=10, batch_size=32):
 train_dataset, val_dataset, test_dataset, n_depths, spatial_info = create_time_split_datasets(processed_data)
 
 
-
 ####
 
 ####
-
 
 
 model_params = {
@@ -5086,7 +4654,6 @@ training_config = {
 }
 
 
-
 # for x, y in train_dataset.take(1):
 #     print("Input shape:", x.shape)
 #     print("Label shape:", y.shape)
@@ -5101,15 +4668,6 @@ for x, y in train_dataset.take(1):
 model.summary()
 
 
-
-
-
-
-
-
-
-
-
 print(f"TensorFlow version: {tf.__version__}")
 print("\nDevice configuration:")
 print(tf.config.list_physical_devices())
@@ -5122,7 +4680,6 @@ tf.keras.backend.clear_session()
 # print("\nTesting with single batch:")
 # print(f"x shape: {x_small.shape}")
 # print(f"y shape: {y_small.shape}")
-
 
 
 #TROUBLESHOOTING
@@ -5148,7 +4705,6 @@ tf.keras.backend.clear_session()
 
 # test_x = tf.random.normal((32, 30, 4))
 # test_y = tf.random.uniform((32,), maxval=2, dtype=tf.int32)
-
 
 
 # with tf.device('/CPU:0'):
@@ -5368,7 +4924,6 @@ tf.keras.backend.clear_session()
 # print("\nTraining complete!")
 
 
-
 # Input shape: (32, 30, 10)
 # Label shape: (32,)
 # Model: "functional_5"
@@ -5496,7 +5051,6 @@ tf.keras.backend.clear_session()
 # #model.load_weights('model.weights.h5')
 
 
-
 def convert_to_serializable(obj):
     """Convert numpy/tensorflow types to Python native types"""
     if isinstance(obj, (np.integer, np.floating)):
@@ -5517,7 +5071,6 @@ best_model, best_hyperparameters, results = train_hyperparameter_optimization(
     input_shape=(30, 10),
     spatial_info=spatial_info
 )
-
 
 
 hyperparameter_files = glob.glob('best_hyperparameters_*.json')
@@ -5545,9 +5098,6 @@ if model_files:
 batch_size = 32
 n_batches = int(np.ceil(len(x_test) / batch_size))
 print(f"Processing {len(x_test)} samples in {n_batches} batches...")
-
-
-
 
 
 # 6. Performance Metrics by Latitude Band
@@ -5631,31 +5181,9 @@ Training lon range: 7.302472 - 54.498611
 create_focused_regional_maps(train_pred, val_pred, test_pred, spatial_info)
 
 
-
-
-
 test_metrics = best_model.evaluate(x_test, y_test, batch_size=32, verbose=1)
 
 predictions = best_model.predict(x_test)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  #UAVSAR
@@ -5676,8 +5204,8 @@ def polygon_within_bounds(coord_str):
         return False
     return False
 
-geojson_path = "/Users/bgay/Downloads/AllFlownUAVSARSwaths.geojson"
-csv_path = "/Users/bgay/Downloads/AllFlownUAVSARSwaths.csv"
+geojson_path = "/Users/[USER]/Downloads/AllFlownUAVSARSwaths.geojson"
+csv_path = "/Users/[USER]/Downloads/AllFlownUAVSARSwaths.csv"
 
 with open(geojson_path, "r") as file:
     geojson_data = json.load(file)
@@ -5703,12 +5231,11 @@ print(filtered_df)
 filtered_df[filtered_df.Band=='L'].sort_values('Line ID').reset_index(drop=True).drop(columns=['Disclaimer']).to_csv\
 ('uavsar_lines.csv',index=False)
 
-asf_datapool_file = "/Users/bgay/Downloads/asf-datapool-results-2025-02-19_20-15-57.csv"
-uavsar_lines_file = "/Users/bgay/Downloads/uavsar_lines.csv"
+asf_datapool_file = "/Users/[USER]/Downloads/asf-datapool-results-2025-02-19_20-15-57.csv"
+uavsar_lines_file = "/Users/[USER]/Downloads/uavsar_lines.csv"
 asf_df = pd.read_csv(asf_datapool_file)
 uavsar_df = pd.read_csv(uavsar_lines_file)
 asf_df.head(), uavsar_df.head()
-
 
 
 asf_df["Line ID"] = asf_df["GroupID"].str.split("_").str[2]
@@ -5774,108 +5301,5 @@ print(filtered_df['Granule Name'][:30].tolist())
 merged_df.nunique()
 
 filtered_df.nunique()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

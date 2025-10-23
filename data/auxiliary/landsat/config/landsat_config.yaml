@@ -1,0 +1,305 @@
+# ============================================================================
+# Landsat 8/9 ETM+ Processing Configuration
+# Arctic Zero-Curtain Pipeline - Auxiliary Data
+# ============================================================================
+
+metadata:
+  version: "1.0.0"
+  created: "2025-01-20"
+  author: "[RESEARCHER]'s Research Team"
+  purpose: "Landsat data acquisition for SMAP downscaling"
+  description: |
+    Configuration for Landsat 8/9 Collection 2 Level-2 Surface Reflectance
+    and Surface Temperature acquisition, processing, and consolidation for
+    the Arctic Zero-Curtain Detection Pipeline.
+    
+    This data serves as auxiliary input for downscaling SMAP soil moisture
+    from 9 km to 30 m resolution, alongside ArcticDEM terrain data.
+
+# Earth Engine Configuration
+earth_engine:
+  project_id: "circumarcticzerocurtain"
+  collection_id: "LANDSAT/LC08/C02/T1_L2"
+  backup_collections:
+    - "LANDSAT/LC09/C02/T1_L2"  # Landsat 9 for additional coverage
+    - "LANDSAT/LE07/C02/T1_L2"  # Landsat 7 for historical/gap filling
+  
+  authentication:
+    method: "auto"  # Options: auto, manual, service_account
+    max_retries: 3
+    retry_delay: 2  # seconds
+
+# Spatial Domain Configuration
+domain:
+  name: "Circumarctic"
+  description: "Complete Arctic domain from 45°N to 90°N"
+  
+  bounds:
+    longitude_min: -180.0
+    longitude_max: 180.0
+    latitude_min: 45.0
+    latitude_max: 90.0
+  
+  grid_resolution:
+    longitude_step: 10.0  # degrees
+    latitude_step: 5.0    # degrees
+  
+  special_regions:
+    dateline:
+      enabled: true
+      buffer: 1.0  # degrees
+    polar_cap:
+      enabled: true
+      latitude_threshold: 85.0
+      longitude_step: 20.0
+
+# Temporal Configuration
+temporal:
+  start_date: "2015-03-30"  # Landsat 8 OLI operational start
+  end_date: "2024-12-31"
+  
+  seasonal_windows:
+    spring:
+      start_month: 3
+      end_month: 5
+    summer:
+      start_month: 6
+      end_month: 8
+    fall:
+      start_month: 9
+      end_month: 11
+    winter:
+      start_month: 12
+      end_month: 2
+
+# Band Configuration
+bands:
+  surface_reflectance:
+    - name: "SR_B2"
+      alias: "B2"
+      description: "Blue (0.45-0.51 μm)"
+      wavelength_min: 0.45
+      wavelength_max: 0.51
+      units: "reflectance"
+      
+    - name: "SR_B3"
+      alias: "B3"
+      description: "Green (0.53-0.59 μm)"
+      wavelength_min: 0.53
+      wavelength_max: 0.59
+      units: "reflectance"
+      
+    - name: "SR_B4"
+      alias: "B4"
+      description: "Red (0.64-0.67 μm)"
+      wavelength_min: 0.64
+      wavelength_max: 0.67
+      units: "reflectance"
+  
+  surface_temperature:
+    - name: "ST_B10"
+      alias: "B10"
+      description: "Thermal Infrared 1 (10.6-11.19 μm)"
+      wavelength_min: 10.6
+      wavelength_max: 11.19
+      units: "kelvin"
+      scale_factor: 0.00341802
+      add_offset: 149.0
+
+# Quality Filtering
+quality:
+  cloud_cover:
+    max_percentage: 10.0
+    strict_mode: false  # If true, use 5% threshold
+  
+  qa_band: "QA_PIXEL"
+  
+  filters:
+    exclude_cloud: true
+    exclude_cloud_shadow: true
+    exclude_snow_ice: false  # Keep for Arctic regions
+    exclude_cirrus: true
+
+# Sampling Configuration
+sampling:
+  points_per_scene: 100
+  grid_size: 10  # sqrt(points_per_scene)
+  
+  method: "systematic_grid"  # Options: systematic_grid, random, stratified
+  
+  edge_buffer:
+    percentage: 0.05  # 5% inset from scene boundaries
+    min_distance_meters: 150  # Minimum distance from edge
+  
+  validation:
+    check_all_bands: true
+    allow_partial_coverage: false
+
+# Processing Configuration
+processing:
+  system:
+    max_concurrent_processes: 8
+    max_threads_per_process: 8
+    memory_limit_gb: 64
+    
+  batching:
+    scene_batch_size: 64
+    csv_batch_size: 5000
+    checkpoint_frequency: 10  # scenes
+  
+  earth_engine:
+    tile_scale: 16
+    scale_meters: 30
+    max_pixels: 1e8
+    
+  retry:
+    max_attempts: 10
+    initial_delay: 8  # seconds
+    backoff_multiplier: 2
+    max_delay: 300  # seconds
+  
+  optimization:
+    use_adaptive_batching: true
+    enable_caching: true
+    cleanup_temp_files: false  # Keep for debugging
+
+# Gap Filling Configuration
+gap_filling:
+  enabled: true
+  
+  analysis:
+    grid_size: 5.0  # degrees
+    min_coverage_threshold: 0.85  # 85%
+  
+  strategies:
+    - name: "spatial_gaps"
+      description: "Fill empty grid cells"
+      priority: 1
+      
+    - name: "boundary_gaps"
+      description: "Fill domain boundaries"
+      priority: 2
+      
+    - name: "swath_gaps"
+      description: "Fill between-swath gaps"
+      priority: 3
+      min_gap_width: 0.1  # degrees
+      max_gap_width: 2.0  # degrees
+      buffer: 1.0  # degrees
+
+# Output Configuration
+output:
+  directories:
+    base: "~/arctic_zero_curtain_pipeline/data/auxiliary/landsat"
+    raw: "raw"
+    processed: "processed"
+    gaps_filled: "gaps_filled"
+    swath_gaps_filled: "swath_gaps_filled"
+    final: "final"
+    checkpoints: "checkpoints"
+    temp_csv: "temp_csv"
+    analysis: "analysis"
+    logs: "logs"
+  
+  formats:
+    primary: "parquet"
+    backup: "csv"
+    compression: "snappy"
+  
+  naming:
+    pattern: "landsat_{type}_{date}.{ext}"
+    timestamp_format: "%Y%m%d_%H%M%S"
+  
+  metadata:
+    include_processing_history: true
+    include_quality_metrics: true
+    include_coverage_statistics: true
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  
+  handlers:
+    console:
+      enabled: true
+      level: "INFO"
+    
+    file:
+      enabled: true
+      level: "DEBUG"
+      rotation:
+        max_bytes: 104857600  # 100 MB
+        backup_count: 5
+  
+  loggers:
+    ee: "WARNING"  # Reduce Earth Engine verbosity
+    urllib3: "WARNING"
+    requests: "WARNING"
+
+# Validation Configuration
+validation:
+  enabled: true
+  
+  checks:
+    - name: "spatial_coverage"
+      description: "Verify complete domain coverage"
+      threshold: 0.95
+      critical: true
+      
+    - name: "temporal_coverage"
+      description: "Check date range completeness"
+      min_scenes_per_region: 1
+      critical: false
+      
+    - name: "data_quality"
+      description: "Validate band values"
+      check_ranges: true
+      check_nulls: true
+      critical: true
+      
+    - name: "duplicate_detection"
+      description: "Identify duplicate observations"
+      tolerance: 0.0001  # degrees
+      critical: false
+
+# Performance Monitoring
+monitoring:
+  enabled: true
+  
+  metrics:
+    - "scenes_processed"
+    - "points_extracted"
+    - "processing_time"
+    - "memory_usage"
+    - "error_rate"
+  
+  reporting:
+    interval: 300  # seconds
+    save_to_file: true
+    format: "json"
+  
+  alerts:
+    error_threshold: 0.1  # 10% error rate
+    memory_threshold: 0.9  # 90% memory usage
+    slow_processing_threshold: 600  # seconds per scene
+
+# Integration Configuration
+integration:
+  # Link to other auxiliary data
+  dependencies:
+    - name: "ArcticDEM"
+      path: "~/arctic_zero_curtain_pipeline/data/auxiliary/arcticdem/final"
+      required: true
+      purpose: "Terrain-aware SMAP downscaling"
+      
+  # Output for downstream processing
+  outputs:
+    - name: "SMAP_Downscaling"
+      consumers:
+        - "smap_kriging_processor"
+        - "terrain_correction_module"
+      format: "parquet"
+      resolution: 30  # meters

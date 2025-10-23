@@ -130,7 +130,7 @@ print(sys.getrecursionlimit())
     
 #     # Calculate full statistics
 #     stats_df = pd.DataFrame({
-#         'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max', 'Q1', 'Q3', 'IQR'],
+# 'Statistic': ['Mean', 'Median', 'Std Dev', 'Min', 'Max',...
 #         'Value': [
 #             duration_values.mean(),
 #             np.median(duration_values),
@@ -324,12 +324,12 @@ print(sys.getrecursionlimit())
 #     day_effect = np.sum(duration_values % 24 == 0) / n_events * 100
 #     if day_effect > 50:
 #         print("\nDiagnosis: Strong daily measurement effect detected.")
-#         print(f"  {day_effect:.1f}% of durations are exact multiples of 24 hours.")
+# print(f" {day_effect:.1f}% of durations are exact multiples...
 #         print("  This suggests temporal aliasing due to measurement frequency.")
 #         print("\nRecommendation:")
 #         print("  1. Review zero_curtain_detection temporal parameters")
-#         print("  2. Decrease 'max_gap_hours' to allow for more fine-grained detection")
-#         print("  3. Apply interpolation to estimate more precise event transitions")
+# print(" 2. Decrease 'max_gap_hours' to allow for...
+# print(" 3. Apply interpolation to estimate more...
     
 #     # Check for binning or rounding
 #     if n_unique / n_events < 0.1:
@@ -338,7 +338,7 @@ print(sys.getrecursionlimit())
 #         print("\nRecommendation:")
 #         print("  1. Check for explicit rounding in duration calculations")
 #         print("  2. Use higher precision timestamps for event boundaries")
-#         print("  3. Consider continuous time representation instead of discrete bins")
+# print(" 3. Consider continuous time representation instead...
     
 #     # Check for IQR issues
 #     q1 = np.percentile(duration_values, 25)
@@ -347,10 +347,10 @@ print(sys.getrecursionlimit())
     
 #     if iqr < 1e-6:
 #         print("\nDiagnosis: Zero or near-zero IQR detected.")
-#         print(f"  Q1 and Q3 are both {q1:.2f}, creating visualization challenges.")
+# print(f" Q1 and Q3 are both {q1:.2f},...
 #         print("\nRecommendation:")
 #         print("  1. Use percentile-based visualization bounds instead of IQR")
-#         print("  2. For visualization, force a minimum range based on domain knowledge")
+# print(" 2. For visualization, force a minimum...
 #         print("  3. Consider a non-linear transformation of duration values")
     
 #     # Return diagnostic results
@@ -387,7 +387,7 @@ def plot_model_architecture(model, output_file='model_architecture.png', show_sh
     )
     return output_file
 
-# For a more publication-ready visualization, create a simplified diagram showing main components
+# For a more publication-ready visualization, create a...
 def create_simplified_diagram():
     # Create a figure
     plt.figure(figsize=(12, 8))
@@ -515,12 +515,12 @@ import cartopy.crs as ccrs
 from datetime import datetime
 
 # Load the dataset
-#df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
-#df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
-#df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
-#df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
-#df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
-df = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_comprehensive/zero_curtain_events.csv')
+#df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
+#df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
+#df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
+#df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
+#df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_cur...
+df = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_comprehensive/zero_curtain_events.csv')
 
 # Convert datetime columns
 df['datetime_min'] = pd.to_datetime(df['datetime_min'],format='mixed')
@@ -1365,7 +1365,7 @@ plt.show()
 # }
 
 # # Assuming 'events' DataFrame is loaded
-# # events = pd.read_csv('zero_curtain_events.csv')  # Replace with actual data loading
+# # events = pd.read_csv('zero_curtain_events.csv') # Replace with...
 
 # # 1. TEMPORAL PATTERNS VISUALIZATION
 # def plot_temporal_patterns(events):
@@ -1410,7 +1410,7 @@ plt.show()
 #     ax2.tick_params(axis='y', colors='tab:red')
 #     ax1.set_title('Temperature Trends Over Time')
     
-#     # Event counts by month across all years - ensure chronological month order
+# # Event counts by month across all...
 #     events['month'] = pd.to_datetime(events['datetime_min']).dt.month
 #     monthly_counts = events.groupby('month').size()
 #     # Create month labels in order
@@ -1502,7 +1502,7 @@ plt.show()
 #     """
 #     Create heatmaps to visualize patterns across multiple dimensions
 #     """
-#     # 4.1 Prepare data for heatmap - pivot table of temperature by depth zone and season
+# # 4.1 Prepare data for heatmap -...
 #     # Use categorical dtype to ensure seasons are in the correct order
 #     events_season = events.copy()
 #     events_season['season'] = pd.Categorical(
@@ -1524,13 +1524,13 @@ plt.show()
 #     depth_season_temp = depth_season_temp.reindex(depth_order)
     
 #     # 4.2 Create figure with subplots - make it taller
-#     fig, axes = plt.subplots(3, 2, figsize=(18, 24), gridspec_kw={'height_ratios': [1, 2, 1]})
+# fig, axes = plt.subplots(3, 2, figsize=(18, 24),...
     
 #     # 4.3 Depth zone by season heatmap
 #     sns.heatmap(depth_season_temp, annot=True, fmt=".3f", cmap="YlGnBu", ax=axes[0, 0])
 #     axes[0, 0].set_title('Mean Soil Temperature by Depth Zone and Season')
     
-#     # 4.4 Year by depth zone heatmap (event counts) - now larger and in its own row
+# # 4.4 Year by depth zone heatmap...
 #     year_depth_counts = events.pivot_table(
 #         values='observation_count', 
 #         index='year', 
@@ -1981,7 +1981,7 @@ plt.savefig(output_path+'/temporal_distribution.png', dpi=1000, bbox_inches='tig
 plt.close()
 
 # #ONE IMPLEMENTATION (KDTree with Self-Match Exclusion)
-# This script properly calculates nearest-neighbor distances by requesting k+1 neighbors and excludi...
+# This script properly calculates nearest-neighbor distances by...
 # import numpy as np
 # from scipy.spatial import cKDTree
 # import matplotlib.pyplot as plt
@@ -2076,7 +2076,7 @@ plt.close()
 #     print("Calculating NN distances...")
 #     nn_distances = calculate_nn_distances(cartesian_points, k, batch_size)
     
-#     # The density is inversely proportional to the average distance to the k nearest neighbors
+# # The density is inversely proportional to...
 #     # We use the mean distance to k nearest neighbors
 #     mean_distances = np.mean(nn_distances, axis=1)
     
@@ -2345,7 +2345,7 @@ plt.close()
 #             print(f"Loading most recent checkpoint: {latest_checkpoint}")
 #             try:
 #                 model = tf.keras.models.load_model(latest_checkpoint)
-#                 print("Checkpoint loaded successfully - will resume training from this point")
+# print("Checkpoint loaded successfully - will resume training...
 #             except Exception as e:
 #                 print(f"Error loading checkpoint: {str(e)}")
 #                 print("Will start training from scratch")
@@ -4203,8 +4203,8 @@ def create_process_diagram(ax):
 def main():
     """Main function to generate and save the figure"""
     # In a real implementation, load the actual data
-    validated_events = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/improved_model_output/validated_events.csv')
-    enhanced_events = pd.read_csv('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_comprehensive/enhanced_zero_curtain_events.csv')
+    validated_events = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/improved_model_output/validated_events.csv')
+    enhanced_events = pd.read_csv('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/scripts/zero_curtain_comprehensive/enhanced_zero_curtain_events.csv')
     
     # For demonstration, use sample data
     #validated_events, enhanced_events = generate_sample_data()
@@ -5631,7 +5631,7 @@ print("\nResults saved to 'quantum_analysis_results.npz'")
 # all_years = sorted(set(d['window_start'].year for d in processed_data))
 
 # def create_time_split_datasets(processed_data, n_depths=10, batch_size=32):
-#     """Split processed data into training (65%), validation (25%), and test (10%) ensuring correct...
+# """Split processed data into training (65%), validation...
     
 #     print("Sorting data by time...")
     
@@ -5671,17 +5671,17 @@ print("\nResults saved to 'quantum_analysis_results.npz'")
 #             count_test += 1
 
 #         # Ensure we finish the current year before switching splits
-#         if count_train >= train_size and count_val < val_size and year > current_year:
+# if count_train >= train_size and count_val <...
 #             current_year = year
-#         elif count_train >= train_size and count_val >= val_size and count_test < test_size and ye...
+# elif count_train >= train_size and count_val >=...
 #             current_year = year
 
-#     #print(f"Final dataset sizes -> Train: {len(train_data)}, Validation: {len(val_data)}, Test: {...
+# #print(f"Final dataset sizes -> Train: {len(train_data)}, Validation:...
 #     train_years = (train_data[0]['window_start'].year, train_data[-1]['window_start'].year) if tra...
 #     val_years = (val_data[0]['window_start'].year, val_data[-1]['window_start'].year) if val_data ...
 #     test_years = (test_data[0]['window_start'].year, test_data[-1]['window_start'].year) if test_d...
 
-#     print(f"\nFinal dataset sizes -> Train: {len(train_data)}, Validation: {len(val_data)}, Test: ...
+# print(f"\nFinal dataset sizes -> Train: {len(train_data)}, Validation:...
 #     print(f"Train Year Range: {train_years[0]} - {train_years[1]}")
 #     print(f"Validation Year Range: {val_years[0]} - {val_years[1]}")
 #     print(f"Test Year Range: {test_years[0]} - {test_years[1]}")
@@ -5691,7 +5691,7 @@ print("\nResults saved to 'quantum_analysis_results.npz'")
 #     target_depths = n_depths  # Use provided depth count
 
 #     def filter_and_format(data):
-#         filtered = [d for d in data if d['window_data'].shape[1] == target_depths]
+# filtered = [d for d in data...
 #         X = np.array([d['window_data'] for d in filtered])
 #         y = np.array([d['has_zero_curtain'] for d in filtered])
 #         return X, y

@@ -1,0 +1,27 @@
+# Test Configuration - Points to downloaded data
+acquisition_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/nisar_downloads
+interferogram_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/test_interferograms
+displacement_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/test_displacement
+output_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/test_output
+final_output_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/test_output/test_unified.parquet
+smap_master_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/smap/smap_master.parquet
+snaphu_path: /usr/local/bin/snaphu
+max_workers: 2
+skip_existing: true
+displacement_min_m: -10.0
+displacement_max_m: 10.0
+coherence_threshold: 0.3
+valid_pixel_fraction: 0.15
+temperature_min_c: -60.0
+temperature_max_c: 60.0
+moisture_min_frac: 0.0
+moisture_max_frac: 1.0
+circumarctic_bounds:
+  min_lon: -180.0
+  max_lon: 180.0
+  min_lat: 49.0
+  max_lat: 90.0
+temporal_window_days: 3
+spatial_tolerance_m: 100
+require_complete_records: true
+log_level: INFO

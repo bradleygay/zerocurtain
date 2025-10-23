@@ -1,0 +1,9 @@
+CryoGrid Integration Configuration
+========================================
+Use CryoGrid Enthalpy Formulation: True
+Use Painter-Karra Freezing: True
+Use Surface Energy Balance: True
+Use Adaptive Time-stepping: True
+Maximum Enthalpy Change: 50000.0 J/m³
+Stefan-Boltzmann Constant: 5.67e-08 W/m²/K⁴
+Volumetric Latent Heat: 334000000.0 J/m³

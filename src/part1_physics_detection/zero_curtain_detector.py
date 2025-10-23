@@ -480,7 +480,7 @@ class PhysicsInformedZeroCurtainDetector:
             # Method 4: Fallback for areas with missing data but Arctic location
             arctic_fallback = lat >= 60.0  # High Arctic - assume permafrost potential
 
-            # MUCH MORE PERMISSIVE: Site is suitable if ANY condition suggests permafrost potential
+            # MUCH MORE PERMISSIVE: Site is suitable if...
             properties['is_permafrost_suitable'] = (prob_indicates_potential or
                                                    zone_indicates_potential or
                                                    latitude_indicates_potential or
@@ -550,7 +550,7 @@ class PhysicsInformedZeroCurtainDetector:
                         return snow_props
                 
                 # Check if snow coordinates need reprojection
-                # If coordinates are in projected system (large values), need to handle differently
+                # If coordinates are in projected system (large...
                 if np.abs(snow_lat).max() > 180 or np.abs(snow_lon).max() > 360:
                     # Snow data appears to be in projected coordinates
                     print(f"Debug: Snow data appears to be in projected coordinates")

@@ -1,0 +1,42 @@
+# Streamlined Pipeline Configuration
+# H5 → Displacement GeoTIFFs → Consolidation
+
+# Input: Downloaded H5 files
+acquisition_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/nisar_downloads
+
+# Output: Displacement GeoTIFFs (30m)
+displacement_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/displacement_30m
+
+# Final output
+output_dir: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/output
+final_output_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/uavsar/output/arctic_displacement_unified.parquet
+
+# SMAP data - CORRECTED PATH
+smap_master_path: /Users/[USER]/arctic_zero_curtain_pipeline/data/auxiliary/smap/smap.parquet
+
+# Processing parameters
+max_workers: 4
+skip_existing: true
+coherence_threshold: 0.3
+valid_pixel_fraction: 0.15
+displacement_min_m: -10.0
+displacement_max_m: 10.0
+temperature_min_c: -60.0
+temperature_max_c: 60.0
+moisture_min_frac: 0.0
+moisture_max_frac: 1.0
+
+# Geographic bounds
+circumarctic_bounds:
+  min_lon: -180.0
+  max_lon: 180.0
+  min_lat: 49.0
+  max_lat: 90.0
+
+# Spatial-temporal join
+temporal_window_days: 3
+spatial_tolerance_m: 100
+
+# Pipeline control
+require_complete_records: true
+log_level: INFO

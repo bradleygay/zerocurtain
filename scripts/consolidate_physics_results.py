@@ -291,7 +291,7 @@ def generate_comprehensive_statistics(df, output_dir):
 def prepare_stratified_splits(df, output_dir, train_ratio=0.7, val_ratio=0.15, test_ratio=0.15):
     """
     Prepare stratified train/validation/test splits for GeoCryoAI.
-    This is the ONLY acceptable use of sampling per Dr. Gay's instructions.
+    This is the ONLY acceptable use of sampling per [RESEARCHER]'s instructions.
     """
     print("\n" + "="*90)
     print("PREPARING STRATIFIED TRAIN/VALIDATION/TEST SPLITS FOR GEOCRYOAI")

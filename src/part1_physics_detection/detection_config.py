@@ -4,7 +4,6 @@ Physics-Informed Zero-Curtain Detection Configuration
 This module centralizes all configurable parameters for zero-curtain detection,
 enabling systematic parameter tuning and ablation studies.
 
-Author: Dr. Bradley Gay
 Institution: [REDACTED_AFFILIATION] Arctic Research
 """
 
@@ -93,17 +92,17 @@ class AuxiliaryDataPaths:
     """File paths for auxiliary geospatial datasets."""
     
     permafrost_probability_raster: str = (
-        '/Users/bradleygay/new2/UiO_PEX_PERPROB_5/'
+        '/Users/[USER]/new2/UiO_PEX_PERPROB_5/'
         'UiO_PEX_PERPROB_5.0_20181128_2000_2016_NH.tif'
     )
     
     permafrost_zones_shapefile: str = (
-        '/Users/bradleygay/new2/UiO_PEX_PERZONES_5/'
+        '/Users/[USER]/new2/UiO_PEX_PERZONES_5/'
         'UiO_PEX_PERZONES_5.0_20181128_2000_2016_NH.shp'
     )
     
     snow_reanalysis_netcdf: str = (
-        '/Users/bradleygay/aa6ddc60e4ed01915fb9193bcc7f4146.nc'
+        '/Users/[USER]/aa6ddc60e4ed01915fb9193bcc7f4146.nc'
     )
 
 

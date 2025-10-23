@@ -188,15 +188,15 @@ def merge_arctic_datasets(paths_dict, output_path):
 
 def main():
     PATHS = {
-        'in_situ': '/Users/bgay/merged_compressed_corrected_final.parquet',
-        'uavsar_nisar_raw': '/Users/bgay/merged_uavsar_nisar.parquet',
-        'smap_raw': '/Users/bgay/smap_master.parquet',
-        'uavsar_nisar_transformed': '/Users/bgay/uavsar_nisar_transformed.parquet',
-        'smap_transformed': '/Users/bgay/smap_transformed.parquet',
-        'merged_final': '/Users/bgay/final_arctic_consolidated.parquet',
-        'zero_curtain_detections': '/Users/bgay/part1_pipeline_optimized/performance_fixed_zero_curtain_events.parquet',
-        'remote_sensing_detections': '/Users/bgay/vectorized_output/vectorized_high_performance_zero_curtain.parquet',
-        'final_predictions': '/Users/bgay/part4_transfer_learning_new/predictions/circumarctic_zero_curtain_predictions_20250730_160518.parquet'
+        'in_situ': '/Users/[USER]/merged_compressed_corrected_final.parquet',
+        'uavsar_nisar_raw': '/Users/[USER]/merged_uavsar_nisar.parquet',
+        'smap_raw': '/Users/[USER]/smap_master.parquet',
+        'uavsar_nisar_transformed': '/Users/[USER]/uavsar_nisar_transformed.parquet',
+        'smap_transformed': '/Users/[USER]/smap_transformed.parquet',
+        'merged_final': '/Users/[USER]/final_arctic_consolidated.parquet',
+        'zero_curtain_detections': '/Users/[USER]/part1_pipeline_optimized/performance_fixed_zero_curtain_events.parquet',
+        'remote_sensing_detections': '/Users/[USER]/vectorized_output/vectorized_high_performance_zero_curtain.parquet',
+        'final_predictions': '/Users/[USER]/part4_transfer_learning_new/predictions/circumarctic_zero_curtain_predictions_20250730_160518.parquet'
     }
     print("\nSTEP 1: DATA INSPECTION")
     for name, path in [('In Situ', PATHS['in_situ']), ('UAVSAR/NISAR', PATHS['uavsar_nisar_raw']), ('SMAP', PATHS['smap_raw'])]:
@@ -238,7 +238,7 @@ import json
 import re
 import os
 
-df = pd.read_csv('/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/new/latlon_ru_update.csv')
+df = pd.read_csv('/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/new/latlon_ru_update.csv')
 indices_dailysoiltemperature = df[df['data_source'] == 'dailysoiltemperature_1984-2012']['index'].unique()
 latlon_extracted = df[(df['index'].isin(indices_dailysoiltemperature)) & (df['data_source'] != 'dailysoiltemperature_1984-2012')][['index', 'latitude', 'longitude', 'data_source']]
 latlon_lookup = latlon_extracted.groupby('index')[['latitude', 'longitude']].first()
@@ -254,7 +254,7 @@ for idx in df[df['data_source'] == 'dailysoiltemperature_1984-2012'].index:
         df.at[idx, 'longitude'] = latlon_lookup[station_index]['longitude']
 df[df['data_source'] == 'dailysoiltemperature_1984-2012'].isna().sum()
 df[(df['data_source'] == 'dailysoiltemperature_1984-2012')]
-df.to_csv('/Users/bgay/Downloads/latlon_ru_update.csv')
+df.to_csv('/Users/[USER]/Downloads/latlon_ru_update.csv')
 df = df.drop(columns=['Unnamed: 0'])
 
 class ColumnDefinitions:
@@ -565,7 +565,7 @@ class RussianMeteoProcessor:
                         print(sorted(df['pressure_hpa'].unique()))
         return results
     
-    def save_results(self, results: Dict[str, pd.DataFrame], output_dir: str = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/newrun'):
+    def save_results(self, results: Dict[str, pd.DataFrame], output_dir: str = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/newrun'):
         output_dir = Path(output_dir)
         output_dir.mkdir(exist_ok=True)
         for data_type, df in results.items():
@@ -590,7 +590,7 @@ class RussianMeteoProcessor:
             print(f"Saved metadata to {metadata_file}")
 
 def main():
-    base_path = '/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/old'
+    base_path = '/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/ru/old'
     processor = RussianMeteoProcessor(base_path)
     print("Starting data processing...")
     results = processor.process_all_data()
@@ -650,12 +650,12 @@ def batch_process_meteo_files(input_dir, output_dir, latlon_file_path):
         for file in results['failed']:
             print(f"- {file}")
 
-input_directory = "/Users/bgay/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/processed_meteo_data"
-output_directory = "/Users/bgay/Downloads"
-latlon_file_path = "/Users/bgay/Downloads/latlon_ru_update.csv"
+input_directory = "/Users/[USER]/Library/CloudStorage/OneDrive-[REDACTED_AFFILIATION]/zerocurtain/processed_meteo_data"
+output_directory = "/Users/[USER]/Downloads"
+latlon_file_path = "/Users/[USER]/Downloads/latlon_ru_update.csv"
 batch_process_meteo_files(input_directory, output_directory, latlon_file_path)
 
-directory = '/Users/bgay/Desktop/ru/new'
+directory = '/Users/[USER]/Desktop/ru/new'
 for filename in os.listdir(directory):
     if filename.endswith(".csv"):
         filepath = os.path.join(directory, filename)
@@ -670,8 +670,8 @@ dailyairtemperatureandprecipitation
 snowmeasurementsurveys, dailysnowcovercharacteristics, dailysoiltemperature, dailyairtemperatureandprecipitation, dailysoiltemperatureatdepth
 snowmeasurementsurveys
 
-dst1 = pd.read_csv('/Users/bgay/Desktop/ru/new/dailysoiltemperature_1984-2012_data_ru_update.csv').drop(columns=['Unnamed: 0'])
-dst2 = pd.read_csv('/Users/bgay/Desktop/ru/new/dailysoiltemperatureatdepth_1963-2022_data_ru_update.csv').drop(columns=['Unnamed: 0'])
+dst1 = pd.read_csv('/Users/[USER]/Desktop/ru/new/dailysoiltemperature_1984-2012_data_ru_update.csv').drop(columns=['Unnamed: 0'])
+dst2 = pd.read_csv('/Users/[USER]/Desktop/ru/new/dailysoiltemperatureatdepth_1963-2022_data_ru_update.csv').drop(columns=['Unnamed: 0'])
 dst1 = dst1[['station_id','datetime','latitude','longitude','depth_cm','temperature']].sort_values('datetime').reset_index(drop=True)
 dst2 = dst2[['station_id','datetime','latitude','longitude','depth_cm','temperature']].sort_values('datetime').reset_index(drop=True)
 ru_dst = pd.concat([dst1,dst2]).sort_values('datetime').reset_index(drop=True)
@@ -694,7 +694,7 @@ ru_dst['site_id'] = 'RU_Meteo_' + ru_dst['station_id'].astype(str)
 ru_dst['depth_zone'] = ru_dst['depth'].apply(add_depth_zones)
 ru_dst
 
-def locate_missing_coordinates(ru_dst, base_path='/Users/bgay/Desktop/ru/old'):
+def locate_missing_coordinates(ru_dst, base_path='/Users/[USER]/Desktop/ru/old'):
     missing_stations = ru_dst[ru_dst['latitude'].isna() | ru_dst['longitude'].isna()]['station_id'].unique()
     station_coords = {}
     meteo_files = ['monthlyaverageairtemperature_1743-2023_data.csv', 'monthlyprecipitation_1936-2015_data.csv', 'dailyairtemperatureandprecipitation_1812-2001_data.csv', 'averagemonthlytotalclouds_1966-2023_data.csv']
@@ -758,7 +758,7 @@ def locate_missing_coordinates(ru_dst, base_path='/Users/bgay/Desktop/ru/old'):
 
 ru_dst_updated = locate_missing_coordinates(ru_dst)
 
-def analyze_station_coverage(ru_dst, base_path='/Users/bgay/Desktop/ru/old'):
+def analyze_station_coverage(ru_dst, base_path='/Users/[USER]/Desktop/ru/old'):
     station_coords = {}
     data_sources = {}
     missing_stations = set(ru_dst[ru_dst['latitude'].isna() | ru_dst['longitude'].isna()]['station_id'].unique())
@@ -779,7 +779,7 @@ def analyze_station_coverage(ru_dst, base_path='/Users/bgay/Desktop/ru/old'):
                         station_coords[station] = {'latitude': station_data['latitude'], 'longitude': station_data['longitude'], 'source': csv_file.name}
         except Exception as e:
             print(f"Error processing {csv_file}: {e}")
-    meteo_dir = Path('/Users/bgay/Desktop/Research/Code/processed_meteo_data')
+    meteo_dir = Path('/Users/[USER]/Desktop/Research/Code/processed_meteo_data')
     print("\nScanning processed_meteo_data directory...")
     for csv_file in meteo_dir.glob('*.csv'):
         try:
@@ -1548,11 +1548,11 @@ class ALTDataValidator:
 def process_all_sites():
     print("Initializing ALT data processing...")
     start_time = time.time()
-    parser = ALTDataParser('/Users/bgay/Downloads/calm/')
+    parser = ALTDataParser('/Users/[USER]/Downloads/calm/')
     print("\nProcessing all R-series sites...")
     master_df = parser.process_r_series(start_r=11, end_r=61)
     timestamp = datetime.now().strftime("%Y%m%d")
-    output_dir = Path('/Users/bgay/Downloads/calm/processed/')
+    output_dir = Path('/Users/[USER]/Downloads/calm/processed/')
     output_dir.mkdir(exist_ok=True)
     master_output = output_dir / f'CALM_ALT_master_{timestamp}.csv'
     master_df.to_csv(master_output, index=False)
@@ -1585,10 +1585,10 @@ def process_all_sites():
     return master_df, site_stats, yearly_summary
 
 def process_r40():
-    df = pd.read_excel('/Users/bgay/Downloads/calm/alt/R40_Igarka_alt_2008_2023.xlsx', sheet_name='data')
-    dates_raw = ['10/1/08', '9/22/09', '10/4/10', '9/20/11', '9/20/11', '9/23/12', 
-                 '10/1/13', '9/26/14', '9/7/15', '10/4/15', '10/16/16', '10/5/18', 
-                 '10/15/19', '10/3/20', '10/14/21', '9/29/22', '10/17/23']
+    df = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R40_Igarka_alt_2008_2023.xlsx', sheet_name='data')
+    dates_raw = [''''''', 
+                 ''''''', 
+                 '''''']
     dates = [datetime.strptime(date, '%m/%d/%y') for date in dates_raw]
     date_columns = df.columns[6:]
     alt_data = []
@@ -1598,11 +1598,11 @@ def process_r40():
                 alt_data.append({'datetime': date, 'site_id': 'R40', 'alt': value})
     df_alt = pd.DataFrame(alt_data)
     df_alt = df_alt.sort_values('datetime').reset_index(drop=True)
-    df_alt.to_csv('/Users/bgay/Downloads/R40_alt_data.csv', index=False)
+    df_alt.to_csv('/Users/[USER]/Downloads/R40_alt_data.csv', index=False)
     return df_alt
 
 def process_r38b():
-    df = pd.read_excel('/Users/bgay/Downloads/calm/alt/R38b_(Burn)_ALT_2003_2017.xls', sheet_name='data')
+    df = pd.read_excel('/Users/[USER]/Downloads/calm/alt/R38b_(Burn)_ALT_2003_2017.xls', sheet_name='data')
     df = df.iloc[4:-6,1:]
     df.columns = df.iloc[0]
     df = df[1:]
@@ -1617,7 +1617,7 @@ def process_r38b():
     return df
 
 def process_r57():
-    df = pd.read_csv('/Users/bgay/Downloads/r57.csv')
+    df = pd.read_csv('/Users/[USER]/Downloads/r57.csv')
     df=df.melt()
     df.columns=['datetime','alt']
     df['site_id']='R57'
@@ -1628,7 +1628,7 @@ def process_r57():
     return df
 
 def process_r56():
-    df = pd.read_csv('/Users/bgay/Downloads/r56.csv')
+    df = pd.read_csv('/Users/[USER]/Downloads/r56.csv')
     df=df.melt()
     df.columns=['datetime','alt']
     df['site_id']='R56'
@@ -1864,14 +1864,14 @@ def combine_chunks(chunk_files, output_file='merged_permafrost.csv'):
 
 if __name__ == "__main__":
     print("Initializing parser...")
-    parser = ALTDataParser('/Users/bgay/Downloads/calm/alt')
+    parser = ALTDataParser('/Users/[USER]/Downloads/calm/alt')
     print("Processing files...")
     alt_data = parser.process_all_files()
     alt_data.alt = alt_data.alt/100
     alt_data = alt_data[alt_data.alt < 7]
     alt_data.datetime = pd.to_datetime(alt_data.datetime)
     alt_data = alt_data.sort_values('datetime').reset_index(drop=True)
-    output_path = Path('/Users/bgay/Downloads/calm/processed/calm_alt_parsed_all_files.csv')
+    output_path = Path('/Users/[USER]/Downloads/calm/processed/calm_alt_parsed_all_files.csv')
     alt_data.to_csv(output_path, index=False)
     print("\nData Quality Checks")
     print("=" * 50)
@@ -2046,12 +2046,11 @@ fig1.savefig("meansoiltemperature_insitu_zerocurtain.png", bbox_inches='tight', 
 fig2.savefig("stdsoiltemperature_insitu_zerocurtain.png", bbox_inches='tight', pad_inches=0.5, dpi=1000)
 
 
-
 # import cmasher as cmr
 
 # def create_arctic_temp_map(df, value_column, title, vbounds=None, std_dev=False):
 #     """
-#     Create a Circumarctic map with enhanced soil moisture distribution visualization
+# Create a Circumarctic map with enhanced soil...
 #     """
 #     # More sophisticated grouping that considers site-specific characteristics
 #     # if std_dev:
@@ -2062,7 +2061,7 @@ fig2.savefig("stdsoiltemperature_insitu_zerocurtain.png", bbox_inches='tight', p
 #     #     #stats.columns = ['latitude', 'longitude', 'std', 'count']
 #     #     stats = df.groupby(['latitude', 'longitude'])[value_column].std().reset_index()
 #     #     # Filter for sites with sufficient measurements
-#     #     #stats = stats[stats['count'] >= 10]  # Minimum threshold for statistical significance
+# # #stats = stats[stats['count'] >= 10] #...
 #     #     plot_value = value_column
 #     #     cbar_label = 'Standard Deviation, Standardized Soil Temperature (°C)'
 #     #     #vmin, vmax = 0, stats[value_column].quantile(0.95)
@@ -2087,11 +2086,11 @@ fig2.savefig("stdsoiltemperature_insitu_zerocurtain.png", bbox_inches='tight', p
 #     cmap = cmr.guppy
 
 #     if std_dev:
-#         vmin, vmax = vbounds if vbounds is not None else (stats[value_column].min(), stats[value_c...
+# vmin, vmax = vbounds if vbounds is...
 #         cmap = 'viridis'
 #         cbar_label = 'Standard Deviation, Standardized Soil Temperature (°C)'
 #     else:
-#         vmin, vmax = vbounds if vbounds is not None else (stats[value_column].min(), stats[value_c...
+# vmin, vmax = vbounds if vbounds is...
 #         cmap = 'cmr.guppy'
 #         cbar_label = 'Mean, Standardized Soil Temperature (°C)'
 
@@ -2107,7 +2106,7 @@ fig2.savefig("stdsoiltemperature_insitu_zerocurtain.png", bbox_inches='tight', p
 #     fallback_vmax = stats[plot_value].quantile(0.95)
     
 #     # Use vbounds if provided, otherwise fallback to quantiles
-#     vmin, vmax = vbounds if vbounds is not None else (fallback_vmin, fallback_vmax)
+# vmin, vmax = vbounds if vbounds is...
 
 #     #print(f"\nValue distribution for {plot_value}:")
 #     #print(stats[plot_value].describe())
@@ -2376,7 +2375,7 @@ fig2.savefig("stdalt_insitu_zerocurtain.png", bbox_inches='tight', pad_inches=0.
 #     return fig
 
 # fig1 = create_arctic_thickness_map(thickness_clean, 'thickness', 
-#                            'Circumarctic Distribution of Active Layer Thickness, In Situ \n 1963-0...
+# 'Circumarctic Distribution of Active Layer Thickness, In...
 #                            vbounds=mean_bounds)
 # fig2 = create_arctic_thickness_map(thickness_clean, 'thickness',
 #                            'Circumarctic Distribution of Active Layer Thickness Variability, In Si...
@@ -4930,7 +4929,7 @@ def analyze_zc_alt_dynamics(data, output_path):
     
     return fig, stats
 
-fig, stats = analyze_zc_alt_dynamics(processor2_df_with_coords, '/Users/bgay/Desktop/Research/Code')
+fig, stats = analyze_zc_alt_dynamics(processor2_df_with_coords, '/Users/[USER]/Desktop/Research/Code')
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5018,7 +5017,7 @@ def plot_temporal_evolution(data, output_path):
     return fig
 
 # Create output directory
-output_path = Path('/Users/bgay/Desktop/Research/Code')
+output_path = Path('/Users/[USER]/Desktop/Research/Code')
 output_path.mkdir(exist_ok=True, parents=True)
 
 # Generate the plot
@@ -5152,7 +5151,7 @@ def analyze_seasonal_evolution(data, output_path):
     
     return fig, stats_dict
 
-output_path = Path('/Users/bgay/Desktop/Research/Code')
+output_path = Path('/Users/[USER]/Desktop/Research/Code')
 output_path.mkdir(exist_ok=True, parents=True)
 fig, stats = analyze_seasonal_evolution(processor2_df_with_coords, output_path)
 
@@ -6023,7 +6022,6 @@ def improved_resumable_training(model, X_file, y_file, train_indices, val_indice
     return model, final_model_path
 
 
-
 def configure_tensorflow_memory():
     physical_devices = tf.config.list_physical_devices('GPU')
     for device in physical_devices:
@@ -6142,8 +6140,8 @@ def train_model(model, X_file, y_file, train_indices, val_indices, output_dir, b
     return model
 
 # Paths
-output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 X_file = os.path.join(data_dir, 'X_features.npy')
 y_file = os.path.join(data_dir, 'y_labels.npy')
 
@@ -6491,8 +6489,8 @@ def evaluate_model_with_visualizations(model, X_file, y_file, test_indices, outp
 # def main():
 #     # Configuration
 #     input_shape = (24, 5)  # Adjust to match your data shape
-#     output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-#     data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+#     output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+#     data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 #     X_file = os.path.join(data_dir, 'X_features.npy')
 #     y_file = os.path.join(data_dir, 'y_labels.npy')
 #     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -7108,7 +7106,7 @@ def analyze_feature_importance(model, X_file, y_file, test_indices, output_dir):
                         perm_auc = roc_auc_score(y_test, perm_preds)
                         
                         # Calculate interaction strength
-                        # We compare permuting both features together vs. sum of permuting each separately
+                        # We compare permuting both features together vs....
                         interactions[i, j] = baseline_auc - perm_auc - (mean_importances[i] + mean_importances[j])
                         interactions[j, i] = interactions[i, j]  # Symmetric
                         
@@ -8331,7 +8329,7 @@ def optimized_training(model, X_file, y_file, train_indices, val_indices, test_i
 #             loss='binary_crossentropy',
 #             metrics=[
 #                 'accuracy',
-#                 # FIX: Use numerically stable AUC implementation with more thresholds
+# # FIX: Use numerically stable AUC implementation...
 #                 tf.keras.metrics.AUC(name='auc', num_thresholds=200, from_logits=False),
 #                 tf.keras.metrics.Precision(name='precision'),
 #                 tf.keras.metrics.Recall(name='recall')
@@ -8340,7 +8338,7 @@ def optimized_training(model, X_file, y_file, train_indices, val_indices, test_i
 #         force_print("Model recompilation complete")
     
 #     # Calculate total batches - use FULL training set
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
 #     force_print(f"Training on all {total_batches} batches of full training set")
     
 #     # Load checkpoint if resuming
@@ -8363,7 +8361,7 @@ def optimized_training(model, X_file, y_file, train_indices, val_indices, test_i
 #     try:
 #         val_metrics = model.evaluate(val_X, val_y, verbose=1)
 #         val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#         metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #         force_print(f"Initial validation: {metrics_str}")
 #         best_val_auc = val_metrics_dict.get('auc', 0)
 #     except Exception as e:
@@ -8475,7 +8473,7 @@ def optimized_training(model, X_file, y_file, train_indices, val_indices, test_i
 #                 val_metrics = model.evaluate(val_X, val_y, verbose=1)
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
                 
-#                 metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 force_print(f"Validation metrics at batch {batch_idx+1}/{total_batches}:")
 #                 force_print(f"  {metrics_str}")
                 
@@ -8501,8 +8499,8 @@ def optimized_training(model, X_file, y_file, train_indices, val_indices, test_i
 #         # Progress tracking
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
-#         progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
         
 #         force_print(f"PROGRESS UPDATE:")
 #         force_print(f"  Batch {batch_idx+1}/{total_batches} completed ({progress*100:.1f}%)")
@@ -9884,7 +9882,7 @@ def ultra_robust_training(model, X_file, y_file, train_indices, val_indices, tes
 # from tensorflow.keras.models import load_model
 
 # # Load your current model and continue with fixed training
-# checkpoint_path = "/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model...
+# checkpoint_path = "/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model...
 # model = load_model(checkpoint_path)
 
 import tensorflow as tf
@@ -10825,8 +10823,8 @@ def run_improved_pipeline():
     from IPython.display import clear_output
     
     # Paths and configuration
-    output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-    data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+    output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+    data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
     X_file = os.path.join(data_dir, 'X_features.npy')
     y_file = os.path.join(data_dir, 'y_labels.npy')
     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -10973,24 +10971,7 @@ if __name__ == "__main__":
     run_improved_pipeline()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # WHOLE CODE FOR CLAUDE
+# # WHOLE CODE FOR [AUTOMATED_TOOL]
 
 # import os,sys
 # import cartopy.crs as ccrs
@@ -11072,7 +11053,7 @@ if __name__ == "__main__":
 # print(sys.getrecursionlimit())
 
 # def configure_tensorflow_memory():
-#     """Configure TensorFlow to use memory growth and handle device allocation carefully"""
+# """Configure TensorFlow to use memory growth and...
 #     import tensorflow as tf
     
 #     # Disable GPU if experiencing persistent issues
@@ -11194,7 +11175,7 @@ if __name__ == "__main__":
 #     # Apply transformer encoder
 #     transformer_output = transformer_encoder(transformer_input)
     
-#     # Parallel CNN paths for multi-scale feature extraction (with regularization)
+# # Parallel CNN paths for multi-scale feature...
 #     cnn_1 = Conv1D(filters=32, kernel_size=3, padding='same', activation='relu', 
 #                   kernel_regularizer=l2(reg_strength))(inputs)
 #     cnn_1 = BatchNormalization()(cnn_1)
@@ -11308,7 +11289,7 @@ if __name__ == "__main__":
 #     def clr(self):
 #         cycle = np.floor(1 + self.clr_iterations / (2 * self.step_size))
 #         x = np.abs(self.clr_iterations / self.step_size - 2 * cycle + 1)
-#         return self.base_lr + (self.max_lr - self.base_lr) * np.maximum(0, (1 - x)) * self.scale_f...
+# return self.base_lr + (self.max_lr - self.base_lr) *...
         
 #     def on_train_begin(self, logs=None):
 #         logs = logs or {}
@@ -11323,7 +11304,7 @@ if __name__ == "__main__":
 # # Enhanced callbacks setup
 # def get_enhanced_callbacks(output_dir, fold_idx=None):
 #     """
-#     Create enhanced callbacks with increased patience and cyclical learning rate.
+# Create enhanced callbacks with increased patience and...
 #     """
 #     sub_dir = f"fold_{fold_idx}" if fold_idx is not None else ""
 #     checkpoint_dir = os.path.join(output_dir, sub_dir, "checkpoints")
@@ -11379,7 +11360,7 @@ if __name__ == "__main__":
 
 # def process_chunk_with_batch_safety(model, chunk_X, chunk_y, val_data, batch_size=256, epochs=3, c...
 #     """
-#     Process a chunk with batch-level safety to prevent stopping at specific batches.
+# Process a chunk with batch-level safety to...
 #     """
 #     import numpy as np
     
@@ -11387,10 +11368,10 @@ if __name__ == "__main__":
     
 #     for epoch in range(epochs):
 #         print(f"Epoch {epoch+1}/{epochs}")
-#         epoch_history = {"loss": [], "accuracy": [], "auc": [], "precision": [], "recall": [], "lr...
+# epoch_history = {"loss": [], "accuracy": [], "auc":...
         
 #         # Process in smaller mini-batches to isolate failures
-#         num_batches = len(chunk_X) // batch_size + (1 if len(chunk_X) % batch_size > 0 else 0)
+# num_batches = len(chunk_X) // batch_size + (1...
         
 #         for batch in range(num_batches):
 #             batch_start = batch * batch_size
@@ -11424,14 +11405,14 @@ if __name__ == "__main__":
             
 #             # Print progress every 10 batches
 #             if batch % 10 == 0 or batch == num_batches - 1:
-#                 metrics_str = " - ".join([f"{k}: {np.mean(v):.4f}" for k, v in epoch_history.items...
+# metrics_str = " - ".join([f"{k}: {np.mean(v):.4f}" for...
 #                 print(f"Batch {batch+1}/{num_batches} - {metrics_str}")
         
 #         # Validate after each epoch
 #         try:
 #             val_X, val_y = val_data
 #             val_metrics = model.evaluate(val_X, val_y, verbose=0)
-#             val_dict = {f"val_{name}": value for name, value in zip(model.metrics_names, val_metri...
+# val_dict = {f"val_{name}": value for name, value...
             
 #             # Add validation metrics to epoch history
 #             for k, v in val_dict.items():
@@ -11442,7 +11423,7 @@ if __name__ == "__main__":
 #                 import tensorflow as tf
 #                 epoch_history['lr'] = [float(tf.keras.backend.get_value(model.optimizer.lr))]
                 
-#             metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #             print(f"Validation: {metrics_str}")
 #         except Exception as val_e:
 #             print(f"Error during validation: {val_e}")
@@ -11454,7 +11435,7 @@ if __name__ == "__main__":
     
 #     # Combine histories into a format similar to model.fit
 #     combined_history = {"history": {}}
-#     for key in ["loss", "accuracy", "auc", "precision", "recall", "val_loss", "val_accuracy", 
+# for key in ["loss", "accuracy", "auc", "precision",...
 #                 "val_auc", "val_precision", "val_recall", "lr"]:
 #         combined_history["history"][key] = []
 #         for epoch_hist in history_list:
@@ -11682,7 +11663,7 @@ if __name__ == "__main__":
 #                         pickle.dump(history_log, f)
             
 #             # Save model periodically
-#             if (chunk_idx + 1) % save_frequency == 0 or chunk_idx == num_chunks - 1:
+# if (chunk_idx + 1) % save_frequency ==...
 #                 try:
 #                     model_path = os.path.join(output_dir, "checkpoints", f"model_chunk_{chunk_idx+...
 #                     model.save(model_path)
@@ -11734,7 +11715,7 @@ if __name__ == "__main__":
         
 #         # Estimate time
 #         elapsed = time.time() - start_time
-#         avg_time_per_chunk = elapsed / (chunk_idx - start_chunk + 1) if chunk_idx > start_chunk el...
+# avg_time_per_chunk = elapsed / (chunk_idx - start_chunk...
 #         remaining = avg_time_per_chunk * (num_chunks - chunk_idx - 1)
 #         print(f"Estimated remaining time: {timedelta(seconds=int(remaining))}")
         
@@ -12471,7 +12452,7 @@ if __name__ == "__main__":
 #             log_message(f"Loading predictions with metadata from {pred_file}")
 #             predictions = pd.read_csv(pred_file)
 #         else:
-#             log_message("No predictions with metadata found, attempting to load separate files")
+# log_message("No predictions with metadata found, attempting to...
 #             # Load separate files and combine
 #             preds = np.load(os.path.join(output_dir, "test_predictions.npy"))
 #             true = np.load(os.path.join(output_dir, "test_true_labels.npy"))
@@ -12511,7 +12492,7 @@ if __name__ == "__main__":
 #                     log_message(traceback.format_exc())
         
 #         # Check if we have spatial data
-#         if 'latitude' not in predictions.columns or 'longitude' not in predictions.columns:
+# if 'latitude' not in predictions.columns or 'longitude'...
 #             log_message("No spatial data (latitude/longitude) found in predictions")
 #             return {'error': 'No spatial data available'}
         
@@ -12597,7 +12578,7 @@ if __name__ == "__main__":
 #                 '66.5-70°N (Arctic)', '70-75°N (Arctic)', 
 #                 '75-80°N (Arctic)', '>80°N (Arctic)'
 #             ]
-#             ordered_bands = [b for b in ordered_bands if b in band_metrics.index]
+# ordered_bands = [b for b in ordered_bands...
             
 #             # Get metrics
 #             band_data = band_metrics.loc[ordered_bands]
@@ -12789,7 +12770,7 @@ if __name__ == "__main__":
     
 #     try:
 #         # Load a subset of test data to save memory
-#         max_samples = min(5000, len(test_indices))  # Limit to 5000 samples for memory
+# max_samples = min(5000, len(test_indices)) # Limit to...
 #         np.random.seed(42)
 #         if len(test_indices) > max_samples:
 #             test_indices_subset = np.random.choice(test_indices, max_samples, replace=False)
@@ -12975,8 +12956,8 @@ if __name__ == "__main__":
 #                         perm_auc = roc_auc_score(y_test, perm_preds)
                         
 #                         # Calculate interaction strength
-#                         # We compare permuting both features together vs. sum of permuting each se...
-#                         interactions[i, j] = baseline_auc - perm_auc - (mean_importances[i] + mean...
+# # We compare permuting both features together...
+# interactions[i, j] = baseline_auc - perm_auc -...
 #                         interactions[j, i] = interactions[i, j]  # Symmetric
                         
 #                         # Clean up
@@ -13016,7 +12997,7 @@ if __name__ == "__main__":
 # def failsafe_training_fixed(model, X_file, y_file, train_indices, val_indices, test_indices,
 #                            output_dir, batch_size=256, epochs=3, class_weight=None, start_batch=0)...
 #     """
-#     Fixed robust training function that prevents stalling and handles TensorFlow errors gracefully...
+# Fixed robust training function that prevents stalling...
 #     without changing the model architecture.
 #     """
 #     import os
@@ -13054,7 +13035,7 @@ if __name__ == "__main__":
 #     val_y = np.array([y_mmap[idx] for idx in val_indices_subset])
     
 #     # Training configuration
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
 #     log_message(f"Total batches: {total_batches}")
     
 #     # Load a previous model if starting from a later batch
@@ -13242,7 +13223,7 @@ if __name__ == "__main__":
 #         gc.collect()
         
 #         # Evaluate on validation set every 10 batches
-#         if (batch_idx + 1) % 10 == 0 or (batch_idx + 1) == total_batches or stall_counter > 0:
+# if (batch_idx + 1) % 10 ==...
 #             log_message(f"Evaluating on validation set at batch {batch_idx+1}/{total_batches}")
             
 #             try:
@@ -13250,7 +13231,7 @@ if __name__ == "__main__":
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
                 
 #                 # Display metrics
-#                 metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 log_message(f"Validation metrics at batch {batch_idx+1}/{total_batches}:")
 #                 log_message(f"  {metrics_str}")
                 
@@ -13262,7 +13243,7 @@ if __name__ == "__main__":
 #                     best_model_path = os.path.join(output_dir, "checkpoints", f"best_model_batch_{...
 #                     model.save(best_model_path)
                 
-#                 # If validation AUC is also stuck at zero, this indicates a deeper problem
+# # If validation AUC is also stuck...
 #                 if val_auc == 0 and stall_counter > 0:
 #                     log_message("Critical: Validation AUC is zero, attempting advanced recovery")
                     
@@ -13318,8 +13299,8 @@ if __name__ == "__main__":
 #         # Progress reporting
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
-#         progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
         
 #         log_message(f"Progress: {batch_idx+1}/{total_batches} batches ({progress*100:.1f}%)")
 #         log_message(f"Batch time: {batch_time:.1f}s")
@@ -13424,8 +13405,8 @@ if __name__ == "__main__":
 #         )
     
 #     # Calculate approximate number of batches
-#     num_batches = min(max_batches, (len(train_indices) + effective_batch_size - 1) // effective_ba...
-#     log_message(f"Training on {num_batches} batches (out of original {len(train_indices) // batch_...
+# num_batches = min(max_batches, (len(train_indices) + effective_batch_size -...
+# log_message(f"Training on {num_batches} batches (out of original...
     
 #     # Load from checkpoint if resuming
 #     if start_batch > 0:
@@ -13448,13 +13429,13 @@ if __name__ == "__main__":
 #     try:
 #         val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #         val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#         metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #         log_message(f"Initial validation: {metrics_str}")
 #         best_val_auc = val_metrics_dict.get('auc', 0)
 #     except Exception as e:
 #         log_message(f"Error during initial validation: {e}")
     
-#     # SPEED OPTIMIZATION 5: Use a subset of training data, with appropriate indices
+# # SPEED OPTIMIZATION 5: Use a subset...
 #     # We'll use stratified sampling to maintain class balance
 #     # First, separate indices by class
 #     pos_indices = []
@@ -13526,7 +13507,7 @@ if __name__ == "__main__":
         
 #         # Train on this batch
 #         try:
-#             # SPEED OPTIMIZATION 6: More epochs per batch for faster convergence
+# # SPEED OPTIMIZATION 6: More epochs per...
 #             history = model.fit(
 #                 batch_X, batch_y,
 #                 epochs=3,  # Train for 3 epochs on each batch
@@ -13602,13 +13583,13 @@ if __name__ == "__main__":
 #         gc.collect()
         
 #         # Validate at appropriate intervals
-#         if (batch_idx + 1) % validation_frequency == 0 or stall_counter > 0 or (batch_idx + 1) == ...
+# if (batch_idx + 1) % validation_frequency ==...
 #             log_message(f"Validating at batch {batch_idx+1}/{num_batches}")
             
 #             try:
 #                 val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#                 metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 log_message(f"Validation metrics at batch {batch_idx+1}/{num_batches}:")
 #                 log_message(f"  {metrics_str}")
                 
@@ -13633,7 +13614,7 @@ if __name__ == "__main__":
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
 #         progress = (batch_idx - start_batch + 1) / (num_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# remaining = (elapsed / progress) * (1...
         
 #         log_message(f"Progress: {batch_idx+1}/{num_batches} batches ({progress*100:.1f}%)")
 #         log_message(f"Batch time: {batch_time:.1f}s")
@@ -13670,7 +13651,7 @@ if __name__ == "__main__":
 # def full_dataset_training(model, X_file, y_file, train_indices, val_indices, test_indices,
 #                          output_dir, batch_size=256, class_weight=None, start_batch=0):
 #     """
-#     Training function that uses the ENTIRE training set without any subsampling,
+# Training function that uses the ENTIRE training...
 #     while improving efficiency where possible.
 #     """
 #     import os
@@ -13713,7 +13694,7 @@ if __name__ == "__main__":
 #     log_message(f"Using batch size: {effective_batch_size}")
     
 #     # Calculate total batches
-#     total_batches = len(train_indices) // effective_batch_size + (1 if len(train_indices) % effect...
+# total_batches = len(train_indices) // effective_batch_size + (1...
 #     log_message(f"Training on all {total_batches} batches")
     
 #     # Validation frequency
@@ -13755,7 +13736,7 @@ if __name__ == "__main__":
 #     try:
 #         val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #         val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#         metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #         log_message(f"Initial validation: {metrics_str}")
 #         best_val_auc = val_metrics_dict.get('auc', 0)
 #     except Exception as e:
@@ -13892,13 +13873,13 @@ if __name__ == "__main__":
 #         gc.collect()
         
 #         # Validate at appropriate intervals
-#         if (batch_idx + 1) % validation_frequency == 0 or stall_counter > 0 or (batch_idx + 1) == ...
+# if (batch_idx + 1) % validation_frequency ==...
 #             log_message(f"Validating at batch {batch_idx+1}/{total_batches}")
             
 #             try:
 #                 val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#                 metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 log_message(f"Validation metrics at batch {batch_idx+1}/{total_batches}:")
 #                 log_message(f"  {metrics_str}")
                 
@@ -13922,8 +13903,8 @@ if __name__ == "__main__":
 #         # Progress tracking
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
-#         progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
         
 #         log_message(f"Progress: {batch_idx+1}/{total_batches} batches ({progress*100:.1f}%)")
 #         log_message(f"Batch time: {batch_time:.1f}s")
@@ -13987,7 +13968,7 @@ if __name__ == "__main__":
 #     val_y = np.array([y_mmap[idx] for idx in val_indices_subset])
     
 #     # Calculate total batches
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
 #     print(f"Training on all {total_batches} batches")
     
 #     # Load from checkpoint if resuming
@@ -14009,7 +13990,7 @@ if __name__ == "__main__":
 #     print("Performing initial validation")
 #     val_metrics = model.evaluate(val_X, val_y, verbose=0)
 #     val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
-#     metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #     print(f"Initial validation: {metrics_str}")
 #     best_val_auc = val_metrics_dict.get('auc', 0)
     
@@ -14088,8 +14069,8 @@ if __name__ == "__main__":
 #         # Progress tracking
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
-#         progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
         
 #         print(f"Progress: {batch_idx+1}/{total_batches} batches ({progress*100:.1f}%)")
 #         print(f"Batch time: {batch_time:.1f}s")
@@ -14184,7 +14165,7 @@ if __name__ == "__main__":
 #             loss='binary_crossentropy',
 #             metrics=[
 #                 'accuracy',
-#                 # FIX: Use numerically stable AUC implementation with more thresholds
+# # FIX: Use numerically stable AUC implementation...
 #                 tf.keras.metrics.AUC(name='auc', num_thresholds=200, from_logits=False),
 #                 tf.keras.metrics.Precision(name='precision'),
 #                 tf.keras.metrics.Recall(name='recall')
@@ -14193,7 +14174,7 @@ if __name__ == "__main__":
 #         force_print("Model recompilation complete")
     
 #     # Calculate total batches - use FULL training set
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
 #     force_print(f"Training on all {total_batches} batches of full training set")
     
 #     # Load checkpoint if resuming
@@ -14282,7 +14263,7 @@ if __name__ == "__main__":
 #                 val_metrics = model.evaluate(val_X, val_y, verbose=1)
 #                 val_metrics_dict = dict(zip(model.metrics_names, val_metrics))
                 
-#                 metrics_str = " - ".join([f"{k}: {v:.4f}" for k, v in val_metrics_dict.items()])
+# metrics_str = " - ".join([f"{k}: {v:.4f}" for...
 #                 force_print(f"Validation metrics at batch {batch_idx+1}/{total_batches}:")
 #                 force_print(f"  {metrics_str}")
                 
@@ -14308,8 +14289,8 @@ if __name__ == "__main__":
 #         # Progress tracking
 #         batch_time = time.time() - batch_start_time
 #         elapsed = time.time() - start_time
-#         progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#         remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
         
 #         force_print(f"PROGRESS UPDATE:")
 #         force_print(f"  Batch {batch_idx+1}/{total_batches} completed ({progress*100:.1f}%)")
@@ -14704,7 +14685,7 @@ if __name__ == "__main__":
 #     )
     
 #     # Calculate total batches
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
     
 #     # Tracking variables
 #     best_val_auc = 0
@@ -14766,8 +14747,8 @@ if __name__ == "__main__":
 #         # Progress tracking (minimal output)
 #         if batch_idx % 50 == 0:
 #             elapsed = time.time() - start_time
-#             progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#             remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
 #             print(f"Batch {batch_idx+1}/{total_batches} - Progress: {progress*100:.1f}% - Elapsed:...
     
 #     # Save final model
@@ -14800,7 +14781,7 @@ if __name__ == "__main__":
 # def hyper_fast_training(model, X_file, y_file, train_indices, val_indices, test_indices,
 #                        output_dir, batch_size=1024, class_weight=None, start_batch=0):
 #     """
-#     Hyper-optimized training function with absolute minimal overhead and device handling
+# Hyper-optimized training function with absolute minimal overhead...
 #     """
 #     import os
 #     import numpy as np
@@ -14840,7 +14821,7 @@ if __name__ == "__main__":
 #         val_y = np.array([y_mmap[idx] for idx in val_indices_subset])
     
 #     # Total batches calculation
-#     total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size > 0 e...
+# total_batches = len(train_indices) // batch_size + (1...
 #     quick_log(f"Total batches: {total_batches}, Batch size: {batch_size}")
     
 #     # Performance tracking
@@ -14895,8 +14876,8 @@ if __name__ == "__main__":
 #         # Progress reporting (minimal)
 #         if batch_idx % 50 == 0:
 #             elapsed = time.time() - start_time
-#             progress = (batch_idx - start_batch + 1) / (total_batches - start_batch)
-#             remaining = (elapsed / progress) * (1 - progress) if progress > 0 else 0
+# progress = (batch_idx - start_batch + 1)...
+# remaining = (elapsed / progress) * (1...
 #             quick_log(f"Batch {batch_idx+1}/{total_batches} - Progress: {progress*100:.1f}% - Elap...
         
 #         # Aggressive memory management
@@ -15039,7 +15020,7 @@ if __name__ == "__main__":
 #         Advanced training loop with maximum recovery capabilities
 #         """
 #         # Training configuration
-#         total_batches = len(train_indices) // batch_size + (1 if len(train_indices) % batch_size >...
+# total_batches = len(train_indices) // batch_size + (1...
 #         robust_log(f"Total batches: {total_batches}, Batch size: {batch_size}")
         
 #         # Performance tracking
@@ -15169,8 +15150,8 @@ if __name__ == "__main__":
 #     configure_tensorflow_memory()
     
 #     # Paths and configuration
-#     output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-#     data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+#     output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+#     data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 #     X_file = os.path.join(data_dir, 'X_features.npy')
 #     y_file = os.path.join(data_dir, 'y_labels.npy')
 #     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -15307,8 +15288,7 @@ if __name__ == "__main__":
 #     run_improved_pipeline()
 
 
-
-# Make sure this is at the very beginning of your script, before any other TensorFlow operations
+# Make sure this is at the very...
 def configure_tensorflow_memory():
     """Configure TensorFlow to use memory growth and limit GPU memory allocation"""
     import tensorflow as tf
@@ -15634,7 +15614,7 @@ def build_improved_zero_curtain_model(input_shape, include_moisture=True):
 #     # Apply transformer encoder
 #     transformer_output = transformer_encoder(transformer_input)
     
-#     # Parallel CNN paths for multi-scale feature extraction (with regularization)
+# # Parallel CNN paths for multi-scale feature...
 #     cnn_1 = Conv1D(filters=32, kernel_size=3, padding='same', activation='relu', 
 #                   kernel_regularizer=l2(reg_strength))(inputs)
 #     cnn_1 = BatchNormalization()(cnn_1)
@@ -16233,8 +16213,8 @@ def evaluate_model_with_visualizations(model, X_file, y_file, test_indices, outp
 # def main():
 #     # Configuration
 #     input_shape = (24, 5)  # Adjust to match your data shape
-#     output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-#     data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+#     output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+#     data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
 #     X_file = os.path.join(data_dir, 'X_features.npy')
 #     y_file = os.path.join(data_dir, 'y_labels.npy')
 #     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -16714,8 +16694,8 @@ def run_improved_pipeline():
     #configure_tensorflow_memory()
     
     # Paths and configuration
-    output_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
-    data_dir = '/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
+    output_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/improved_model'
+    data_dir = '/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling/ml_data'
     X_file = os.path.join(data_dir, 'X_features.npy')
     y_file = os.path.join(data_dir, 'y_labels.npy')
     metadata_file = os.path.join(data_dir, 'metadata.pkl')
@@ -17480,7 +17460,7 @@ def analyze_feature_importance_fixed(model, X_file, y_file, test_indices, output
             log_message(f"Error creating feature importance plot: {str(plot_e)}")
             log_message(traceback.format_exc())
         
-        # Analyze temporal patterns in feature importance only if there are sufficient time steps
+        # Analyze temporal patterns in feature importance only...
         if X_test.shape[1] > 1:
             log_message("Analyzing temporal importance patterns")
             
@@ -17581,7 +17561,6 @@ A comprehensive model for zero curtain detection in permafrost monitoring,
 with specific optimizations for numerical stability and memory management
 to address training stalls.
 
-Author: [REDACTED_NAME], [REDACTED_AFFILIATION] Arctic Research
 """
 
 import tensorflow as tf
@@ -17781,7 +17760,7 @@ def configure_tensorflow():
 #    precision = tf.keras.metrics.Precision()(y_true, y_pred)
 #    recall = tf.keras.metrics.Recall()(y_true, y_pred)
 #    # Add epsilon to avoid division by zero
-#    return 2 * ((precision * recall) / (precision + recall + tf.keras.backend.epsilon()))
+# return 2 * ((precision * recall) /...
 
 class F1Score(tf.keras.metrics.Metric):
     def __init__(self, name='f1_score', **kwargs):
@@ -18752,7 +18731,7 @@ def progressive_training(X_file, y_file, train_indices, val_indices, output_dir,
 #        
 #        # Report progress
 #        elapsed = time.time() - start_time
-#        avg_time_per_chunk = elapsed / (chunk_idx - start_chunk + 1) if chunk_idx > start_chunk els...
+# avg_time_per_chunk = elapsed / (chunk_idx - start_chunk...
 #        remaining = avg_time_per_chunk * (num_chunks - chunk_idx - 1)
 #        
 #        if logger:
@@ -20343,7 +20322,7 @@ class DataValidator:
 #         depth_diff = np.diff(depths)
 #         vertical_gradients = np.zeros_like(temp_profile)
 #         for i in range(len(depths)-1):
-#             vertical_gradients[:, i] = (temp_profile[:, i+1] - temp_profile[:, i]) / depth_diff[i]
+# vertical_gradients[:, i] = (temp_profile[:, i+1] - temp_profile[:,...
         
 #         temporal_gradients = np.gradient(temp_profile, axis=0)
         

@@ -232,7 +232,7 @@ def enable_metal_gpu(debug_level=2):
 #             batch = data_generator[batch_index]
 #             # If batch is a tuple, yield elements individually
 #             if isinstance(batch, tuple):
-#                 for i in range(len(batch[0])):  # For each example in the batch
+# for i in range(len(batch[0])): # For each...
 #                     # Extract individual items from the batch
 #                     if len(batch) == 2:  # (x, y)
 #                         yield batch[0][i], batch[1][i]
@@ -255,7 +255,7 @@ def enable_metal_gpu(debug_level=2):
     
 #     return dataset
 
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spa...
 
 # # Set up callbacks
 # callbacks = [
@@ -388,7 +388,7 @@ plot_model(model, to_file='zero_curtain_pipeline/modeling/spatial_model/insitu_m
 #             batch = data_generator[batch_index]
 #             # If batch is a tuple, yield elements individually
 #             if isinstance(batch, tuple):
-#                 for i in range(len(batch[0])):  # For each example in the batch
+# for i in range(len(batch[0])): # For each...
 #                     # Extract individual items from the batch
 #                     if len(batch) == 2:  # (x, y)
 #                         yield batch[0][i], batch[1][i]
@@ -475,7 +475,7 @@ plot_model(model, to_file='zero_curtain_pipeline/modeling/spatial_model/insitu_m
     
 #     return history_aggregate
 
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
 
 # Set up callbacks
 callbacks = [
@@ -672,7 +672,7 @@ gradients = tape.gradient(loss, model.trainable_variables)
 model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 print(f"Backward pass completed in {time.time() - start:.2f} seconds")
 
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'efficient_model')
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'efficient_model')
 
 # Set up callbacks
 callbacks = [
@@ -979,7 +979,7 @@ def resumable_efficient_training(model, X_file, y_file, train_indices, val_indic
     return model, final_model_path
 
 # # Define output directory
-# output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'mem...
+# output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'mem...
 
 # # Configure initial TensorFlow memory settings
 # configure_tensorflow_memory()
@@ -1055,7 +1055,7 @@ from tensorflow.keras.utils import plot_model
 plot_model(model, to_file='zero_curtain_pipeline/modeling/spatial_model/insitu_model_plot.png', show_shapes=True, show_dtype=True, \
            show_layer_names=True, expand_nested=True, dpi=300, layer_range=None, show_layer_activations=True);#, rankdir='TB')
 
-output_dir = os.path.join('/Users/bgay/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
+output_dir = os.path.join('/Users/[USER]/Desktop/Research/Code/zero_curtain_pipeline/modeling', 'spatial_model')
 
 # Set up callbacks
 callbacks = [
@@ -1408,7 +1408,7 @@ def process_chunk_with_batch_safety(model, chunk_X, chunk_y, val_data, batch_siz
 #         phase_fraction = tf.sigmoid((temperatures + 0.1) * 100)
         
 #         # Thermal properties
-#         k_eff = (phase_fraction * self.k_water + (1 - phase_fraction) * self.k_ice) * self.porosit...
+# k_eff = (phase_fraction * self.k_water + (1...
         
 #         return temperatures + k_eff * temp_gradients
 
@@ -1625,7 +1625,7 @@ def process_chunk_with_batch_safety(model, chunk_X, chunk_y, val_data, batch_siz
 #         phase_fraction = tf.sigmoid((temperatures + 0.1) * 100)
         
 #         # Thermal properties
-#         k_eff = (phase_fraction * self.k_water + (1 - phase_fraction) * self.k_ice) * self.porosit...
+# k_eff = (phase_fraction * self.k_water + (1...
         
 #         return temperatures + k_eff * temp_gradients
         
@@ -1795,7 +1795,7 @@ class ZeroCurtainModel(tf.keras.Model):
 #     for x, y in train_dataset.take(1):
 #         print("Input shape:", x.shape)
 #         print("Label shape:", y.shape)
-#         dummy_input = tf.zeros_like(x)  # Create dummy input with exact same shape
+# dummy_input = tf.zeros_like(x) # Create dummy input...
     
 #     _ = model(dummy_input)
     
@@ -2324,7 +2324,7 @@ class PermafrostHyperModel(kt.HyperModel):
             #         activation='relu'
             #     )(x)
             # else:
-            #     x = tf.keras.layers.Lambda(lambda x: x[:, -1, ...])(x)  # Take last sequence
+            # x = tf.keras.layers.Lambda(lambda x: x[:, -1, ...])(x)...
 
             # Spatial attention mechanism
             if hp.Boolean('use_spatial_attention'):
