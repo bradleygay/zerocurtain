@@ -1,6 +1,8 @@
 # Arctic Zero-Curtain Detection Pipeline
 **A physics-informed machine learning framework for detecting and analyzing zero-curtain events in permafrost regions**
 
+[![DOI](https://zenodo.org/badge/1069438493.svg)](https://doi.org/10.5281/zenodo.17407929)
+
 ---
 
 ## Associated Manuscript
