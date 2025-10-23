@@ -1,32 +1,12 @@
 # Arctic Zero-Curtain Detection Pipeline
 **A physics-informed machine learning framework for detecting and analyzing zero-curtain events in permafrost regions**
-
 [![DOI](https://zenodo.org/badge/1069438493.svg)](https://doi.org/10.5281/zenodo.17407929)
 
 ---
-
-## Associated Manuscript
-
-**Manuscript Number**: NATMACHINTELL-A25094443  
-**Submission Date**: October 13, 2025  
-**Journal**: *Nature Machine Intelligence*
-
-### Citation
-
-Gay, B. A., Miner, K. N., Rietze, N., Poulter, B., Pastick, N. J., & Miller, C. E. (2025). Resolving circumarctic zero-curtain phenomena with AI-integrated Earth observations. *Nature Machine Intelligence*. Manuscript submitted for publication.
-
-### Authors
-
-**Corresponding Author**:  
-Bradley A. Gay  
-NASA Goddard Space Flight Center  
-Email: bradley.a.gay@nasa.gov
-
-**Contributing Authors**:  
-Kimberley N. Miner, Nils Rietze, Benjamin Poulter, Neal J. Pastick, Charles E. Miller
-
-### Abstract
-
+##### Associated Manuscript
+##### Gay, B.A., Miner, K.R., Rietze, N., Poulter, B., Pastick, N.J., & Miller, C.E. (2025). Resolving circumarctic zero-curtain phenomena with AI-integrated Earth observations (NATMACHINTELL-A25094443). *Nature Machine Intelligence*. Under Review.</br>
+> ###### **Corresponding Author**: Bradley A. Gay, PhD | NASA Goddard Space Flight Center | bradley.a.gay@nasa.gov
+###### Abstract
 Across the circumarctic, permafrost landscapes store approximately 1700 billion metric tons of organic carbon—nearly twice atmospheric levels—yet reservoir stability depends on the zero-curtain, a subsurface thermal plateau that emerges when latent heat maintains soil temperatures near 0°C during freeze-thaw phase transitions. The zero-curtain sustains liquid water through cryosuction within the active layer, enabling microbial activity to persist well into the cold season and regulating permafrost thermal stability. However, zero-curtain intensity, duration, and spatial extent remain inadequately quantified during transitional seasons when isothermal buffering exhibits maximum variability, limiting our understanding of permafrost-climate feedbacks. Here, we show that zero-curtain phenomena exhibit pronounced seasonal asymmetry, with extended vernal intensification (1000-4000 hours) relative to compressed winter occurrence (100-500 hours), and significant longitudinal variations, with moderate intensity patterns across the North American Arctic, enhanced vernal amplification in Siberia, reduced winter suppression in Fennoscandia, and a delayed vernal response in the Canadian Archipelago, with systematic amplification under warming conditions (2015-2024). GeoCryoAI, a hybridized physics-informed transfer learning framework, integrates 62.71 million in situ measurements and 3.3 billion remote sensing observations to quantify these dynamics at 30 m resolution, achieving 96.4% detection accuracy and 39% improvement over conventional models. Mechanistic analysis reveals soil moisture-latent heat coupling drives 60-90% of duration variability, amplified 20-40% under warming. This framework establishes a NISAR-ready circumarctic monitoring protocol, enabling 3-6-month forecasts and quantitative constraints for Earth system models simulating carbon-climate feedbacks in a warming Arctic.
 
 ---
