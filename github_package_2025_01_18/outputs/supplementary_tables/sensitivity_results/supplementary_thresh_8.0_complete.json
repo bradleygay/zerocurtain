@@ -1,9 +1,0 @@
-{
-  "threshold_pct": 8.0,
-  "events_retained": 50076951,
-  "events_excluded": 4341166,
-  "detection_cv": 6.7e-05,
-  "morans_i_masked": 0.180435,
-  "morans_i_z": 1276.85,
-  "cv_rmse": 665.4436294402293
-}
