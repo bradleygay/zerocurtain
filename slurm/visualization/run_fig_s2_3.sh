@@ -53,7 +53,7 @@ export MPLCONFIGDIR=/discover/nobackup/bagay/.matplotlib
 mkdir -p $MPLCONFIGDIR
 
 # Cartopy data directory (Natural Earth shapefiles)
-export CARTOPY_DATA_DIR=/home/bagay/.local/share/cartopy
+export CARTOPY_DATA_DIR=${HOME}/.local/share/cartopy
 
 # Working directory setup
 export TMPDIR=/discover/nobackup/bagay/tmp
