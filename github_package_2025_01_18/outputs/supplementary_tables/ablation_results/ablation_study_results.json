@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "generated": "2025-12-31T16:18:10.365973",
+    "device": "cuda",
+    "gpu": "NVIDIA A100-SXM4-40GB"
+  },
+  "table_s2_6": [
+    {
+      "configuration": "Full GeoCryoAI",
+      "detection_accuracy": 64.9,
+      "delta_accuracy": 0.0,
+      "duration_rmse_hours": 5125.84,
+      "extent_rmse_m": 1.065,
+      "physics_compliance_pct": 94.8,
+      "notes": "Complete architecture"
+    },
+    {
+      "configuration": "- Physics Constraints",
+      "detection_accuracy": 65.6,
+      "delta_accuracy": 0.7,
+      "duration_rmse_hours": 5137.36,
+      "extent_rmse_m": 1.2,
+      "physics_compliance_pct": 95.0,
+      "notes": "lambda_physics = 0"
+    },
+    {
+      "configuration": "- LNN Component",
+      "detection_accuracy": 66.0,
+      "delta_accuracy": 1.1,
+      "duration_rmse_hours": 5106.37,
+      "extent_rmse_m": 1.351,
+      "physics_compliance_pct": 93.1,
+      "notes": "Standard LSTM replacement"
+    },
+    {
+      "configuration": "- Multi-scale Attention",
+      "detection_accuracy": 66.8,
+      "delta_accuracy": 1.9,
+      "duration_rmse_hours": 5164.75,
+      "extent_rmse_m": 0.82,
+      "physics_compliance_pct": 95.0,
+      "notes": "Single-scale attention"
+    },
+    {
+      "configuration": "- U-Net Decoder",
+      "detection_accuracy": 51.2,
+      "delta_accuracy": -13.7,
+      "duration_rmse_hours": 5593.6,
+      "extent_rmse_m": 0.67,
+      "physics_compliance_pct": 100.0,
+      "notes": "Dense decoder layers"
+    },
+    {
+      "configuration": "Baseline MLP",
+      "detection_accuracy": 61.6,
+      "delta_accuracy": -3.3,
+      "duration_rmse_hours": 5387.83,
+      "extent_rmse_m": 0.851,
+      "physics_compliance_pct": 79.0,
+      "notes": "3-layer feedforward"
+    }
+  ]
+}

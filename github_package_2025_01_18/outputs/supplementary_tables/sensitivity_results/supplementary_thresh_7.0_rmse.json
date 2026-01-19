@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "generated": "2026-01-01T13:31:47.019322",
+    "pinszc": 54418117,
+    "pirszc": 18602831
+  },
+  "table_s2_4": [
+    {
+      "threshold_pct": 4.0,
+      "events_retained": 52270267,
+      "events_excluded": 2147850,
+      "detection_cv": 6.4e-05,
+      "morans_i_raw": 0.344417,
+      "morans_i_masked": 0.279946,
+      "morans_i_z": 2023.96,
+      "cv_rmse": 1085.5253335289087,
+      "physical_violations": 1853505
+    },
+    {
+      "threshold_pct": 5.0,
+      "events_retained": 51703501,
+      "events_excluded": 2714616,
+      "detection_cv": 7.27116268599049e-05,
+      "morans_i_raw": 0.344417,
+      "morans_i_masked": 0.19600917398929596,
+      "morans_i_z": 1409.406977105203,
+      "cv_rmse": 980.977858031292,
+      "physical_violations": 1286739
+    },
+    {
+      "threshold_pct": 5.95,
+      "events_retained": 51189851,
+      "events_excluded": 3228266,
+      "detection_cv": 7.076724470130418e-05,
+      "morans_i_raw": 0.344417,
+      "morans_i_masked": 0.163542702794075,
+      "morans_i_z": 1170.100474475212,
+      "cv_rmse": 884.8417913161244,
+      "physical_violations": 773089
+    }
+  ]
+}
