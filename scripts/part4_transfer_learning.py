@@ -266,7 +266,7 @@ class GeoCryoAIModel(nn.Module):
         # Multi-task predictions
         intensity = self.intensity_head(final_features)
         duration_raw = self.duration_head(final_features)
-        duration = torch.clamp(duration_raw, min=0.0, max=8.95)  # [0, log(6570/6)]
+        duration = torch.clamp(duration_raw, min=0.0, max=8.95)  # raw log1p-space guard (expm1(8.95) ~ 7700 h); physical 4500 h plausibility ceiling enforced downstream in QC
         extent = self.extent_head(final_features)
         
         return {

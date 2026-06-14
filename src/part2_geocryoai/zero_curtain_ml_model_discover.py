@@ -11,7 +11,6 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
-import torchvision.transforms as transforms
 
 # Scientific Computing
 import numpy as np
@@ -62,7 +61,6 @@ except ImportError:
     SHAP_AVAILABLE = False
 
 # Advanced Architectures
-from transformers import AutoModel, AutoConfig
 import torch_geometric
 from torch_geometric.nn import GCNConv, GATConv, GraphConv
 
