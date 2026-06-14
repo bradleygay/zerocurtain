@@ -39,41 +39,28 @@ Zero-curtain duration and intensity reflect the balance between latent heat exch
 The framework operates in five sequential stages:
 
 ```
-
   PART I: Physics-Informed Neural Zero-Curtain Detection (PINSZC) 
   • Thermodynamic constraint integration                          
   • Multi-sensor data fusion (in-situ + reanalysis)               
   • Event classification: rapid, consecutive, extended, composite 
-
                        ↓
-                       
-
   PART II: GeoCryoAI Teacher Forcing Model                        
   • Spatiotemporal graph neural networks                          
   • Liquid neural networks for ecological memory                  
   • Curriculum learning with ground truth                         
   • Multi-task prediction: intensity, duration, spatial extent    
-
                        ↓
-                       
-
   PART III: Physics-Informed Remote Sensing Zero-Curtain (PIRSZC) 
   • Satellite data integration (Landsat, SMAP, UAVSAR, NISAR)     
   • Upscaling from site to regional predictions                   
   • Uncertainty quantification                                    
-
                        ↓
-                       
-
   PART IV: Transfer Learning & Circumarctic Prediction            
   • Domain adaptation from in-situ to remote sensing              
   • Two-phase training strategy with selective layer freezing     
   • Pan-Arctic zero-curtain mapping and forecasting               
   • Prognostic modeling for permafrost vulnerability              
-
                        ↓
-                       
-
   PART V: Circumarctic Mapping & Visualization                    
   • High-resolution geospatial visualizations (1891-2024)         
   • Multi-decadal trend analysis and anomaly detection            
